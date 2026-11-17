@@ -5,9 +5,10 @@ Static rules (fitted on RE_train, the errors of all training-split points):
   percentile_threshold p-th percentile                 B1
   mean_k_std_threshold mean + k std                    B2
   robust_threshold     median + lambda * scaled MAD    S-robust
+  evt_pot_threshold    GPD tail quantile (POT)         R2 EVT-POT (Alcarria et al. 2026), untuned
 
 Rolling rules (rolling_alarms), threshold at t from the w errors before t:
-  kind="mean_std",   mult=3    B3
+  kind="mean_std",   mult=3    B3 / RePAD2 rule (Lee & Lin 2023)
   kind="median_mad", mult=lam  P1, memory "plain" or "gated"
 
 All rules alarm when e(t) > threshold(t). Standard deviations use ddof=0.
@@ -60,6 +61,58 @@ def mean_k_std_threshold(train_err, k: float) -> float:
 def robust_threshold(train_err, lam: float) -> float:
     x = np.asarray(train_err, dtype=float)
     return float(np.median(x) + lam * scaled_mad(x))
+
+
+EVT_Q = 0.98
+EVT_ALPHA = 0.01
+EVT_MIN_EXCESS = 30
+EVT_FALLBACK_Q = 0.99
+EVT_XI_ZERO = 1e-6
+
+
+def gpd_tail_threshold(u: float, sigma: float, xi: float, p_u: float, alpha: float) -> float:
+    """POT threshold (Alcarria et al. 2026, Eq. 2): the level exceeded with
+    probability alpha, given a GPD(xi, sigma) for the excesses over u, which
+    occur with probability p_u."""
+    if abs(xi) > EVT_XI_ZERO:
+        return float(u + (sigma / xi) * ((p_u / alpha) ** xi - 1.0))
+    return float(u + sigma * np.log(p_u / alpha))
+
+
+def evt_pot_threshold(train_err, q: float = EVT_Q, alpha: float = EVT_ALPHA,
+                      min_excess: int = EVT_MIN_EXCESS) -> tuple[float, dict]:
+    """R2 EVT-POT (D-24). u = q-quantile of RE_train; GPD fitted by maximum
+    likelihood (loc fixed at 0) to the excesses over u. Falls back to the
+    0.99 quantile of RE_train if there are fewer than `min_excess` excesses or
+    the fit fails. Returns (threshold, info); info["fallback"] says which
+    path was used."""
+    from scipy.stats import genpareto
+
+    x = np.asarray(train_err, dtype=float)
+    x = x[np.isfinite(x)]
+    u = float(np.quantile(x, q))
+    exc = x[x > u] - u
+    p_u = len(exc) / len(x)
+    info = {"u": u, "n_excess": int(len(exc)), "p_u": p_u, "xi": float("nan"),
+            "sigma": float("nan"), "fallback": False, "reason": ""}
+
+    def fallback(reason: str):
+        info.update(fallback=True, reason=reason)
+        return float(np.quantile(x, EVT_FALLBACK_Q)), info
+
+    if len(exc) < min_excess:
+        return fallback(f"{len(exc)} excesses < {min_excess}")
+    try:
+        xi, _, sigma = genpareto.fit(exc, floc=0)
+    except Exception as e:  # scipy optimiser failure
+        return fallback(f"fit failed: {e!r}")
+    info.update(xi=float(xi), sigma=float(sigma))
+    if not (np.isfinite(xi) and np.isfinite(sigma) and sigma > 0):
+        return fallback("fit returned invalid parameters")
+    t = gpd_tail_threshold(u, sigma, xi, p_u, alpha)
+    if not np.isfinite(t):
+        return fallback("threshold not finite")
+    return t, info
 
 
 def static_alarms(err, threshold: float) -> np.ndarray:

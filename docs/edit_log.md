@@ -77,3 +77,8 @@
 - scripts/time_one.py: timed one fit (nyc_taxi, seed 15, 4 threads): 44
   epochs, 38.6 s training; projection for 36 files x 3 seeds 0.77 h
   (same epochs) to 0.88 h (50 epochs) sequential; results/phase2_timing.json.
+- D-24 (owner, before any threshold results): B3 relabelled
+  "B3 / RePAD2 rule (Lee & Lin 2023)" in docs, README and
+  pipeline/thresholds.py; R2 EVT-POT added (pipeline/thresholds.py:
+  evt_pot_threshold, gpd_tail_threshold) with 4 unit tests. Done while the
+  training run was in progress; the run was not restarted.

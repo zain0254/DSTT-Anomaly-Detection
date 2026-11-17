@@ -8,7 +8,9 @@ e(t):
 - B1: p-th percentile of training errors
 - B2: mean + k std of training errors, k tuned
 - S-robust: median + lambda * scaled MAD of training errors
-- B3: rolling mean + 3 std of the previous w errors (non-robust counterpart of P1)
+- B3 / RePAD2 rule (Lee & Lin 2023): rolling mean + 3 std of the previous w errors
+  (non-robust counterpart of P1)
+- R2 EVT-POT (Alcarria et al. 2026): GPD tail threshold of training errors, untuned
 - P1: rolling median + lambda * scaled MAD of the previous w errors (proposed),
   plain or gated memory
 

@@ -85,7 +85,8 @@ earlier note that a zero MAD gives a zero floor. Implemented in
 | B1 | p-th percentile of RE_train | p |
 | B2 | mean + k std of RE_train | k |
 | S-robust | median + lambda * scaled MAD of RE_train | lambda |
-| B3 | rolling mean + 3 std of the previous w errors, floored (D-09) | w (k = 3 fixed, implementation reading of "rolling mean + 3 sigma") |
+| B3 / RePAD2 rule (Lee & Lin 2023) | rolling mean + 3 std of the previous w errors, floored (D-09) | w (k = 3 fixed, implementation reading of "rolling mean + 3 sigma") |
+| R2 EVT-POT (Alcarria et al. 2026) | GPD tail threshold from RE_train (D-24) | nothing |
 | P1 | rolling median + lambda * scaled MAD of the previous w errors, floored, memory plain or gated | lambda, w, memory |
 The old ablations A1-A4 and the old B4 are dropped.
 
@@ -187,3 +188,26 @@ hold-out is the last 10 % of training windows by position (as Keras
 `validation_split` does); the first hold-out windows share up to 29 rows with
 the last fitting windows. Owner can overrule any of these before the full
 run.
+
+## D-24 Reference threshold rules (2026-11-18, user, decided before any threshold results)
+Added while the LSTM-AE training run was in progress; no threshold has been
+computed or scored yet.
+- R1 RePAD2 rule (Lee & Lin, IoTBDS 2023) is the same rule as B3 (rolling
+  mean + 3 std of the previous w errors). No duplicate method; B3 is labelled
+  "B3 / RePAD2 rule (Lee & Lin 2023)". Differences from the original: their
+  window lengths (1440 to 16128) exceed the length of many NAB files, so w is
+  tuned on validation like the other rolling rules; they threshold the AARE
+  of an LSTM predictor, we apply the rule to LSTM-AE reconstruction MAE. The
+  D-09 floor applies as for B3.
+- R2 EVT-POT (Alcarria et al. 2026, arXiv:2609.10017, Eq. 2), static, from
+  RE_train, nothing tuned: u = 0.98 quantile of RE_train; a Generalized Pareto
+  Distribution is fitted by maximum likelihood (`scipy.stats.genpareto`,
+  loc = 0) to the excesses over u; with p_u = n_excess / n and alpha = 0.01,
+  T = u + (sigma / xi) * ((p_u / alpha)^xi - 1) if |xi| > 1e-6, else
+  T = u + sigma * log(p_u / alpha). If there are fewer than 30 excesses, the
+  fit fails, or the result is not finite, T = 0.99 quantile of RE_train. Their
+  smoothing and rate limit are not used: they serve monthly re-calibration
+  windows, which this protocol does not have. The number of files that use
+  the fallback is logged when thresholds are computed. Implemented in
+  `pipeline/thresholds.evt_pot_threshold`; unit tests on exponential data
+  (closed-form answer ln 100) and both fallback paths.
