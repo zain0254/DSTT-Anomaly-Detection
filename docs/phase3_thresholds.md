@@ -86,7 +86,7 @@ Verdicts (primary comparison P1 vs Base):
   Wilcoxon test. Secondary H2 measures on the clean streams: no significant
   difference from Base (clean FPR difference 0.0068, p = 0.163;
   false alarms per 1,000 points difference 6.75, p = 0.163).
-- **H3 (every-step NAB standard, per file): not supported.** No significant
+- **D-26 NAB test (labelled H3 in D-26; in the paper NAB belongs to RQ2/RQ3, and H3 is the proposal's category hypothesis, see D-28): not supported.** No significant
   difference (mean difference 359.4, CI -149.5 to
   994.5, p = 0.832).
 
@@ -167,3 +167,71 @@ Test results of the only changed method (mean ± sd over seeds):
 With w = 600, B3 has a lower composite F1 and event recall on test than with
 the pre-registered w = 400, and a higher point F1 and every-step NAB. No
 hypothesis test was run on the exploratory results.
+
+## Proposal hypotheses (D-28)
+
+Pre-registered in the October 2026 proposal defense and tested exactly as
+written, on the primary results (nothing rerun). alpha = 0.05, as stated in
+the proposal (p < 0.05). Unit = file, mean over 3 seeds. Each hypothesis is
+tested against Base (static mu + 3 sigma) and against B3 (rolling
+mu + 3 sigma, which the proposal labelled as the base paper). Script
+`scripts/proposal_hypotheses.py`; outputs `results/phase3/proposal_hypotheses.csv`,
+`category_analysis.csv`, `detection_delay.csv`, `detection_delay_windows.csv`.
+
+- **Proposal H1 vs Base: not supported.** Point F1 P1 0.161 vs 0.355; P1 higher on 3 of 18 files (criterion: at least 13), lower on 15; Wilcoxon p = 0.0007 (P1 significantly lower).
+- **Proposal H1 vs B3: not supported.** Point F1 P1 0.161 vs 0.207; P1 higher on 5 of 18 files (criterion: at least 13), lower on 13; Wilcoxon p = 0.0898 (not significant).
+- **Proposal H2 vs Base: not supported under either test.** Mean high-variance FPR P1 0.0801 vs 0.2309 (n = 17); relative reduction 65.3 % (criterion >= 15 %: met); paired t-test t = -1.805, p = 0.0900; Wilcoxon W = 27, p = 0.1093.
+- **Proposal H2 vs B3: not supported under either test.** Mean high-variance FPR P1 0.0801 vs 0.0699 (n = 17); relative reduction -14.5 % (criterion >= 15 %: not met); paired t-test t = 0.424, p = 0.6772; Wilcoxon W = 34, p = 0.6949.
+
+| Hypothesis | vs | n | P1 | Baseline | Criterion | Met | Test | Statistic | p | Verdict |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Proposal H1 | Base | 18 | 0.1611 | 0.3551 | wins >= 13 of 18 | False | Wilcoxon | 13.000 | 0.0007 | not supported |
+| Proposal H1 | B3 | 18 | 0.1611 | 0.2072 | wins >= 13 of 18 | False | Wilcoxon | 46.000 | 0.0898 | not supported |
+| Proposal H2 | Base | 17 | 0.0801 | 0.2309 | relative reduction >= 15 % | True | paired t-test | -1.805 | 0.0900 | not supported |
+| Proposal H2 | Base | 17 | 0.0801 | 0.2309 | relative reduction >= 15 % | True | Wilcoxon | 27.000 | 0.1093 | not supported |
+| Proposal H2 | B3 | 17 | 0.0801 | 0.0699 | relative reduction >= 15 % | False | paired t-test | 0.424 | 0.6772 | not supported |
+| Proposal H2 | B3 | 17 | 0.0801 | 0.0699 | relative reduction >= 15 % | False | Wilcoxon | 34.000 | 0.6949 | not supported |
+
+**Proposal H3 (RQ4, descriptive): realAWSCloudwatch shows the largest
+improvement.** Mean improvement of P1 per category (positive = P1 better;
+rank 1 = largest improvement among the 5 categories). AdExchange has 1 file;
+AWS has 4 files for high-variance FPR (ec2_cpu_utilization_ac20cd undefined).
+
+| Metric | vs | AWSCloudwatch (n) | AdExchange (n) | KnownCause (n) | Traffic (n) | Tweets (n) | AWS rank |
+|---|---|---|---|---|---|---|---|
+| f1 | Base | -0.141 (5) | -0.022 (1) | -0.327 (5) | -0.234 (4) | -0.064 (3) | 3 |
+| f1 | B3 | -0.095 (5) | +0.178 (1) | -0.051 (5) | -0.066 (4) | -0.004 (3) | 5 |
+| composite_f1 | Base | +0.080 (5) | -0.187 (1) | -0.395 (5) | -0.248 (4) | -0.219 (3) | 1 |
+| composite_f1 | B3 | -0.293 (5) | -0.334 (1) | -0.251 (5) | -0.082 (4) | -0.068 (3) | 4 |
+| hv_fpr | Base | +0.507 (4) | -0.122 (1) | +0.038 (5) | +0.130 (4) | -0.017 (3) | 1 |
+| hv_fpr | B3 | -0.064 (4) | -0.163 (1) | +0.016 (5) | +0.043 (4) | -0.004 (3) | 4 |
+
+Verdict: **partly in line with H3, descriptively.** AWS CloudWatch ranks first
+against Base on composite F1 and high-variance FPR, third on point F1, and
+4th to 5th on all three measures against B3. It ranks first in
+2 of the 6 metric x baseline combinations. No significance is claimed.
+
+**Detection delay (proposal RO6).** Over the 25 test windows of the 18
+evaluation files (clipped to the test segment): mean relative delay of the
+first alarm over detected windows, and missed windows, mean ± sd over seeds.
+
+| Method | Detected (of 25) | Missed | Mean relative delay |
+|---|---|---|---|
+| Base (Ahmad 2026) | 24.0 ± 0.0 | 1.0 ± 0.0 | 0.419 ± 0.011 |
+| B1 percentile | 24.0 ± 0.0 | 1.0 ± 0.0 | 0.203 ± 0.004 |
+| B2 mean + k std | 24.0 ± 0.0 | 1.0 ± 0.0 | 0.390 ± 0.008 |
+| S-robust median + lambda MAD | 24.0 ± 0.0 | 1.0 ± 0.0 | 0.377 ± 0.009 |
+| R2 EVT (Yu et al. 2024) | 19.7 ± 0.6 | 5.3 ± 0.6 | 0.453 ± 0.001 |
+| B3 / RePAD2 rule (Lee & Lin 2023) | 22.0 ± 0.0 | 3.0 ± 0.0 | 0.431 ± 0.012 |
+| B3-k rolling mean + k std | 22.0 ± 0.0 | 3.0 ± 0.0 | 0.431 ± 0.012 |
+| P1 rolling median + lambda MAD (proposed) | 18.3 ± 1.5 | 6.7 ± 1.5 | 0.406 ± 0.004 |
+
+The mean delay is computed only over detected windows, so a method that
+misses more windows (P1 misses 6.7 on average, R2 5.3, B3 3.0, the static
+rules 1.0) is compared on a different set of windows; delays and missed
+counts should be read together.
+
+Figures: `fig05_category_improvement` (per category, P1 vs Base and vs B3,
+three measures) and `fig06_detection_delay` (relative delay and missed
+windows per method).
+

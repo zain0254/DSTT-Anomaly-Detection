@@ -119,3 +119,11 @@
 - Phase 3 result figures (scripts/plot_phase3_results.py: fig02 test
   metrics, fig03 per-file paired plots, fig04 example trace) and their
   descriptions in docs/phase3_thresholds.md.
+- D-28 recorded before computing: proposal hypotheses H1-H3 and detection
+  delay; D-26 "H3" relabelled as the NAB test in the docs.
+- Proposal hypotheses (D-28): scripts/proposal_hypotheses.py,
+  results/phase3/proposal_hypotheses.csv, category_analysis.csv,
+  detection_delay.csv, detection_delay_windows.csv; scripts/plot_proposal.py
+  (fig05 category improvement, fig06 detection delay); new section in
+  docs/phase3_thresholds.md; the D-26 NAB test is labelled as such instead of
+  "H3" in the doc. Primary results unchanged.
