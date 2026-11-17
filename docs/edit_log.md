@@ -101,3 +101,9 @@
 - D-26 recorded before any threshold result: tuning objective, grids, B3-k
   added, one parameter set across seeds, pre-registered H1-H3 tests. Reason:
   owner approved the Phase 3 plan.
+- Phase 3 on branch feature/phase3-thresholds: pipeline/methods.py (method
+  registry, shared rolling statistics), gated memory uses a numpy ring
+  buffer (same behaviour, faster; tests unchanged plus a consistency test),
+  scripts/phase3.py (tuning on validation, one test scoring), results in
+  results/phase3/, scripts/plot_phase3.py (tuning figure),
+  docs/phase3_thresholds.md. Hypothesis tests not run yet.
