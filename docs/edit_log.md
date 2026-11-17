@@ -98,3 +98,6 @@
   Garg et al. (2022); NAB cited as the GitHub repository at the pinned
   commit instead of Lavin & Ahmad (2015). Reason: the paper cites 2021+
   sources only. decisions.md D-17 now cites Garg et al. 2022.
+- D-26 recorded before any threshold result: tuning objective, grids, B3-k
+  added, one parameter set across seeds, pre-registered H1-H3 tests. Reason:
+  owner approved the Phase 3 plan.

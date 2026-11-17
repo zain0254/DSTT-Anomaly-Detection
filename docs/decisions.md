@@ -87,6 +87,7 @@ earlier note that a zero MAD gives a zero floor. Implemented in
 | S-robust | median + lambda * scaled MAD of RE_train | lambda |
 | B3 / RePAD2 rule (Lee & Lin 2023) | rolling mean + 3 std of the previous w errors, floored (D-09) | w (k = 3 fixed, implementation reading of "rolling mean + 3 sigma") |
 | R2 EVT (Yu et al. 2024, Alg. 2) | GPD tail threshold from RE_train, q by Eq. (8) on RE_train (D-24) | nothing on labels |
+| B3-k | rolling mean + k std of the previous w errors, floored (D-09) | k, w (D-26) |
 | P1 | rolling median + lambda * scaled MAD of the previous w errors, floored, memory plain or gated | lambda, w, memory |
 The old ablations A1-A4 and the old B4 are dropped.
 
@@ -232,3 +233,36 @@ computed or scored yet.
 not retrained: the decided protocol (D-05, D-23) is applied to every fit
 without exceptions, so no fit is treated differently after its outcome is
 seen.
+
+## D-26 Phase 3 protocol and pre-registered tests (2026-11-18, user, before any threshold result)
+Tuning
+- Objective: mean composite F1 over the 24 tuning files x 3 seeds, computed
+  on validation segments (windows clipped to the segment). Ties: higher mean
+  every-step NAB standard (per file and seed, normalised on the segment,
+  then averaged), then lower mean alarm rate, then the earlier grid entry.
+- One parameter set per method, shared by all seeds.
+- Grids: B1 p in {90, 95, 97, 98, 99, 99.5, 99.9}; B2 k in {1, 1.5, 2, 2.5,
+  3, 4, 5, 6, 8}; S-robust and P1 lambda in {2, 3, 4, 5, 6, 8, 10, 12, 15,
+  20}; B3, B3-k and P1 w in {50, 100, 200, 400}; P1 memory in {plain,
+  gated}. Base and R2 have no parameters.
+- Added method B3-k: rolling mean + k std of the previous w errors with the
+  same floor as B3, k in {2, 3, 4, 5, 6, 8, 10, 12, 15, 20}, w as above.
+  B3 (k = 3 fixed, RePAD2 rule) is kept. B3-k vs P1 and B2 vs S-robust are the
+  equal-budget Gaussian-vs-robust comparisons (same parameters tuned, same
+  grid for the multiplier).
+Test
+- The selected parameters are applied once to the test segments of the 18
+  evaluation files x 3 seeds. Reported per method as mean +/- sd over seeds
+  of the across-file mean (and corpus NAB per seed). Clean-stream rate (D-22)
+  on the test segments of the 18 clean files.
+- Saved per file and seed: chosen thresholds and alarm arrays on the test
+  segments, the full validation tuning table, and the R2 path per file and
+  seed (Eq. 8, fallback, or "no q with exceedances").
+Pre-registered hypothesis tests (run after the test summary is reviewed)
+- H1: composite F1. H2: high-variance FPR; secondary H2 measures: clean-stream
+  FPR and false alarms per 1,000 points. H3: every-step NAB standard.
+- Primary comparison: P1 vs Base (Ahmad 2026). Secondary: P1 vs every other
+  method, Holm-corrected within each hypothesis.
+- Unit of analysis: file (metric averaged over the 3 seeds), n = 18
+  (clean-stream measures: n = 18 clean files). Paired two-sided Wilcoxon
+  signed-rank test, mean difference with bootstrap 95 % CI, wins/ties/losses.
