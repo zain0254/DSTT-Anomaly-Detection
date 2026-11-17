@@ -1,0 +1,9 @@
+# Pipeline environment (Python 3.12, Windows, PyTorch CPU build from PyPI).
+# Exact pins; full resolved set is in docs/env_pipeline.txt.
+numpy==2.1.3
+pandas==2.2.3
+scipy==1.14.1
+scikit-learn==1.5.2
+matplotlib==3.9.2
+torch==2.14.1
+pytest==8.3.3
