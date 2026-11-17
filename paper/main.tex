@@ -186,7 +186,7 @@ Validation selected $p = 90$ for B1, $k = 2.5$ for B2, $\lambda = 5$ for S-robus
 \end{figure}
 
 \subsection{Test performance (RQ1, RQ2)}
-Table~\ref{tab:test} gives the test results. The base rule detected 97.2\% of the test windows and reached a composite F1 of $0.733$, but it flagged 18.9\% of normal points. The tuned static rules did not change this picture much. Both rolling rules lowered the FPR by about an order of magnitude: to 0.018 for B3 and 0.035 for P1. B3 had the highest composite F1 ($0.743$) and the best every-step NAB score. P1 had a composite F1 of $0.544$, below Base, B2 and B3, because it missed more windows (event recall 0.769) and its precision fell to 0.490. Fig.~\ref{fig:testmetrics} shows the same results with seed variation.
+Table~\ref{tab:test} gives the test results. The base rule detected 24 of the 25 test windows (mean event recall 0.972) and reached a composite F1 of $0.733$, but it flagged 18.9\% of normal points. The tuned static rules did not change this picture much. Both rolling rules lowered the FPR sharply, from 0.189 to 0.018 for B3 and to 0.035 for P1. B3 had the highest composite F1 ($0.743$) and the best every-step NAB score. P1 had a composite F1 of $0.544$, below Base, B2 and B3, because it missed more windows (event recall 0.769) and its precision fell to 0.490. Fig.~\ref{fig:testmetrics} shows the same results with seed variation.
 
 \begin{table*}[t]
 \centering
@@ -219,24 +219,38 @@ Table~\ref{tab:tests} summarises the confirmatory tests. On composite F1, P1 was
 \label{fig:paired}
 \end{figure}
 
-For the proposal hypotheses: H1 (higher F1 than the baseline on at least 70\% of series) \pending{verdict and counts against Base and B3 from proposal\_hypotheses.csv}. H2 (at least 15\% lower high-variance FPR, paired $t$-test) \pending{relative reduction, t-test and Wilcoxon p against Base and B3}.
+For the proposal hypotheses: H1 (higher F1 than the baseline on at least 70\% of series) was not supported. P1 had a higher point F1 than Base on 3 of 18 series and lower on 15 (Wilcoxon $p = 0.0007$, P1 significantly lower), and a higher point F1 than B3 on 5 of 18 series ($p = 0.090$); the criterion required 13. H2 (at least 15\% lower high-variance FPR, paired $t$-test) was not supported either. Against Base the mean high-variance FPR fell by 65.3\%, which meets the criterion, but neither the paired $t$-test ($p = 0.090$) nor the Wilcoxon test ($p = 0.109$) was significant ($n = 17$). Against B3, P1's mean high-variance FPR was 14.5\% higher ($t$-test $p = 0.677$, Wilcoxon $p = 0.695$).
 
 \subsection{Categories (RQ4)}
-\pending{Per-category improvement of P1 over Base and B3 from category\_analysis.csv, with the number of series per category, and the H3 verdict for AWS CloudWatch. Descriptive only.}
+Fig.~\ref{fig:category} shows the mean improvement of P1 per NAB category; the 18 evaluation series comprise 5 AWS CloudWatch, 5 known-cause, 4 traffic, 3 Twitter and 1 ad exchange series, so these results are descriptive. Against Base, P1 improved point F1 in no category, composite F1 only for AWS CloudWatch ($+0.080$), and high-variance FPR for AWS CloudWatch ($+0.507$, 4 series), known-cause ($+0.038$) and traffic ($+0.130$). AWS CloudWatch thus showed the largest improvement over Base in composite F1 and high-variance FPR, but ranked third in point F1 ($-0.141$). Against B3 it ranked fourth or fifth on all three measures, with a composite F1 difference of $-0.293$. H3 is therefore only partly in line with the data, and only against the static base rule.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{fig05_category_improvement}
+\caption{Mean improvement of P1 over Base and over B3 per NAB category (positive means P1 is better). Each series is averaged over three seeds; $n$ is the number of series. Descriptive only.}
+\label{fig:category}
+\end{figure}
 
 \subsection{Detection delay}
-\pending{Mean relative detection delay per rule and the number of missed windows from the saved results.}
+Of the 25 test windows, Base, B1, B2 and S-robust each missed 1, B3 missed 3, R2 missed 5.3 and P1 missed 6.7 on average over seeds (Fig.~\ref{fig:delay}). In the windows they detected, the first alarm came after 0.20 (B1) to 0.45 (R2) of the window length; the values were 0.42 for Base, 0.43 for B3 and 0.41 for P1. Because the delay is averaged only over detected windows, it has to be read together with the missed count: P1's slightly shorter delay than B3 comes with more than twice as many missed windows.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{fig06_detection_delay}
+\caption{Relative delay of the first alarm in detected test windows (left) and missed test windows out of 25 (right), mean over three seeds; error bars show the standard deviation over seeds.}
+\label{fig:delay}
+\end{figure}
 
 \subsection{Exploratory grid extension}
 \label{sec:explore}
-Because four selections sat on a grid edge, we extended those grids after seeing the test results: $w \in \{10, 20, 30\}$ for P1, $w \in \{600, 800\}$ for B3 and B3-k, and $p \in \{80, 85\}$ for B1. This analysis is post hoc and does not replace the primary results. B1 and P1 kept their earlier selections, because the new values scored lower on validation. B3 and B3-k moved to $w = 600$, which on the test data lowered composite F1 to 0.713 but raised point F1 to 0.240 and improved the every-step NAB score from $-28.7$ to $-16.8$. The ordering of the rules did not change.
+Because four selections sat on a grid edge, we extended those grids after seeing the test results: $w \in \{10, 20, 30\}$ for P1, $w \in \{600, 800\}$ for B3 and B3-k, and $p \in \{80, 85\}$ for B1. This analysis is post hoc and does not replace the primary results. B1 and P1 kept their earlier selections, because the new values scored lower on validation. B3 and B3-k moved to $w = 600$, which on the test data lowered composite F1 to 0.713 but raised point F1 to 0.240 and improved the every-step NAB score from $-28.7$ to $-16.8$. On composite F1, B3 then fell behind Base (0.733) and B2 (0.718), while it kept the best every-step NAB score.
 
 %=====================================================================
 \section{Discussion}
 %=====================================================================
 
 \subsection{The expected failure did not occur}
-Our proposal argued that outliers inflate $\mu + 3\sigma$ and so hide real anomalies. On NAB the base rule did the opposite. It caught 97.2\% of the test windows, and its problem was a high rate of false alarms. A likely reason is that the threshold is fitted to errors on the data the model was trained on, while errors on later data tend to be larger, so a fixed threshold sits too low once the data moves on. \pending{support with saved numbers: median test error / median training error across the 18 evaluation series, from results/} A rule that adapts to recent errors removes most of this effect, which is why both rolling rules cut false alarms so sharply. The finding agrees with Garg et al. \cite{garg2022}, who found dynamic scoring functions better than static ones on other benchmarks.
+Our proposal argued that outliers inflate $\mu + 3\sigma$ and so hide real anomalies. On NAB the base rule did the opposite. It caught 24 of the 25 test windows, and its problem was a high rate of false alarms. A likely reason is that the threshold is fitted to errors on the data the model was trained on, while errors on later data tend to be larger, so a fixed threshold sits too low once the data moves on. The saved errors support this: the median test error was 1.20 times the median training error across the 18 evaluation series (median over series, each averaged over three seeds), and the ratio exceeded 1 in 17 of the 18 series. A rule that adapts to recent errors removes most of this effect, which is why both rolling rules cut false alarms so sharply. The finding agrees with Garg et al. \cite{garg2022}, who found dynamic scoring functions better than static ones on other benchmarks.
 
 \subsection{Why robustness did not help}
 Robust statistics protect a threshold from a few large values in its window. That protection only matters when large values are present and when the window is long enough for them to be a small minority. P1 selected the smallest window in the primary grid ($w = 50$); longer windows scored lower on validation, and the shorter ones added in the exploratory grid did not win either. In a 50-step window an anomaly run quickly becomes a large share of the window, and then the median and the MAD move as much as the mean. Fig.~\ref{fig:trace} shows exactly this on \texttt{nyc\_taxi}: P1's threshold jumps up right after large errors inside the anomaly windows. This is the masking effect our proposal described, but it appears in the rolling robust rule, not in the static base rule. Gated memory was designed to stop it, yet it lost on validation, probably because keeping alarmed errors out of the window also keeps out harmless level shifts, which then produce long runs of false alarms. The rolling mean rule with a long window ($w = 400$) avoids both problems: a short anomaly barely moves a mean over 400 errors, while gradual drift is still followed.
