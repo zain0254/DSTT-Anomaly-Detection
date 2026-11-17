@@ -109,3 +109,13 @@ def evaluate_segment(alarms, scores, labels, windows, hv_mask=None) -> dict:
     out.update(auc_metrics(scores, y))
     out.update(nab_metrics(a, windows))
     return out
+
+
+def clean_stream_metrics(alarms) -> dict:
+    """Secondary metric (D-22) on an anomaly-free test segment: every alarm is
+    false, so FPR = alarms / points. Not used for tuning."""
+    a = np.asarray(alarms, dtype=bool)
+    n = len(a)
+    k = int(a.sum())
+    return {"clean_points": n, "clean_false_alarms": k,
+            "clean_fpr": _div(k, n), "clean_false_alarms_per_1000": _div(1000 * k, n)}

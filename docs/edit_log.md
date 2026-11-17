@@ -65,3 +65,36 @@
     (not final) evaluation/tuning file selection. D-20 (no resampling)
     recorded. Reason: owner asked for EDA before training and for window
     counts per part and training contamination to justify the selection.
+- Selection confirmed by owner (D-21): scripts/make_selection.py writes
+  configs/datasets.json (18 evaluation, 24 tuning, 18 clean-test, 36 model
+  files).
+- Clean-stream false-alarm rate added as a secondary metric before any
+  results (D-22): pipeline/metrics.clean_stream_metrics and a unit test.
+- pipeline/model.py: base-paper LSTM-AE in PyTorch (50,497 parameters),
+  MinMax on train, early stopping on last 10 % of training windows,
+  per-window MAE at window end (D-11 to D-13, D-23); tests/test_model.py
+  (shape, alignment, seed determinism). 39 tests passing.
+- scripts/time_one.py: timed one fit (nyc_taxi, seed 15, 4 threads): 44
+  epochs, 38.6 s training; projection for 36 files x 3 seeds 0.77 h
+  (same epochs) to 0.88 h (50 epochs) sequential; results/phase2_timing.json.
+- D-24 (owner, before any threshold results): B3 relabelled
+  "B3 / RePAD2 rule (Lee & Lin 2023)" in docs, README and
+  pipeline/thresholds.py; R2 EVT-POT added (pipeline/thresholds.py:
+  evt_pot_threshold, gpd_tail_threshold) with 4 unit tests. Done while the
+  training run was in progress; the run was not restarted.
+- R2 replaced (owner, still before any threshold results): EVT-POT from the
+  Alcarria et al. arXiv preprint dropped; R2 is now "EVT (Yu et al. 2024,
+  Alg. 2)", static part only (pipeline/thresholds.py: evt_threshold,
+  evt_quantile, eq8_score; 5 unit tests replace the 4 EVT-POT tests). D-24
+  rewritten; docs/references.md added. Reason: owner prefers a peer-reviewed
+  source. The training run was not interrupted.
+- Training run (scripts/train.py): 108/108 fits, 0 failures, 47.5 min summed
+  wall time; outputs in results/phase2_errors/ (errors, loss history, run
+  time per fit), log in logs/phase2_train.log. 5 fits with best epoch <= 2
+  kept as trained (D-25). docs/phase2_model.md.
+- scripts/plot_phase2.py: loss curves and one reconstruction-error figure
+  (figures/phase2_model/).
+- docs/references.md: full citations for Ahmad (2026), Lee & Lin (2023),
+  Garg et al. (2022); NAB cited as the GitHub repository at the pinned
+  commit instead of Lavin & Ahmad (2015). Reason: the paper cites 2021+
+  sources only. decisions.md D-17 now cites Garg et al. 2022.
