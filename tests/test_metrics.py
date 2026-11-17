@@ -117,3 +117,12 @@ def test_window_indices_duplicate_timestamp_maps_to_first():
     ts = pd.DatetimeIndex(pd.to_datetime(["2020-01-01 00:00", "2020-01-01 01:00", "2020-01-01 01:00",
                                           "2020-01-01 02:00"]))
     assert window_indices(ts, [("2020-01-01 01:00", "2020-01-01 02:00")]) == [(1, 3)]
+
+
+def test_clean_stream_metrics():
+    a = np.zeros(2000, bool)
+    a[[5, 6, 900]] = True
+    m = M.clean_stream_metrics(a)
+    assert m["clean_false_alarms"] == 3
+    assert m["clean_fpr"] == pytest.approx(3 / 2000)
+    assert m["clean_false_alarms_per_1000"] == pytest.approx(1.5)
