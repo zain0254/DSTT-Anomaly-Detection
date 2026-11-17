@@ -116,3 +116,37 @@ difference.
 | H3 | nab_standard | secondary | R2 | 18 | -173.1 | -419.1 | 246 [-267.7, 890.7] | 7/0/11 | 0.5798 | 1.0000 | no significant difference |
 | H3 | nab_standard | secondary | B3 | 18 | -173.1 | -64.34 | -108.7 [-197.3, -34.97] | 3/0/15 | 0.0066 | 0.0395 | P1 worse |
 | H3 | nab_standard | secondary | B3-k | 18 | -173.1 | -64.34 | -108.7 [-197.3, -34.97] | 3/0/15 | 0.0066 | 0.0395 | P1 worse |
+
+## Exploratory: extended edge grids (D-27, post-hoc)
+
+**This section is post-hoc.** It was decided after the primary results and
+the pre-registered tests above were known, because four selections sat on
+grid edges. It does not change the primary results or the verdicts. Run with
+`scripts/phase3.py --grids exploratory`; outputs in
+`results/phase3_exploratory/`.
+
+Grid additions: P1 w in {10, 20, 30}; B3 and B3-k w in {600, 800}; B1 p in
+{80, 85}. Window allowance (`window_log.csv`): w = 800 was skipped for
+speed_7578 (647 errors before validation) for B3 (3 seeds) and B3-k (10 k
+values x 3 seeds), 33 candidates in total; no substitution was needed at
+test. The 10,944 candidates shared with the primary grid reproduce the
+primary validation metrics exactly (maximum absolute difference 0).
+
+Re-selection on validation (`selected_params.csv`):
+- B1: p = 90 again (p = 80 and 85 score lower on validation).
+- P1: lambda = 6, plain, w = 50 again (w = 10, 20, 30 score lower).
+- B3 and B3-k: w = 600 (validation composite F1 0.596 vs 0.591 at w = 400);
+  B3-k again selects k = 3, so it stays identical to B3.
+- All other methods are unchanged, and their test results are identical to
+  the primary ones.
+
+Test results of the only changed method (mean ± sd over seeds):
+
+| B3 / B3-k | Selected w | Composite F1 | Point F1 | Event recall | FPR | HV FPR | Corpus NAB std (every step) | Corpus NAB std (first step) | Clean FA / 1000 |
+|---|---|---|---|---|---|---|---|---|---|
+| primary (D-26) | 400 | 0.743 ± 0.008 | 0.207 ± 0.010 | 0.917 ± 0.000 | 0.018 ± 0.000 | 0.070 ± 0.001 | -28.7 ± 3.6 | 65.7 ± 1.7 | 24.5 ± 1.3 |
+| exploratory (D-27) | 600 | 0.713 ± 0.008 | 0.240 ± 0.003 | 0.877 ± 0.011 | 0.018 ± 0.000 | 0.064 ± 0.001 | -16.8 ± 3.5 | 64.5 ± 2.4 | 24.0 ± 2.6 |
+
+With w = 600, B3 has a lower composite F1 and event recall on test than with
+the pre-registered w = 400, and a higher point F1 and every-step NAB. No
+hypothesis test was run on the exploratory results.

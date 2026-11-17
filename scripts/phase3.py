@@ -29,11 +29,13 @@ sys.path.insert(0, str(ROOT))
 from pipeline import metrics as MX  # noqa: E402
 from pipeline import nab_scorer  # noqa: E402
 from pipeline.data import clip_windows, load_series, split_bounds  # noqa: E402
-from pipeline.methods import METHODS, SeriesContext, pkey  # noqa: E402
+from pipeline.methods import GRID_SETS, METHODS, SeriesContext, pkey, w_allowed  # noqa: E402
 
 SEEDS = [15, 42, 123]
 ERR = ROOT / "results" / "phase2_errors"
 OUT = ROOT / "results" / "phase3"
+OUT_BY_GRID = {"primary": ROOT / "results" / "phase3",
+               "exploratory": ROOT / "results" / "phase3_exploratory"}
 
 
 def errors_of(name: str, seed: int) -> np.ndarray:
@@ -55,24 +57,28 @@ def r2_row(name, seed, ctx) -> dict:
     return {"file": name, "seed": seed, "threshold": t, **info}
 
 
-def tune_one(args) -> tuple[list[dict], dict]:
-    name, seed = args
+def tune_one(args) -> tuple[list[dict], dict, list[dict]]:
+    name, seed, grid_set = args
     s = load_series(name)
     tr, va, _ = split_bounds(len(s.values))
     ctx = SeriesContext(errors_of(name, seed), tr.stop)
     labels = s.labels[va]
     wins = clip_windows(s.windows, va)
-    rows = []
-    for m, spec in METHODS.items():
+    rows, skipped = [], []
+    for m, spec in GRID_SETS[grid_set].items():
         for prm in spec["grid"]:
+            if not w_allowed(prm, tr.stop):
+                skipped.append({"stage": "tune", "file": name, "seed": seed, "method": m,
+                                "params": pkey(prm), "errors_before_val": tr.stop - 29})
+                continue
             a, _ = ctx.apply(m, prm)
             rows.append({"file": name, "seed": seed, "method": m, "params": pkey(prm),
                          **val_metrics(a[va], labels, wins)})
-    return rows, r2_row(name, seed, ctx)
+    return rows, r2_row(name, seed, ctx), skipped
 
 
-def select(cand: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
-    order = {(m, pkey(p)): i for m, spec in METHODS.items() for i, p in enumerate(spec["grid"])}
+def select(cand: pd.DataFrame, methods=METHODS) -> tuple[pd.DataFrame, pd.DataFrame]:
+    order = {(m, pkey(p)): i for m, spec in methods.items() for i, p in enumerate(spec["grid"])}
     summ = (cand.groupby(["method", "params"], as_index=False)
             .agg(composite_f1=("composite_f1", "mean"), nab_standard=("nab_standard", "mean"),
                  alarm_rate=("alarm_rate", "mean"), precision=("precision", "mean"),
@@ -84,16 +90,22 @@ def select(cand: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
     return summ, sel
 
 
-def test_one(args) -> tuple[list[dict], list[dict], dict, str]:
-    name, seed, selected, is_eval, is_clean = args
+def test_one(args) -> tuple[list[dict], list[dict], dict, str, list[dict]]:
+    name, seed, selected, is_eval, is_clean, grid_set = args
     s = load_series(name)
     tr, _, te = split_bounds(len(s.values))
     e = errors_of(name, seed)
     ctx = SeriesContext(e, tr.stop)
     hv = MX.high_variance_mask(s.values, tr)
     wins = clip_windows(s.windows, te)
-    ev_rows, cl_rows, traces = [], [], {}
+    ev_rows, cl_rows, traces, subs = [], [], {}, []
     for m, prm in selected.items():
+        if not w_allowed(prm, tr.stop):      # D-27: largest allowed w of the method's grid
+            ws = sorted({g["w"] for g in GRID_SETS[grid_set][m]["grid"]})
+            new_w = max(w for w in ws if w_allowed({"w": w}, tr.stop))
+            subs.append({"stage": "test", "file": name, "seed": seed, "method": m, "params": pkey(prm),
+                         "used_w": new_w, "errors_before_val": tr.stop - 29})
+            prm = {**prm, "w": new_w}
         a, th = ctx.apply(m, prm)
         traces[f"{m}__alarms"] = a[te]
         traces[f"{m}__threshold"] = th[te]
@@ -107,7 +119,7 @@ def test_one(args) -> tuple[list[dict], list[dict], dict, str]:
     traces["errors"] = e[te]
     traces["labels"] = s.labels[te]
     traces["test_start"] = np.array(te.start)
-    return ev_rows, cl_rows, traces, name
+    return ev_rows, cl_rows, traces, name, subs
 
 
 def summarise(test: pd.DataFrame, clean: pd.DataFrame) -> pd.DataFrame:
@@ -135,23 +147,30 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--workers", type=int, default=4)
     ap.add_argument("--stage", choices=["tune", "test", "all"], default="all")
+    ap.add_argument("--grids", choices=list(GRID_SETS), default="primary",
+                    help="exploratory = D-27 post-hoc grid extension, written to results/phase3_exploratory/")
     args = ap.parse_args()
+    global OUT
+    OUT = OUT_BY_GRID[args.grids]
+    methods = GRID_SETS[args.grids]
     OUT.mkdir(parents=True, exist_ok=True)
+    log_rows = []
     ds = json.loads((ROOT / "configs" / "datasets.json").read_text())
 
     if args.stage in ("tune", "all"):
         t0 = time.perf_counter()
-        jobs = [(f, s) for f in ds["tuning"] for s in SEEDS]
+        jobs = [(f, s, args.grids) for f in ds["tuning"] for s in SEEDS]
         rows, r2 = [], []
         with ProcessPoolExecutor(args.workers) as ex:
-            for i, (r, info) in enumerate(ex.map(tune_one, jobs), 1):
+            for i, (r, info, skipped) in enumerate(ex.map(tune_one, jobs), 1):
                 rows += r
                 r2.append(info)
+                log_rows += skipped
                 print(f"tune [{i}/{len(jobs)}] {info['file']} seed={info['seed']} "
                       f"({time.perf_counter() - t0:.0f}s)", flush=True)
         cand = pd.DataFrame(rows)
         cand.to_csv(OUT / "tuning_candidates.csv", index=False)
-        summ, sel = select(cand)
+        summ, sel = select(cand, methods)
         summ.to_csv(OUT / "tuning_summary.csv", index=False)
         sel.to_csv(OUT / "selected_params.csv", index=False)
         pd.DataFrame(r2).to_csv(OUT / "r2_info_tuning.csv", index=False)
@@ -163,14 +182,16 @@ def main() -> None:
         sel = pd.read_csv(OUT / "selected_params.csv")
         selected = {m: json.loads(p) for m, p in zip(sel.method, sel.params)}
         files = sorted(set(ds["evaluation"]) | set(ds["clean_test"]))
-        jobs = [(f, s, selected, f in ds["evaluation"], f in ds["clean_test"]) for f in files for s in SEEDS]
+        jobs = [(f, s, selected, f in ds["evaluation"], f in ds["clean_test"], args.grids)
+                for f in files for s in SEEDS]
         ev, cl = [], []
         tr_dir = OUT / "test_traces"
         tr_dir.mkdir(exist_ok=True)
         with ProcessPoolExecutor(args.workers) as ex:
-            for i, ((job_name, job_seed, *_), (e_rows, c_rows, traces, name)) in enumerate(zip(jobs, ex.map(test_one, jobs)), 1):
+            for i, ((job_name, job_seed, *_), (e_rows, c_rows, traces, name, subs)) in enumerate(zip(jobs, ex.map(test_one, jobs)), 1):
                 ev += e_rows
                 cl += c_rows
+                log_rows += subs
                 np.savez_compressed(tr_dir / f"{name.replace('.csv', '').replace('/', '__')}__s{job_seed}.npz", **traces)
         test = pd.DataFrame(ev)
         clean = pd.DataFrame(cl)
@@ -187,6 +208,10 @@ def main() -> None:
         summary = summarise(test, clean)
         summary.to_csv(OUT / "test_summary.csv", index=False)
         print(f"test scoring done in {time.perf_counter() - t0:.0f}s: {len(test)} eval rows, {len(clean)} clean rows")
+    if args.grids != "primary":
+        pd.DataFrame(log_rows, columns=["stage", "file", "seed", "method", "params", "errors_before_val",
+                                        "used_w"]).to_csv(OUT / "window_log.csv", index=False)
+        print(f"window log: {len(log_rows)} skipped or substituted candidates")
 
 
 if __name__ == "__main__":

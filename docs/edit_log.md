@@ -111,3 +111,8 @@
   results/phase3/hypothesis_tests.csv) and added to docs/phase3_thresholds.md
   with verdicts: H1, H2, H3 not supported (primary P1 vs Base). alpha = 0.05
   stated as the conventional level because D-26 does not give one.
+- D-27 exploratory run (post-hoc): pipeline/methods.py gains the
+  EXPLORATORY grid set and w_allowed; scripts/phase3.py gains --grids
+  (primary unchanged, exploratory writes results/phase3_exploratory/) and
+  logs skipped windows (window_log.csv). Only B3/B3-k changed selection
+  (w = 600). Reported in a separate section of docs/phase3_thresholds.md.

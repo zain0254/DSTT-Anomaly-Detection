@@ -86,3 +86,19 @@ class SeriesContext:
         with np.errstate(invalid="ignore"):
             alarms = np.nan_to_num(self.e, nan=-np.inf) > np.nan_to_num(thr, nan=np.inf)
         return alarms, thr
+
+
+# D-27 (post-hoc, exploratory): only the edge grids are extended.
+WS_P1_EXPL = [10, 20, 30] + WS
+WS_B3_EXPL = WS + [600, 800]
+EXPLORATORY = dict(METHODS)
+EXPLORATORY["B1"] = {**METHODS["B1"], "grid": _grid(p=[80, 85, 90, 95, 97, 98, 99, 99.5, 99.9])}
+EXPLORATORY["B3"] = {**METHODS["B3"], "grid": _grid(w=WS_B3_EXPL)}
+EXPLORATORY["B3-k"] = {**METHODS["B3-k"], "grid": _grid(k=LAMBDAS, w=WS_B3_EXPL)}
+EXPLORATORY["P1"] = {**METHODS["P1"], "grid": _grid(lam=LAMBDAS, w=WS_P1_EXPL, memory=["plain", "gated"])}
+GRID_SETS = {"primary": METHODS, "exploratory": EXPLORATORY}
+
+
+def w_allowed(params: dict, train_end: int, first_score: int = 29) -> bool:
+    """A rolling window needs w errors before the validation segment (D-27)."""
+    return "w" not in params or train_end - first_score >= params["w"]
