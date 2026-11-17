@@ -158,3 +158,15 @@
   model, in two columns, because all 52 labelled series do not fit at
   6.5 pt; the printed note says so. main.tex (owner) uses figure* with
   	extwidth for the full-width figures. Number check 0 mismatches; zip rebuilt.
+- Final submission: paper/main.tex final from the owner (author details and
+  AI disclosure filled, four PDF figures plus the TikZ pipeline); title
+  changed on request to "Does Robust Adaptive Thresholding Help LSTM
+  Autoencoder Anomaly Detection? A Leakage-Free Evaluation on NAB" (also in
+  README). paper/figures/ holds only the four paper figures at 7.16 in;
+  fig05_windows_vs_split now shows all 52 labelled series in two columns at
+  6.5 pt. Number check: 303 tokens, 0 mismatches. Zip rebuilt.
+- Fresh-clone check of commit c5c4bae in a temporary folder: setup_env.sh
+  229 s, fetch_nab.sh 13 s, pytest 45 passed (20 s), validate_scorer.py
+  ALL MATCH (25 s); folder deleted. Later commits change only paper files,
+  docs and paper scripts.
+- Images repo README: figure index added.
