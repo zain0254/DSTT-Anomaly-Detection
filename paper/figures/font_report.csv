@@ -1,9 +1,5 @@
 figure,width_in,height_in,min_font_pt
 fig05_windows_vs_split,7.16,4.5,6.5
-fig02_reconstruction_error,3.5,2.6,7.0
-fig01_tuning_objective,7.16,4.2,6.5
-fig02_test_metrics,7.16,3.2,6.5
 fig03_paired_per_file,7.16,2.55,6.5
 fig04_example_trace,7.16,3.0,7.0
 fig05_category_improvement,7.16,2.7,6.5
-fig06_detection_delay,7.16,2.5,6.5
