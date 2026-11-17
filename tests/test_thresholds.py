@@ -47,36 +47,45 @@ def test_static_alarms_strict_and_nan():
     assert a.tolist() == [False, False, False, True]
 
 
-# ------------------------------------------------------------ R2 EVT-POT
-def test_gpd_tail_threshold_both_branches():
-    # xi = 0 branch: u + sigma * log(p_u / alpha)
-    assert T.gpd_tail_threshold(1.0, 2.0, 0.0, 0.02, 0.01) == pytest.approx(1 + 2 * np.log(2))
-    # xi != 0: u + sigma/xi * ((p_u/alpha)^xi - 1)
-    assert T.gpd_tail_threshold(1.0, 2.0, 0.5, 0.02, 0.01) == pytest.approx(1 + 4 * (np.sqrt(2) - 1))
+# ------------------------------------------------- R2 EVT (Yu et al. 2024)
+def test_evt_quantile_both_branches():
+    # gamma = 0: th - sigma * log(q n / n_th)
+    assert T.evt_quantile(1.0, 2.0, 0.0, 1e-3, 1000, 20) == pytest.approx(1 - 2 * np.log(0.05))
+    # gamma = 0.5: th + sigma/gamma * ((q n / n_th)^-gamma - 1)
+    assert T.evt_quantile(1.0, 2.0, 0.5, 1e-3, 1000, 20) == pytest.approx(1 + 4 * (0.05 ** -0.5 - 1))
 
 
-def test_evt_pot_on_exponential_data():
-    # Excesses of Exp(1) over any u are Exp(1) = GPD(xi=0, sigma=1), so the
-    # threshold estimates the 0.99 quantile of Exp(1), ln(100) = 4.605.
-    x = np.random.default_rng(0).exponential(1.0, 200_000)
-    t, info = T.evt_pot_threshold(x)
-    assert not info["fallback"]
-    assert info["n_excess"] == pytest.approx(4000, abs=5)
-    assert abs(info["xi"]) < 0.05 and info["sigma"] == pytest.approx(1.0, abs=0.06)
-    assert t == pytest.approx(np.log(100), abs=0.1)
+def test_eq8_score():
+    x = np.array([1.0, 1, 1, 1, 6])
+    rest = x[:4]
+    expected = ((x.mean() - rest.mean()) / x.mean() + (x.var() - rest.var()) / x.var()) / 1
+    assert T.eq8_score(x, 5.0) == pytest.approx(expected)
+    assert T.eq8_score(x, 10.0) is None          # nothing above: skipped
 
 
-def test_evt_pot_fallback_too_few_excesses():
-    x = np.random.default_rng(1).exponential(1.0, 1000)    # 20 excesses over the 0.98 quantile
-    t, info = T.evt_pot_threshold(x)
-    assert info["fallback"] and info["n_excess"] < 30
-    assert t == pytest.approx(np.quantile(x, 0.99))
+def test_evt_on_exponential_errors():
+    x = np.random.default_rng(0).exponential(1.0, 20_000)
+    t, info = T.evt_threshold(x)
+    assert info["path"] == "eq8"
+    assert t > np.quantile(x, 0.98)                       # above th
+    assert 1e-5 <= info["q"] <= 1e-3 and info["q"] in set(T.EVT_Q_GRID.tolist())
+    # Exp(1) excesses: GPD with gamma near 0 and sigma near 1
+    assert abs(info["gamma"]) < 0.15 and info["sigma"] == pytest.approx(1.0, abs=0.15)
+    # E_TH(q) for the chosen q equals the reported threshold
+    assert t == pytest.approx(T.evt_quantile(info["th"], info["sigma"], info["gamma"],
+                                             info["q"], info["n"], info["n_th"]))
 
 
-def test_evt_pot_fallback_constant_errors():
-    t, info = T.evt_pot_threshold(np.full(5000, 0.3))
-    assert info["fallback"] and info["n_excess"] == 0
-    assert t == pytest.approx(0.3)
+def test_evt_fallback_too_few_excesses():
+    x = np.random.default_rng(1).exponential(1.0, 300)    # 6 excesses over the 0.98 quantile
+    t, info = T.evt_threshold(x)
+    assert info["path"].startswith("fallback") and info["n_th"] < 10
+    assert t == pytest.approx(x.max())
+
+
+def test_evt_fallback_constant_errors():
+    t, info = T.evt_threshold(np.full(5000, 0.3))
+    assert info["path"].startswith("fallback") and t == pytest.approx(0.3)
 
 
 # ---------------------------------------------------- rolling, plain memory

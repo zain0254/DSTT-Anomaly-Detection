@@ -86,7 +86,7 @@ earlier note that a zero MAD gives a zero floor. Implemented in
 | B2 | mean + k std of RE_train | k |
 | S-robust | median + lambda * scaled MAD of RE_train | lambda |
 | B3 / RePAD2 rule (Lee & Lin 2023) | rolling mean + 3 std of the previous w errors, floored (D-09) | w (k = 3 fixed, implementation reading of "rolling mean + 3 sigma") |
-| R2 EVT-POT (Alcarria et al. 2026) | GPD tail threshold from RE_train (D-24) | nothing |
+| R2 EVT (Yu et al. 2024, Alg. 2) | GPD tail threshold from RE_train, q by Eq. (8) on RE_train (D-24) | nothing on labels |
 | P1 | rolling median + lambda * scaled MAD of the previous w errors, floored, memory plain or gated | lambda, w, memory |
 The old ablations A1-A4 and the old B4 are dropped.
 
@@ -199,15 +199,30 @@ computed or scored yet.
   tuned on validation like the other rolling rules; they threshold the AARE
   of an LSTM predictor, we apply the rule to LSTM-AE reconstruction MAE. The
   D-09 floor applies as for B3.
-- R2 EVT-POT (Alcarria et al. 2026, arXiv:2609.10017, Eq. 2), static, from
-  RE_train, nothing tuned: u = 0.98 quantile of RE_train; a Generalized Pareto
-  Distribution is fitted by maximum likelihood (`scipy.stats.genpareto`,
-  loc = 0) to the excesses over u; with p_u = n_excess / n and alpha = 0.01,
-  T = u + (sigma / xi) * ((p_u / alpha)^xi - 1) if |xi| > 1e-6, else
-  T = u + sigma * log(p_u / alpha). If there are fewer than 30 excesses, the
-  fit fails, or the result is not finite, T = 0.99 quantile of RE_train. Their
-  smoothing and rate limit are not used: they serve monthly re-calibration
-  windows, which this protocol does not have. The number of files that use
-  the fallback is logged when thresholds are computed. Implemented in
-  `pipeline/thresholds.evt_pot_threshold`; unit tests on exponential data
-  (closed-form answer ln 100) and both fallback paths.
+- R2 "EVT (Yu et al. 2024, Alg. 2)", IEEE I2MTC 2024,
+  doi:10.1109/I2MTC60896.2024.10561049 (peer reviewed; replaces an arXiv
+  preprint considered earlier the same day, before any threshold results).
+  Static threshold from RE_train, not tuned on labels:
+  th = 0.98 quantile of RE_train; excesses y = e - th for e > th, N_TH = |y|,
+  n = |RE_train|; GPD fitted to y by maximum likelihood
+  (`scipy.stats.genpareto.fit(y, floc=0)`) giving shape gamma and scale sigma;
+  E_TH(q) = th + (sigma / gamma) * ((q n / N_TH)^(-gamma) - 1), or
+  th - sigma * log(q n / N_TH) if |gamma| < 1e-6. q is chosen on a 50-point
+  log grid in [1e-5, 1e-3] by maximising their Eq. (8) on training errors only:
+  (dmu / mu + dvar / var) / |e_a|, e_a = {e > E_TH(q)}, mu and var the mean
+  and variance of RE_train, dmu and dvar their drop when e_a is removed. A q
+  with |e_a| = 0 is skipped; if every q is skipped, the q with the lowest
+  E_TH is used and logged. Fallback if N_TH < 10 or the fit fails:
+  E_TH = max(RE_train), logged per file.
+  Property of the grid: the expected number of training errors above E_TH(q)
+  is about q n, so for these files (n roughly 650 to 13,600 training
+  windows) many grid values have no exceedance and are skipped.
+  Not implemented: their dynamic update (Eq. 9). As printed,
+  eps = 2 - exp(-(...)^2) lies in [1, 2), so the update can only raise the
+  threshold, and the update frequency is not given; only the fully specified
+  static part is reproduced. They score windows by squared L2 error; we apply
+  the rule to per-window MAE (D-11).
+  Implemented in `pipeline/thresholds.evt_threshold`; unit tests: closed-form
+  E_TH for both gamma branches, Eq. (8) on a hand-made array, exponential
+  errors (E_TH above the 0.98 quantile, q inside the grid), two fallback
+  paths.

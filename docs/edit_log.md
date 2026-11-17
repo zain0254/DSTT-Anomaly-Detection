@@ -82,3 +82,9 @@
   pipeline/thresholds.py; R2 EVT-POT added (pipeline/thresholds.py:
   evt_pot_threshold, gpd_tail_threshold) with 4 unit tests. Done while the
   training run was in progress; the run was not restarted.
+- R2 replaced (owner, still before any threshold results): EVT-POT from the
+  Alcarria et al. arXiv preprint dropped; R2 is now "EVT (Yu et al. 2024,
+  Alg. 2)", static part only (pipeline/thresholds.py: evt_threshold,
+  evt_quantile, eq8_score; 5 unit tests replace the 4 EVT-POT tests). D-24
+  rewritten; docs/references.md added. Reason: owner prefers a peer-reviewed
+  source. The training run was not interrupted.
