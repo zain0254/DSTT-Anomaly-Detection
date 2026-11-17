@@ -1,0 +1,433 @@
+file,category,seed,method,params,clean_points,clean_false_alarms,clean_fpr,clean_false_alarms_per_1000
+realAWSCloudwatch/ec2_cpu_utilization_53ea38.csv,realAWSCloudwatch,15,B1,"{""p"": 90}",807,18,0.022304832713754646,22.304832713754646
+realAWSCloudwatch/ec2_cpu_utilization_53ea38.csv,realAWSCloudwatch,15,B2,"{""k"": 2.5}",807,0,0.0,0.0
+realAWSCloudwatch/ec2_cpu_utilization_53ea38.csv,realAWSCloudwatch,15,B3,"{""w"": 400}",807,1,0.0012391573729863693,1.2391573729863692
+realAWSCloudwatch/ec2_cpu_utilization_53ea38.csv,realAWSCloudwatch,15,B3-k,"{""k"": 3, ""w"": 400}",807,1,0.0012391573729863693,1.2391573729863692
+realAWSCloudwatch/ec2_cpu_utilization_53ea38.csv,realAWSCloudwatch,15,Base,{},807,0,0.0,0.0
+realAWSCloudwatch/ec2_cpu_utilization_53ea38.csv,realAWSCloudwatch,15,P1,"{""lam"": 6, ""memory"": ""plain"", ""w"": 50}",807,17,0.021065675340768277,21.065675340768276
+realAWSCloudwatch/ec2_cpu_utilization_53ea38.csv,realAWSCloudwatch,15,R2,{},807,0,0.0,0.0
+realAWSCloudwatch/ec2_cpu_utilization_53ea38.csv,realAWSCloudwatch,15,S-robust,"{""lam"": 5}",807,0,0.0,0.0
+realAWSCloudwatch/ec2_cpu_utilization_53ea38.csv,realAWSCloudwatch,42,B1,"{""p"": 90}",807,21,0.026022304832713755,26.022304832713754
+realAWSCloudwatch/ec2_cpu_utilization_53ea38.csv,realAWSCloudwatch,42,B2,"{""k"": 2.5}",807,0,0.0,0.0
+realAWSCloudwatch/ec2_cpu_utilization_53ea38.csv,realAWSCloudwatch,42,B3,"{""w"": 400}",807,1,0.0012391573729863693,1.2391573729863692
+realAWSCloudwatch/ec2_cpu_utilization_53ea38.csv,realAWSCloudwatch,42,B3-k,"{""k"": 3, ""w"": 400}",807,1,0.0012391573729863693,1.2391573729863692
+realAWSCloudwatch/ec2_cpu_utilization_53ea38.csv,realAWSCloudwatch,42,Base,{},807,0,0.0,0.0
+realAWSCloudwatch/ec2_cpu_utilization_53ea38.csv,realAWSCloudwatch,42,P1,"{""lam"": 6, ""memory"": ""plain"", ""w"": 50}",807,15,0.01858736059479554,18.587360594795538
+realAWSCloudwatch/ec2_cpu_utilization_53ea38.csv,realAWSCloudwatch,42,R2,{},807,0,0.0,0.0
+realAWSCloudwatch/ec2_cpu_utilization_53ea38.csv,realAWSCloudwatch,42,S-robust,"{""lam"": 5}",807,0,0.0,0.0
+realAWSCloudwatch/ec2_cpu_utilization_53ea38.csv,realAWSCloudwatch,123,B1,"{""p"": 90}",807,83,0.10285006195786865,102.85006195786865
+realAWSCloudwatch/ec2_cpu_utilization_53ea38.csv,realAWSCloudwatch,123,B2,"{""k"": 2.5}",807,8,0.009913258983890954,9.913258983890954
+realAWSCloudwatch/ec2_cpu_utilization_53ea38.csv,realAWSCloudwatch,123,B3,"{""w"": 400}",807,0,0.0,0.0
+realAWSCloudwatch/ec2_cpu_utilization_53ea38.csv,realAWSCloudwatch,123,B3-k,"{""k"": 3, ""w"": 400}",807,0,0.0,0.0
+realAWSCloudwatch/ec2_cpu_utilization_53ea38.csv,realAWSCloudwatch,123,Base,{},807,0,0.0,0.0
+realAWSCloudwatch/ec2_cpu_utilization_53ea38.csv,realAWSCloudwatch,123,P1,"{""lam"": 6, ""memory"": ""plain"", ""w"": 50}",807,7,0.008674101610904586,8.674101610904584
+realAWSCloudwatch/ec2_cpu_utilization_53ea38.csv,realAWSCloudwatch,123,R2,{},807,0,0.0,0.0
+realAWSCloudwatch/ec2_cpu_utilization_53ea38.csv,realAWSCloudwatch,123,S-robust,"{""lam"": 5}",807,0,0.0,0.0
+realAWSCloudwatch/ec2_cpu_utilization_5f5533.csv,realAWSCloudwatch,15,B1,"{""p"": 90}",807,0,0.0,0.0
+realAWSCloudwatch/ec2_cpu_utilization_5f5533.csv,realAWSCloudwatch,15,B2,"{""k"": 2.5}",807,0,0.0,0.0
+realAWSCloudwatch/ec2_cpu_utilization_5f5533.csv,realAWSCloudwatch,15,B3,"{""w"": 400}",807,0,0.0,0.0
+realAWSCloudwatch/ec2_cpu_utilization_5f5533.csv,realAWSCloudwatch,15,B3-k,"{""k"": 3, ""w"": 400}",807,0,0.0,0.0
+realAWSCloudwatch/ec2_cpu_utilization_5f5533.csv,realAWSCloudwatch,15,Base,{},807,0,0.0,0.0
+realAWSCloudwatch/ec2_cpu_utilization_5f5533.csv,realAWSCloudwatch,15,P1,"{""lam"": 6, ""memory"": ""plain"", ""w"": 50}",807,0,0.0,0.0
+realAWSCloudwatch/ec2_cpu_utilization_5f5533.csv,realAWSCloudwatch,15,R2,{},807,0,0.0,0.0
+realAWSCloudwatch/ec2_cpu_utilization_5f5533.csv,realAWSCloudwatch,15,S-robust,"{""lam"": 5}",807,0,0.0,0.0
+realAWSCloudwatch/ec2_cpu_utilization_5f5533.csv,realAWSCloudwatch,42,B1,"{""p"": 90}",807,0,0.0,0.0
+realAWSCloudwatch/ec2_cpu_utilization_5f5533.csv,realAWSCloudwatch,42,B2,"{""k"": 2.5}",807,0,0.0,0.0
+realAWSCloudwatch/ec2_cpu_utilization_5f5533.csv,realAWSCloudwatch,42,B3,"{""w"": 400}",807,0,0.0,0.0
+realAWSCloudwatch/ec2_cpu_utilization_5f5533.csv,realAWSCloudwatch,42,B3-k,"{""k"": 3, ""w"": 400}",807,0,0.0,0.0
+realAWSCloudwatch/ec2_cpu_utilization_5f5533.csv,realAWSCloudwatch,42,Base,{},807,0,0.0,0.0
+realAWSCloudwatch/ec2_cpu_utilization_5f5533.csv,realAWSCloudwatch,42,P1,"{""lam"": 6, ""memory"": ""plain"", ""w"": 50}",807,0,0.0,0.0
+realAWSCloudwatch/ec2_cpu_utilization_5f5533.csv,realAWSCloudwatch,42,R2,{},807,0,0.0,0.0
+realAWSCloudwatch/ec2_cpu_utilization_5f5533.csv,realAWSCloudwatch,42,S-robust,"{""lam"": 5}",807,0,0.0,0.0
+realAWSCloudwatch/ec2_cpu_utilization_5f5533.csv,realAWSCloudwatch,123,B1,"{""p"": 90}",807,0,0.0,0.0
+realAWSCloudwatch/ec2_cpu_utilization_5f5533.csv,realAWSCloudwatch,123,B2,"{""k"": 2.5}",807,0,0.0,0.0
+realAWSCloudwatch/ec2_cpu_utilization_5f5533.csv,realAWSCloudwatch,123,B3,"{""w"": 400}",807,0,0.0,0.0
+realAWSCloudwatch/ec2_cpu_utilization_5f5533.csv,realAWSCloudwatch,123,B3-k,"{""k"": 3, ""w"": 400}",807,0,0.0,0.0
+realAWSCloudwatch/ec2_cpu_utilization_5f5533.csv,realAWSCloudwatch,123,Base,{},807,0,0.0,0.0
+realAWSCloudwatch/ec2_cpu_utilization_5f5533.csv,realAWSCloudwatch,123,P1,"{""lam"": 6, ""memory"": ""plain"", ""w"": 50}",807,0,0.0,0.0
+realAWSCloudwatch/ec2_cpu_utilization_5f5533.csv,realAWSCloudwatch,123,R2,{},807,0,0.0,0.0
+realAWSCloudwatch/ec2_cpu_utilization_5f5533.csv,realAWSCloudwatch,123,S-robust,"{""lam"": 5}",807,0,0.0,0.0
+realAWSCloudwatch/ec2_cpu_utilization_fe7f93.csv,realAWSCloudwatch,15,B1,"{""p"": 90}",807,75,0.09293680297397769,92.93680297397769
+realAWSCloudwatch/ec2_cpu_utilization_fe7f93.csv,realAWSCloudwatch,15,B2,"{""k"": 2.5}",807,2,0.0024783147459727386,2.4783147459727384
+realAWSCloudwatch/ec2_cpu_utilization_fe7f93.csv,realAWSCloudwatch,15,B3,"{""w"": 400}",807,0,0.0,0.0
+realAWSCloudwatch/ec2_cpu_utilization_fe7f93.csv,realAWSCloudwatch,15,B3-k,"{""k"": 3, ""w"": 400}",807,0,0.0,0.0
+realAWSCloudwatch/ec2_cpu_utilization_fe7f93.csv,realAWSCloudwatch,15,Base,{},807,0,0.0,0.0
+realAWSCloudwatch/ec2_cpu_utilization_fe7f93.csv,realAWSCloudwatch,15,P1,"{""lam"": 6, ""memory"": ""plain"", ""w"": 50}",807,112,0.13878562577447337,138.78562577447335
+realAWSCloudwatch/ec2_cpu_utilization_fe7f93.csv,realAWSCloudwatch,15,R2,{},807,0,0.0,0.0
+realAWSCloudwatch/ec2_cpu_utilization_fe7f93.csv,realAWSCloudwatch,15,S-robust,"{""lam"": 5}",807,396,0.49070631970260226,490.70631970260223
+realAWSCloudwatch/ec2_cpu_utilization_fe7f93.csv,realAWSCloudwatch,42,B1,"{""p"": 90}",807,79,0.09789343246592318,97.89343246592317
+realAWSCloudwatch/ec2_cpu_utilization_fe7f93.csv,realAWSCloudwatch,42,B2,"{""k"": 2.5}",807,2,0.0024783147459727386,2.4783147459727384
+realAWSCloudwatch/ec2_cpu_utilization_fe7f93.csv,realAWSCloudwatch,42,B3,"{""w"": 400}",807,0,0.0,0.0
+realAWSCloudwatch/ec2_cpu_utilization_fe7f93.csv,realAWSCloudwatch,42,B3-k,"{""k"": 3, ""w"": 400}",807,0,0.0,0.0
+realAWSCloudwatch/ec2_cpu_utilization_fe7f93.csv,realAWSCloudwatch,42,Base,{},807,0,0.0,0.0
+realAWSCloudwatch/ec2_cpu_utilization_fe7f93.csv,realAWSCloudwatch,42,P1,"{""lam"": 6, ""memory"": ""plain"", ""w"": 50}",807,103,0.12763320941759604,127.63320941759603
+realAWSCloudwatch/ec2_cpu_utilization_fe7f93.csv,realAWSCloudwatch,42,R2,{},807,0,0.0,0.0
+realAWSCloudwatch/ec2_cpu_utilization_fe7f93.csv,realAWSCloudwatch,42,S-robust,"{""lam"": 5}",807,393,0.48698884758364314,486.9888475836431
+realAWSCloudwatch/ec2_cpu_utilization_fe7f93.csv,realAWSCloudwatch,123,B1,"{""p"": 90}",807,79,0.09789343246592318,97.89343246592317
+realAWSCloudwatch/ec2_cpu_utilization_fe7f93.csv,realAWSCloudwatch,123,B2,"{""k"": 2.5}",807,2,0.0024783147459727386,2.4783147459727384
+realAWSCloudwatch/ec2_cpu_utilization_fe7f93.csv,realAWSCloudwatch,123,B3,"{""w"": 400}",807,0,0.0,0.0
+realAWSCloudwatch/ec2_cpu_utilization_fe7f93.csv,realAWSCloudwatch,123,B3-k,"{""k"": 3, ""w"": 400}",807,0,0.0,0.0
+realAWSCloudwatch/ec2_cpu_utilization_fe7f93.csv,realAWSCloudwatch,123,Base,{},807,0,0.0,0.0
+realAWSCloudwatch/ec2_cpu_utilization_fe7f93.csv,realAWSCloudwatch,123,P1,"{""lam"": 6, ""memory"": ""plain"", ""w"": 50}",807,79,0.09789343246592318,97.89343246592317
+realAWSCloudwatch/ec2_cpu_utilization_fe7f93.csv,realAWSCloudwatch,123,R2,{},807,0,0.0,0.0
+realAWSCloudwatch/ec2_cpu_utilization_fe7f93.csv,realAWSCloudwatch,123,S-robust,"{""lam"": 5}",807,401,0.4969021065675341,496.9021065675341
+realAWSCloudwatch/ec2_disk_write_bytes_1ef3de.csv,realAWSCloudwatch,15,B1,"{""p"": 90}",946,180,0.19027484143763213,190.27484143763215
+realAWSCloudwatch/ec2_disk_write_bytes_1ef3de.csv,realAWSCloudwatch,15,B2,"{""k"": 2.5}",946,80,0.08456659619450317,84.56659619450318
+realAWSCloudwatch/ec2_disk_write_bytes_1ef3de.csv,realAWSCloudwatch,15,B3,"{""w"": 400}",946,44,0.046511627906976744,46.51162790697674
+realAWSCloudwatch/ec2_disk_write_bytes_1ef3de.csv,realAWSCloudwatch,15,B3-k,"{""k"": 3, ""w"": 400}",946,44,0.046511627906976744,46.51162790697674
+realAWSCloudwatch/ec2_disk_write_bytes_1ef3de.csv,realAWSCloudwatch,15,Base,{},946,79,0.08350951374207188,83.50951374207189
+realAWSCloudwatch/ec2_disk_write_bytes_1ef3de.csv,realAWSCloudwatch,15,P1,"{""lam"": 6, ""memory"": ""plain"", ""w"": 50}",946,75,0.07928118393234672,79.28118393234672
+realAWSCloudwatch/ec2_disk_write_bytes_1ef3de.csv,realAWSCloudwatch,15,R2,{},946,0,0.0,0.0
+realAWSCloudwatch/ec2_disk_write_bytes_1ef3de.csv,realAWSCloudwatch,15,S-robust,"{""lam"": 5}",946,336,0.35517970401691334,355.1797040169133
+realAWSCloudwatch/ec2_disk_write_bytes_1ef3de.csv,realAWSCloudwatch,42,B1,"{""p"": 90}",946,194,0.20507399577167018,205.07399577167018
+realAWSCloudwatch/ec2_disk_write_bytes_1ef3de.csv,realAWSCloudwatch,42,B2,"{""k"": 2.5}",946,85,0.08985200845665962,89.85200845665962
+realAWSCloudwatch/ec2_disk_write_bytes_1ef3de.csv,realAWSCloudwatch,42,B3,"{""w"": 400}",946,41,0.04334038054968287,43.34038054968288
+realAWSCloudwatch/ec2_disk_write_bytes_1ef3de.csv,realAWSCloudwatch,42,B3-k,"{""k"": 3, ""w"": 400}",946,41,0.04334038054968287,43.34038054968288
+realAWSCloudwatch/ec2_disk_write_bytes_1ef3de.csv,realAWSCloudwatch,42,Base,{},946,80,0.08456659619450317,84.56659619450318
+realAWSCloudwatch/ec2_disk_write_bytes_1ef3de.csv,realAWSCloudwatch,42,P1,"{""lam"": 6, ""memory"": ""plain"", ""w"": 50}",946,75,0.07928118393234672,79.28118393234672
+realAWSCloudwatch/ec2_disk_write_bytes_1ef3de.csv,realAWSCloudwatch,42,R2,{},946,0,0.0,0.0
+realAWSCloudwatch/ec2_disk_write_bytes_1ef3de.csv,realAWSCloudwatch,42,S-robust,"{""lam"": 5}",946,313,0.3308668076109937,330.86680761099365
+realAWSCloudwatch/ec2_disk_write_bytes_1ef3de.csv,realAWSCloudwatch,123,B1,"{""p"": 90}",946,178,0.18816067653276955,188.16067653276954
+realAWSCloudwatch/ec2_disk_write_bytes_1ef3de.csv,realAWSCloudwatch,123,B2,"{""k"": 2.5}",946,80,0.08456659619450317,84.56659619450318
+realAWSCloudwatch/ec2_disk_write_bytes_1ef3de.csv,realAWSCloudwatch,123,B3,"{""w"": 400}",946,43,0.045454545454545456,45.45454545454545
+realAWSCloudwatch/ec2_disk_write_bytes_1ef3de.csv,realAWSCloudwatch,123,B3-k,"{""k"": 3, ""w"": 400}",946,43,0.045454545454545456,45.45454545454545
+realAWSCloudwatch/ec2_disk_write_bytes_1ef3de.csv,realAWSCloudwatch,123,Base,{},946,79,0.08350951374207188,83.50951374207189
+realAWSCloudwatch/ec2_disk_write_bytes_1ef3de.csv,realAWSCloudwatch,123,P1,"{""lam"": 6, ""memory"": ""plain"", ""w"": 50}",946,75,0.07928118393234672,79.28118393234672
+realAWSCloudwatch/ec2_disk_write_bytes_1ef3de.csv,realAWSCloudwatch,123,R2,{},946,0,0.0,0.0
+realAWSCloudwatch/ec2_disk_write_bytes_1ef3de.csv,realAWSCloudwatch,123,S-robust,"{""lam"": 5}",946,342,0.36152219873150104,361.5221987315011
+realAWSCloudwatch/ec2_disk_write_bytes_c0d644.csv,realAWSCloudwatch,15,B1,"{""p"": 90}",807,63,0.07806691449814127,78.06691449814126
+realAWSCloudwatch/ec2_disk_write_bytes_c0d644.csv,realAWSCloudwatch,15,B2,"{""k"": 2.5}",807,21,0.026022304832713755,26.022304832713754
+realAWSCloudwatch/ec2_disk_write_bytes_c0d644.csv,realAWSCloudwatch,15,B3,"{""w"": 400}",807,62,0.0768277571251549,76.82775712515489
+realAWSCloudwatch/ec2_disk_write_bytes_c0d644.csv,realAWSCloudwatch,15,B3-k,"{""k"": 3, ""w"": 400}",807,62,0.0768277571251549,76.82775712515489
+realAWSCloudwatch/ec2_disk_write_bytes_c0d644.csv,realAWSCloudwatch,15,Base,{},807,3,0.0037174721189591076,3.717472118959108
+realAWSCloudwatch/ec2_disk_write_bytes_c0d644.csv,realAWSCloudwatch,15,P1,"{""lam"": 6, ""memory"": ""plain"", ""w"": 50}",807,122,0.15117719950433706,151.17719950433704
+realAWSCloudwatch/ec2_disk_write_bytes_c0d644.csv,realAWSCloudwatch,15,R2,{},807,0,0.0,0.0
+realAWSCloudwatch/ec2_disk_write_bytes_c0d644.csv,realAWSCloudwatch,15,S-robust,"{""lam"": 5}",807,340,0.42131350681536556,421.31350681536554
+realAWSCloudwatch/ec2_disk_write_bytes_c0d644.csv,realAWSCloudwatch,42,B1,"{""p"": 90}",807,69,0.08550185873605948,85.50185873605948
+realAWSCloudwatch/ec2_disk_write_bytes_c0d644.csv,realAWSCloudwatch,42,B2,"{""k"": 2.5}",807,14,0.01734820322180917,17.348203221809168
+realAWSCloudwatch/ec2_disk_write_bytes_c0d644.csv,realAWSCloudwatch,42,B3,"{""w"": 400}",807,56,0.06939281288723669,69.39281288723667
+realAWSCloudwatch/ec2_disk_write_bytes_c0d644.csv,realAWSCloudwatch,42,B3-k,"{""k"": 3, ""w"": 400}",807,56,0.06939281288723669,69.39281288723667
+realAWSCloudwatch/ec2_disk_write_bytes_c0d644.csv,realAWSCloudwatch,42,Base,{},807,4,0.004956629491945477,4.956629491945477
+realAWSCloudwatch/ec2_disk_write_bytes_c0d644.csv,realAWSCloudwatch,42,P1,"{""lam"": 6, ""memory"": ""plain"", ""w"": 50}",807,122,0.15117719950433706,151.17719950433704
+realAWSCloudwatch/ec2_disk_write_bytes_c0d644.csv,realAWSCloudwatch,42,R2,{},807,0,0.0,0.0
+realAWSCloudwatch/ec2_disk_write_bytes_c0d644.csv,realAWSCloudwatch,42,S-robust,"{""lam"": 5}",807,342,0.42379182156133827,423.7918215613383
+realAWSCloudwatch/ec2_disk_write_bytes_c0d644.csv,realAWSCloudwatch,123,B1,"{""p"": 90}",807,65,0.080545229244114,80.545229244114
+realAWSCloudwatch/ec2_disk_write_bytes_c0d644.csv,realAWSCloudwatch,123,B2,"{""k"": 2.5}",807,14,0.01734820322180917,17.348203221809168
+realAWSCloudwatch/ec2_disk_write_bytes_c0d644.csv,realAWSCloudwatch,123,B3,"{""w"": 400}",807,58,0.07187112763320942,71.87112763320941
+realAWSCloudwatch/ec2_disk_write_bytes_c0d644.csv,realAWSCloudwatch,123,B3-k,"{""k"": 3, ""w"": 400}",807,58,0.07187112763320942,71.87112763320941
+realAWSCloudwatch/ec2_disk_write_bytes_c0d644.csv,realAWSCloudwatch,123,Base,{},807,4,0.004956629491945477,4.956629491945477
+realAWSCloudwatch/ec2_disk_write_bytes_c0d644.csv,realAWSCloudwatch,123,P1,"{""lam"": 6, ""memory"": ""plain"", ""w"": 50}",807,133,0.16480793060718713,164.8079306071871
+realAWSCloudwatch/ec2_disk_write_bytes_c0d644.csv,realAWSCloudwatch,123,R2,{},807,0,0.0,0.0
+realAWSCloudwatch/ec2_disk_write_bytes_c0d644.csv,realAWSCloudwatch,123,S-robust,"{""lam"": 5}",807,322,0.3990086741016109,399.0086741016109
+realAWSCloudwatch/ec2_network_in_5abac7.csv,realAWSCloudwatch,15,B1,"{""p"": 90}",946,59,0.06236786469344609,62.36786469344609
+realAWSCloudwatch/ec2_network_in_5abac7.csv,realAWSCloudwatch,15,B2,"{""k"": 2.5}",946,27,0.02854122621564482,28.54122621564482
+realAWSCloudwatch/ec2_network_in_5abac7.csv,realAWSCloudwatch,15,B3,"{""w"": 400}",946,56,0.05919661733615222,59.19661733615222
+realAWSCloudwatch/ec2_network_in_5abac7.csv,realAWSCloudwatch,15,B3-k,"{""k"": 3, ""w"": 400}",946,56,0.05919661733615222,59.19661733615222
+realAWSCloudwatch/ec2_network_in_5abac7.csv,realAWSCloudwatch,15,Base,{},946,0,0.0,0.0
+realAWSCloudwatch/ec2_network_in_5abac7.csv,realAWSCloudwatch,15,P1,"{""lam"": 6, ""memory"": ""plain"", ""w"": 50}",946,125,0.1321353065539112,132.1353065539112
+realAWSCloudwatch/ec2_network_in_5abac7.csv,realAWSCloudwatch,15,R2,{},946,0,0.0,0.0
+realAWSCloudwatch/ec2_network_in_5abac7.csv,realAWSCloudwatch,15,S-robust,"{""lam"": 5}",946,332,0.35095137420718814,350.95137420718817
+realAWSCloudwatch/ec2_network_in_5abac7.csv,realAWSCloudwatch,42,B1,"{""p"": 90}",946,59,0.06236786469344609,62.36786469344609
+realAWSCloudwatch/ec2_network_in_5abac7.csv,realAWSCloudwatch,42,B2,"{""k"": 2.5}",946,21,0.022198731501057084,22.198731501057082
+realAWSCloudwatch/ec2_network_in_5abac7.csv,realAWSCloudwatch,42,B3,"{""w"": 400}",946,47,0.049682875264270614,49.68287526427061
+realAWSCloudwatch/ec2_network_in_5abac7.csv,realAWSCloudwatch,42,B3-k,"{""k"": 3, ""w"": 400}",946,47,0.049682875264270614,49.68287526427061
+realAWSCloudwatch/ec2_network_in_5abac7.csv,realAWSCloudwatch,42,Base,{},946,0,0.0,0.0
+realAWSCloudwatch/ec2_network_in_5abac7.csv,realAWSCloudwatch,42,P1,"{""lam"": 6, ""memory"": ""plain"", ""w"": 50}",946,111,0.11733615221987315,117.33615221987316
+realAWSCloudwatch/ec2_network_in_5abac7.csv,realAWSCloudwatch,42,R2,{},946,0,0.0,0.0
+realAWSCloudwatch/ec2_network_in_5abac7.csv,realAWSCloudwatch,42,S-robust,"{""lam"": 5}",946,314,0.33192389006342493,331.92389006342495
+realAWSCloudwatch/ec2_network_in_5abac7.csv,realAWSCloudwatch,123,B1,"{""p"": 90}",946,59,0.06236786469344609,62.36786469344609
+realAWSCloudwatch/ec2_network_in_5abac7.csv,realAWSCloudwatch,123,B2,"{""k"": 2.5}",946,25,0.026427061310782242,26.427061310782243
+realAWSCloudwatch/ec2_network_in_5abac7.csv,realAWSCloudwatch,123,B3,"{""w"": 400}",946,55,0.05813953488372093,58.13953488372093
+realAWSCloudwatch/ec2_network_in_5abac7.csv,realAWSCloudwatch,123,B3-k,"{""k"": 3, ""w"": 400}",946,55,0.05813953488372093,58.13953488372093
+realAWSCloudwatch/ec2_network_in_5abac7.csv,realAWSCloudwatch,123,Base,{},946,0,0.0,0.0
+realAWSCloudwatch/ec2_network_in_5abac7.csv,realAWSCloudwatch,123,P1,"{""lam"": 6, ""memory"": ""plain"", ""w"": 50}",946,120,0.12684989429175475,126.84989429175475
+realAWSCloudwatch/ec2_network_in_5abac7.csv,realAWSCloudwatch,123,R2,{},946,0,0.0,0.0
+realAWSCloudwatch/ec2_network_in_5abac7.csv,realAWSCloudwatch,123,S-robust,"{""lam"": 5}",946,320,0.3382663847780127,338.2663847780127
+realAWSCloudwatch/rds_cpu_utilization_e47b3b.csv,realAWSCloudwatch,15,B1,"{""p"": 90}",807,582,0.7211895910780669,721.1895910780669
+realAWSCloudwatch/rds_cpu_utilization_e47b3b.csv,realAWSCloudwatch,15,B2,"{""k"": 2.5}",807,395,0.48946716232961585,489.46716232961586
+realAWSCloudwatch/rds_cpu_utilization_e47b3b.csv,realAWSCloudwatch,15,B3,"{""w"": 400}",807,20,0.024783147459727387,24.783147459727385
+realAWSCloudwatch/rds_cpu_utilization_e47b3b.csv,realAWSCloudwatch,15,B3-k,"{""k"": 3, ""w"": 400}",807,20,0.024783147459727387,24.783147459727385
+realAWSCloudwatch/rds_cpu_utilization_e47b3b.csv,realAWSCloudwatch,15,Base,{},807,394,0.4882280049566295,488.2280049566295
+realAWSCloudwatch/rds_cpu_utilization_e47b3b.csv,realAWSCloudwatch,15,P1,"{""lam"": 6, ""memory"": ""plain"", ""w"": 50}",807,34,0.042131350681536554,42.13135068153655
+realAWSCloudwatch/rds_cpu_utilization_e47b3b.csv,realAWSCloudwatch,15,R2,{},807,0,0.0,0.0
+realAWSCloudwatch/rds_cpu_utilization_e47b3b.csv,realAWSCloudwatch,15,S-robust,"{""lam"": 5}",807,397,0.4919454770755886,491.9454770755886
+realAWSCloudwatch/rds_cpu_utilization_e47b3b.csv,realAWSCloudwatch,42,B1,"{""p"": 90}",807,581,0.7199504337050805,719.9504337050805
+realAWSCloudwatch/rds_cpu_utilization_e47b3b.csv,realAWSCloudwatch,42,B2,"{""k"": 2.5}",807,394,0.4882280049566295,488.2280049566295
+realAWSCloudwatch/rds_cpu_utilization_e47b3b.csv,realAWSCloudwatch,42,B3,"{""w"": 400}",807,2,0.0024783147459727386,2.4783147459727384
+realAWSCloudwatch/rds_cpu_utilization_e47b3b.csv,realAWSCloudwatch,42,B3-k,"{""k"": 3, ""w"": 400}",807,2,0.0024783147459727386,2.4783147459727384
+realAWSCloudwatch/rds_cpu_utilization_e47b3b.csv,realAWSCloudwatch,42,Base,{},807,393,0.48698884758364314,486.9888475836431
+realAWSCloudwatch/rds_cpu_utilization_e47b3b.csv,realAWSCloudwatch,42,P1,"{""lam"": 6, ""memory"": ""plain"", ""w"": 50}",807,18,0.022304832713754646,22.304832713754646
+realAWSCloudwatch/rds_cpu_utilization_e47b3b.csv,realAWSCloudwatch,42,R2,{},807,0,0.0,0.0
+realAWSCloudwatch/rds_cpu_utilization_e47b3b.csv,realAWSCloudwatch,42,S-robust,"{""lam"": 5}",807,397,0.4919454770755886,491.9454770755886
+realAWSCloudwatch/rds_cpu_utilization_e47b3b.csv,realAWSCloudwatch,123,B1,"{""p"": 90}",807,590,0.7311028500619579,731.1028500619578
+realAWSCloudwatch/rds_cpu_utilization_e47b3b.csv,realAWSCloudwatch,123,B2,"{""k"": 2.5}",807,395,0.48946716232961585,489.46716232961586
+realAWSCloudwatch/rds_cpu_utilization_e47b3b.csv,realAWSCloudwatch,123,B3,"{""w"": 400}",807,20,0.024783147459727387,24.783147459727385
+realAWSCloudwatch/rds_cpu_utilization_e47b3b.csv,realAWSCloudwatch,123,B3-k,"{""k"": 3, ""w"": 400}",807,20,0.024783147459727387,24.783147459727385
+realAWSCloudwatch/rds_cpu_utilization_e47b3b.csv,realAWSCloudwatch,123,Base,{},807,394,0.4882280049566295,488.2280049566295
+realAWSCloudwatch/rds_cpu_utilization_e47b3b.csv,realAWSCloudwatch,123,P1,"{""lam"": 6, ""memory"": ""plain"", ""w"": 50}",807,30,0.03717472118959108,37.174721189591075
+realAWSCloudwatch/rds_cpu_utilization_e47b3b.csv,realAWSCloudwatch,123,R2,{},807,0,0.0,0.0
+realAWSCloudwatch/rds_cpu_utilization_e47b3b.csv,realAWSCloudwatch,123,S-robust,"{""lam"": 5}",807,397,0.4919454770755886,491.9454770755886
+realAdExchange/exchange-2_cpm_results.csv,realAdExchange,15,B1,"{""p"": 90}",325,177,0.5446153846153846,544.6153846153846
+realAdExchange/exchange-2_cpm_results.csv,realAdExchange,15,B2,"{""k"": 2.5}",325,107,0.3292307692307692,329.2307692307692
+realAdExchange/exchange-2_cpm_results.csv,realAdExchange,15,B3,"{""w"": 400}",325,0,0.0,0.0
+realAdExchange/exchange-2_cpm_results.csv,realAdExchange,15,B3-k,"{""k"": 3, ""w"": 400}",325,0,0.0,0.0
+realAdExchange/exchange-2_cpm_results.csv,realAdExchange,15,Base,{},325,69,0.2123076923076923,212.30769230769232
+realAdExchange/exchange-2_cpm_results.csv,realAdExchange,15,P1,"{""lam"": 6, ""memory"": ""plain"", ""w"": 50}",325,6,0.018461538461538463,18.46153846153846
+realAdExchange/exchange-2_cpm_results.csv,realAdExchange,15,R2,{},325,47,0.14461538461538462,144.6153846153846
+realAdExchange/exchange-2_cpm_results.csv,realAdExchange,15,S-robust,"{""lam"": 5}",325,15,0.046153846153846156,46.15384615384615
+realAdExchange/exchange-2_cpm_results.csv,realAdExchange,42,B1,"{""p"": 90}",325,171,0.5261538461538462,526.1538461538462
+realAdExchange/exchange-2_cpm_results.csv,realAdExchange,42,B2,"{""k"": 2.5}",325,115,0.35384615384615387,353.84615384615387
+realAdExchange/exchange-2_cpm_results.csv,realAdExchange,42,B3,"{""w"": 400}",325,5,0.015384615384615385,15.384615384615385
+realAdExchange/exchange-2_cpm_results.csv,realAdExchange,42,B3-k,"{""k"": 3, ""w"": 400}",325,5,0.015384615384615385,15.384615384615385
+realAdExchange/exchange-2_cpm_results.csv,realAdExchange,42,Base,{},325,79,0.24307692307692308,243.07692307692307
+realAdExchange/exchange-2_cpm_results.csv,realAdExchange,42,P1,"{""lam"": 6, ""memory"": ""plain"", ""w"": 50}",325,16,0.04923076923076923,49.23076923076923
+realAdExchange/exchange-2_cpm_results.csv,realAdExchange,42,R2,{},325,75,0.23076923076923078,230.76923076923077
+realAdExchange/exchange-2_cpm_results.csv,realAdExchange,42,S-robust,"{""lam"": 5}",325,36,0.11076923076923077,110.76923076923077
+realAdExchange/exchange-2_cpm_results.csv,realAdExchange,123,B1,"{""p"": 90}",325,171,0.5261538461538462,526.1538461538462
+realAdExchange/exchange-2_cpm_results.csv,realAdExchange,123,B2,"{""k"": 2.5}",325,105,0.3230769230769231,323.0769230769231
+realAdExchange/exchange-2_cpm_results.csv,realAdExchange,123,B3,"{""w"": 400}",325,7,0.021538461538461538,21.53846153846154
+realAdExchange/exchange-2_cpm_results.csv,realAdExchange,123,B3-k,"{""k"": 3, ""w"": 400}",325,7,0.021538461538461538,21.53846153846154
+realAdExchange/exchange-2_cpm_results.csv,realAdExchange,123,Base,{},325,56,0.1723076923076923,172.30769230769232
+realAdExchange/exchange-2_cpm_results.csv,realAdExchange,123,P1,"{""lam"": 6, ""memory"": ""plain"", ""w"": 50}",325,20,0.06153846153846154,61.53846153846154
+realAdExchange/exchange-2_cpm_results.csv,realAdExchange,123,R2,{},325,47,0.14461538461538462,144.6153846153846
+realAdExchange/exchange-2_cpm_results.csv,realAdExchange,123,S-robust,"{""lam"": 5}",325,13,0.04,40.0
+realAdExchange/exchange-3_cpc_results.csv,realAdExchange,15,B1,"{""p"": 90}",308,0,0.0,0.0
+realAdExchange/exchange-3_cpc_results.csv,realAdExchange,15,B2,"{""k"": 2.5}",308,0,0.0,0.0
+realAdExchange/exchange-3_cpc_results.csv,realAdExchange,15,B3,"{""w"": 400}",308,0,0.0,0.0
+realAdExchange/exchange-3_cpc_results.csv,realAdExchange,15,B3-k,"{""k"": 3, ""w"": 400}",308,0,0.0,0.0
+realAdExchange/exchange-3_cpc_results.csv,realAdExchange,15,Base,{},308,0,0.0,0.0
+realAdExchange/exchange-3_cpc_results.csv,realAdExchange,15,P1,"{""lam"": 6, ""memory"": ""plain"", ""w"": 50}",308,9,0.02922077922077922,29.22077922077922
+realAdExchange/exchange-3_cpc_results.csv,realAdExchange,15,R2,{},308,0,0.0,0.0
+realAdExchange/exchange-3_cpc_results.csv,realAdExchange,15,S-robust,"{""lam"": 5}",308,0,0.0,0.0
+realAdExchange/exchange-3_cpc_results.csv,realAdExchange,42,B1,"{""p"": 90}",308,2,0.006493506493506494,6.4935064935064934
+realAdExchange/exchange-3_cpc_results.csv,realAdExchange,42,B2,"{""k"": 2.5}",308,0,0.0,0.0
+realAdExchange/exchange-3_cpc_results.csv,realAdExchange,42,B3,"{""w"": 400}",308,7,0.022727272727272728,22.727272727272727
+realAdExchange/exchange-3_cpc_results.csv,realAdExchange,42,B3-k,"{""k"": 3, ""w"": 400}",308,7,0.022727272727272728,22.727272727272727
+realAdExchange/exchange-3_cpc_results.csv,realAdExchange,42,Base,{},308,0,0.0,0.0
+realAdExchange/exchange-3_cpc_results.csv,realAdExchange,42,P1,"{""lam"": 6, ""memory"": ""plain"", ""w"": 50}",308,8,0.025974025974025976,25.974025974025974
+realAdExchange/exchange-3_cpc_results.csv,realAdExchange,42,R2,{},308,0,0.0,0.0
+realAdExchange/exchange-3_cpc_results.csv,realAdExchange,42,S-robust,"{""lam"": 5}",308,1,0.003246753246753247,3.2467532467532467
+realAdExchange/exchange-3_cpc_results.csv,realAdExchange,123,B1,"{""p"": 90}",308,0,0.0,0.0
+realAdExchange/exchange-3_cpc_results.csv,realAdExchange,123,B2,"{""k"": 2.5}",308,0,0.0,0.0
+realAdExchange/exchange-3_cpc_results.csv,realAdExchange,123,B3,"{""w"": 400}",308,0,0.0,0.0
+realAdExchange/exchange-3_cpc_results.csv,realAdExchange,123,B3-k,"{""k"": 3, ""w"": 400}",308,0,0.0,0.0
+realAdExchange/exchange-3_cpc_results.csv,realAdExchange,123,Base,{},308,0,0.0,0.0
+realAdExchange/exchange-3_cpc_results.csv,realAdExchange,123,P1,"{""lam"": 6, ""memory"": ""plain"", ""w"": 50}",308,18,0.05844155844155844,58.44155844155844
+realAdExchange/exchange-3_cpc_results.csv,realAdExchange,123,R2,{},308,0,0.0,0.0
+realAdExchange/exchange-3_cpc_results.csv,realAdExchange,123,S-robust,"{""lam"": 5}",308,0,0.0,0.0
+realAdExchange/exchange-3_cpm_results.csv,realAdExchange,15,B1,"{""p"": 90}",308,76,0.24675324675324675,246.75324675324674
+realAdExchange/exchange-3_cpm_results.csv,realAdExchange,15,B2,"{""k"": 2.5}",308,42,0.13636363636363635,136.36363636363637
+realAdExchange/exchange-3_cpm_results.csv,realAdExchange,15,B3,"{""w"": 400}",308,1,0.003246753246753247,3.2467532467532467
+realAdExchange/exchange-3_cpm_results.csv,realAdExchange,15,B3-k,"{""k"": 3, ""w"": 400}",308,1,0.003246753246753247,3.2467532467532467
+realAdExchange/exchange-3_cpm_results.csv,realAdExchange,15,Base,{},308,13,0.04220779220779221,42.20779220779221
+realAdExchange/exchange-3_cpm_results.csv,realAdExchange,15,P1,"{""lam"": 6, ""memory"": ""plain"", ""w"": 50}",308,0,0.0,0.0
+realAdExchange/exchange-3_cpm_results.csv,realAdExchange,15,R2,{},308,0,0.0,0.0
+realAdExchange/exchange-3_cpm_results.csv,realAdExchange,15,S-robust,"{""lam"": 5}",308,50,0.16233766233766234,162.33766233766235
+realAdExchange/exchange-3_cpm_results.csv,realAdExchange,42,B1,"{""p"": 90}",308,76,0.24675324675324675,246.75324675324674
+realAdExchange/exchange-3_cpm_results.csv,realAdExchange,42,B2,"{""k"": 2.5}",308,24,0.07792207792207792,77.92207792207792
+realAdExchange/exchange-3_cpm_results.csv,realAdExchange,42,B3,"{""w"": 400}",308,3,0.00974025974025974,9.74025974025974
+realAdExchange/exchange-3_cpm_results.csv,realAdExchange,42,B3-k,"{""k"": 3, ""w"": 400}",308,3,0.00974025974025974,9.74025974025974
+realAdExchange/exchange-3_cpm_results.csv,realAdExchange,42,Base,{},308,11,0.03571428571428571,35.714285714285715
+realAdExchange/exchange-3_cpm_results.csv,realAdExchange,42,P1,"{""lam"": 6, ""memory"": ""plain"", ""w"": 50}",308,0,0.0,0.0
+realAdExchange/exchange-3_cpm_results.csv,realAdExchange,42,R2,{},308,0,0.0,0.0
+realAdExchange/exchange-3_cpm_results.csv,realAdExchange,42,S-robust,"{""lam"": 5}",308,55,0.17857142857142858,178.57142857142858
+realAdExchange/exchange-3_cpm_results.csv,realAdExchange,123,B1,"{""p"": 90}",308,78,0.2532467532467532,253.24675324675326
+realAdExchange/exchange-3_cpm_results.csv,realAdExchange,123,B2,"{""k"": 2.5}",308,38,0.12337662337662338,123.37662337662337
+realAdExchange/exchange-3_cpm_results.csv,realAdExchange,123,B3,"{""w"": 400}",308,0,0.0,0.0
+realAdExchange/exchange-3_cpm_results.csv,realAdExchange,123,B3-k,"{""k"": 3, ""w"": 400}",308,0,0.0,0.0
+realAdExchange/exchange-3_cpm_results.csv,realAdExchange,123,Base,{},308,12,0.03896103896103896,38.96103896103896
+realAdExchange/exchange-3_cpm_results.csv,realAdExchange,123,P1,"{""lam"": 6, ""memory"": ""plain"", ""w"": 50}",308,0,0.0,0.0
+realAdExchange/exchange-3_cpm_results.csv,realAdExchange,123,R2,{},308,0,0.0,0.0
+realAdExchange/exchange-3_cpm_results.csv,realAdExchange,123,S-robust,"{""lam"": 5}",308,50,0.16233766233766234,162.33766233766235
+realAdExchange/exchange-4_cpc_results.csv,realAdExchange,15,B1,"{""p"": 90}",329,143,0.43465045592705165,434.65045592705167
+realAdExchange/exchange-4_cpc_results.csv,realAdExchange,15,B2,"{""k"": 2.5}",329,25,0.07598784194528875,75.98784194528875
+realAdExchange/exchange-4_cpc_results.csv,realAdExchange,15,B3,"{""w"": 400}",329,0,0.0,0.0
+realAdExchange/exchange-4_cpc_results.csv,realAdExchange,15,B3-k,"{""k"": 3, ""w"": 400}",329,0,0.0,0.0
+realAdExchange/exchange-4_cpc_results.csv,realAdExchange,15,Base,{},329,4,0.0121580547112462,12.158054711246201
+realAdExchange/exchange-4_cpc_results.csv,realAdExchange,15,P1,"{""lam"": 6, ""memory"": ""plain"", ""w"": 50}",329,61,0.18541033434650456,185.41033434650456
+realAdExchange/exchange-4_cpc_results.csv,realAdExchange,15,R2,{},329,0,0.0,0.0
+realAdExchange/exchange-4_cpc_results.csv,realAdExchange,15,S-robust,"{""lam"": 5}",329,132,0.4012158054711246,401.2158054711246
+realAdExchange/exchange-4_cpc_results.csv,realAdExchange,42,B1,"{""p"": 90}",329,146,0.44376899696048633,443.76899696048633
+realAdExchange/exchange-4_cpc_results.csv,realAdExchange,42,B2,"{""k"": 2.5}",329,14,0.0425531914893617,42.5531914893617
+realAdExchange/exchange-4_cpc_results.csv,realAdExchange,42,B3,"{""w"": 400}",329,0,0.0,0.0
+realAdExchange/exchange-4_cpc_results.csv,realAdExchange,42,B3-k,"{""k"": 3, ""w"": 400}",329,0,0.0,0.0
+realAdExchange/exchange-4_cpc_results.csv,realAdExchange,42,Base,{},329,5,0.015197568389057751,15.19756838905775
+realAdExchange/exchange-4_cpc_results.csv,realAdExchange,42,P1,"{""lam"": 6, ""memory"": ""plain"", ""w"": 50}",329,57,0.17325227963525835,173.25227963525836
+realAdExchange/exchange-4_cpc_results.csv,realAdExchange,42,R2,{},329,0,0.0,0.0
+realAdExchange/exchange-4_cpc_results.csv,realAdExchange,42,S-robust,"{""lam"": 5}",329,132,0.4012158054711246,401.2158054711246
+realAdExchange/exchange-4_cpc_results.csv,realAdExchange,123,B1,"{""p"": 90}",329,145,0.44072948328267475,440.7294832826748
+realAdExchange/exchange-4_cpc_results.csv,realAdExchange,123,B2,"{""k"": 2.5}",329,30,0.0911854103343465,91.1854103343465
+realAdExchange/exchange-4_cpc_results.csv,realAdExchange,123,B3,"{""w"": 400}",329,0,0.0,0.0
+realAdExchange/exchange-4_cpc_results.csv,realAdExchange,123,B3-k,"{""k"": 3, ""w"": 400}",329,0,0.0,0.0
+realAdExchange/exchange-4_cpc_results.csv,realAdExchange,123,Base,{},329,13,0.03951367781155015,39.51367781155015
+realAdExchange/exchange-4_cpc_results.csv,realAdExchange,123,P1,"{""lam"": 6, ""memory"": ""plain"", ""w"": 50}",329,62,0.1884498480243161,188.4498480243161
+realAdExchange/exchange-4_cpc_results.csv,realAdExchange,123,R2,{},329,0,0.0,0.0
+realAdExchange/exchange-4_cpc_results.csv,realAdExchange,123,S-robust,"{""lam"": 5}",329,132,0.4012158054711246,401.2158054711246
+realKnownCause/rogue_agent_key_hold.csv,realKnownCause,15,B1,"{""p"": 90}",377,109,0.2891246684350133,289.1246684350133
+realKnownCause/rogue_agent_key_hold.csv,realKnownCause,15,B2,"{""k"": 2.5}",377,12,0.03183023872679045,31.83023872679045
+realKnownCause/rogue_agent_key_hold.csv,realKnownCause,15,B3,"{""w"": 400}",377,0,0.0,0.0
+realKnownCause/rogue_agent_key_hold.csv,realKnownCause,15,B3-k,"{""k"": 3, ""w"": 400}",377,0,0.0,0.0
+realKnownCause/rogue_agent_key_hold.csv,realKnownCause,15,Base,{},377,5,0.013262599469496022,13.26259946949602
+realKnownCause/rogue_agent_key_hold.csv,realKnownCause,15,P1,"{""lam"": 6, ""memory"": ""plain"", ""w"": 50}",377,29,0.07692307692307693,76.92307692307692
+realKnownCause/rogue_agent_key_hold.csv,realKnownCause,15,R2,{},377,0,0.0,0.0
+realKnownCause/rogue_agent_key_hold.csv,realKnownCause,15,S-robust,"{""lam"": 5}",377,0,0.0,0.0
+realKnownCause/rogue_agent_key_hold.csv,realKnownCause,42,B1,"{""p"": 90}",377,109,0.2891246684350133,289.1246684350133
+realKnownCause/rogue_agent_key_hold.csv,realKnownCause,42,B2,"{""k"": 2.5}",377,9,0.023872679045092837,23.872679045092838
+realKnownCause/rogue_agent_key_hold.csv,realKnownCause,42,B3,"{""w"": 400}",377,0,0.0,0.0
+realKnownCause/rogue_agent_key_hold.csv,realKnownCause,42,B3-k,"{""k"": 3, ""w"": 400}",377,0,0.0,0.0
+realKnownCause/rogue_agent_key_hold.csv,realKnownCause,42,Base,{},377,5,0.013262599469496022,13.26259946949602
+realKnownCause/rogue_agent_key_hold.csv,realKnownCause,42,P1,"{""lam"": 6, ""memory"": ""plain"", ""w"": 50}",377,18,0.04774535809018567,47.745358090185675
+realKnownCause/rogue_agent_key_hold.csv,realKnownCause,42,R2,{},377,0,0.0,0.0
+realKnownCause/rogue_agent_key_hold.csv,realKnownCause,42,S-robust,"{""lam"": 5}",377,0,0.0,0.0
+realKnownCause/rogue_agent_key_hold.csv,realKnownCause,123,B1,"{""p"": 90}",377,109,0.2891246684350133,289.1246684350133
+realKnownCause/rogue_agent_key_hold.csv,realKnownCause,123,B2,"{""k"": 2.5}",377,14,0.03713527851458886,37.13527851458886
+realKnownCause/rogue_agent_key_hold.csv,realKnownCause,123,B3,"{""w"": 400}",377,0,0.0,0.0
+realKnownCause/rogue_agent_key_hold.csv,realKnownCause,123,B3-k,"{""k"": 3, ""w"": 400}",377,0,0.0,0.0
+realKnownCause/rogue_agent_key_hold.csv,realKnownCause,123,Base,{},377,5,0.013262599469496022,13.26259946949602
+realKnownCause/rogue_agent_key_hold.csv,realKnownCause,123,P1,"{""lam"": 6, ""memory"": ""plain"", ""w"": 50}",377,27,0.07161803713527852,71.61803713527851
+realKnownCause/rogue_agent_key_hold.csv,realKnownCause,123,R2,{},377,0,0.0,0.0
+realKnownCause/rogue_agent_key_hold.csv,realKnownCause,123,S-robust,"{""lam"": 5}",377,0,0.0,0.0
+realTraffic/TravelTime_387.csv,realTraffic,15,B1,"{""p"": 90}",500,82,0.164,164.0
+realTraffic/TravelTime_387.csv,realTraffic,15,B2,"{""k"": 2.5}",500,61,0.122,122.0
+realTraffic/TravelTime_387.csv,realTraffic,15,B3,"{""w"": 400}",500,28,0.056,56.0
+realTraffic/TravelTime_387.csv,realTraffic,15,B3-k,"{""k"": 3, ""w"": 400}",500,28,0.056,56.0
+realTraffic/TravelTime_387.csv,realTraffic,15,Base,{},500,59,0.118,118.0
+realTraffic/TravelTime_387.csv,realTraffic,15,P1,"{""lam"": 6, ""memory"": ""plain"", ""w"": 50}",500,80,0.16,160.0
+realTraffic/TravelTime_387.csv,realTraffic,15,R2,{},500,55,0.11,110.0
+realTraffic/TravelTime_387.csv,realTraffic,15,S-robust,"{""lam"": 5}",500,76,0.152,152.0
+realTraffic/TravelTime_387.csv,realTraffic,42,B1,"{""p"": 90}",500,70,0.14,140.0
+realTraffic/TravelTime_387.csv,realTraffic,42,B2,"{""k"": 2.5}",500,64,0.128,128.0
+realTraffic/TravelTime_387.csv,realTraffic,42,B3,"{""w"": 400}",500,24,0.048,48.0
+realTraffic/TravelTime_387.csv,realTraffic,42,B3-k,"{""k"": 3, ""w"": 400}",500,24,0.048,48.0
+realTraffic/TravelTime_387.csv,realTraffic,42,Base,{},500,60,0.12,120.0
+realTraffic/TravelTime_387.csv,realTraffic,42,P1,"{""lam"": 6, ""memory"": ""plain"", ""w"": 50}",500,76,0.152,152.0
+realTraffic/TravelTime_387.csv,realTraffic,42,R2,{},500,57,0.114,114.0
+realTraffic/TravelTime_387.csv,realTraffic,42,S-robust,"{""lam"": 5}",500,66,0.132,132.0
+realTraffic/TravelTime_387.csv,realTraffic,123,B1,"{""p"": 90}",500,66,0.132,132.0
+realTraffic/TravelTime_387.csv,realTraffic,123,B2,"{""k"": 2.5}",500,65,0.13,130.0
+realTraffic/TravelTime_387.csv,realTraffic,123,B3,"{""w"": 400}",500,30,0.06,60.0
+realTraffic/TravelTime_387.csv,realTraffic,123,B3-k,"{""k"": 3, ""w"": 400}",500,30,0.06,60.0
+realTraffic/TravelTime_387.csv,realTraffic,123,Base,{},500,64,0.128,128.0
+realTraffic/TravelTime_387.csv,realTraffic,123,P1,"{""lam"": 6, ""memory"": ""plain"", ""w"": 50}",500,84,0.168,168.0
+realTraffic/TravelTime_387.csv,realTraffic,123,R2,{},500,59,0.118,118.0
+realTraffic/TravelTime_387.csv,realTraffic,123,S-robust,"{""lam"": 5}",500,65,0.13,130.0
+realTraffic/occupancy_6005.csv,realTraffic,15,B1,"{""p"": 90}",476,93,0.1953781512605042,195.3781512605042
+realTraffic/occupancy_6005.csv,realTraffic,15,B2,"{""k"": 2.5}",476,54,0.1134453781512605,113.4453781512605
+realTraffic/occupancy_6005.csv,realTraffic,15,B3,"{""w"": 400}",476,6,0.012605042016806723,12.605042016806722
+realTraffic/occupancy_6005.csv,realTraffic,15,B3-k,"{""k"": 3, ""w"": 400}",476,6,0.012605042016806723,12.605042016806722
+realTraffic/occupancy_6005.csv,realTraffic,15,Base,{},476,43,0.09033613445378151,90.33613445378151
+realTraffic/occupancy_6005.csv,realTraffic,15,P1,"{""lam"": 6, ""memory"": ""plain"", ""w"": 50}",476,42,0.08823529411764706,88.23529411764706
+realTraffic/occupancy_6005.csv,realTraffic,15,R2,{},476,0,0.0,0.0
+realTraffic/occupancy_6005.csv,realTraffic,15,S-robust,"{""lam"": 5}",476,22,0.046218487394957986,46.21848739495798
+realTraffic/occupancy_6005.csv,realTraffic,42,B1,"{""p"": 90}",476,94,0.19747899159663865,197.47899159663865
+realTraffic/occupancy_6005.csv,realTraffic,42,B2,"{""k"": 2.5}",476,53,0.11134453781512606,111.34453781512605
+realTraffic/occupancy_6005.csv,realTraffic,42,B3,"{""w"": 400}",476,9,0.018907563025210083,18.907563025210084
+realTraffic/occupancy_6005.csv,realTraffic,42,B3-k,"{""k"": 3, ""w"": 400}",476,9,0.018907563025210083,18.907563025210084
+realTraffic/occupancy_6005.csv,realTraffic,42,Base,{},476,44,0.09243697478991597,92.43697478991596
+realTraffic/occupancy_6005.csv,realTraffic,42,P1,"{""lam"": 6, ""memory"": ""plain"", ""w"": 50}",476,49,0.10294117647058823,102.94117647058823
+realTraffic/occupancy_6005.csv,realTraffic,42,R2,{},476,0,0.0,0.0
+realTraffic/occupancy_6005.csv,realTraffic,42,S-robust,"{""lam"": 5}",476,21,0.04411764705882353,44.11764705882353
+realTraffic/occupancy_6005.csv,realTraffic,123,B1,"{""p"": 90}",476,63,0.1323529411764706,132.35294117647058
+realTraffic/occupancy_6005.csv,realTraffic,123,B2,"{""k"": 2.5}",476,30,0.06302521008403361,63.02521008403362
+realTraffic/occupancy_6005.csv,realTraffic,123,B3,"{""w"": 400}",476,22,0.046218487394957986,46.21848739495798
+realTraffic/occupancy_6005.csv,realTraffic,123,B3-k,"{""k"": 3, ""w"": 400}",476,22,0.046218487394957986,46.21848739495798
+realTraffic/occupancy_6005.csv,realTraffic,123,Base,{},476,27,0.05672268907563025,56.72268907563025
+realTraffic/occupancy_6005.csv,realTraffic,123,P1,"{""lam"": 6, ""memory"": ""plain"", ""w"": 50}",476,14,0.029411764705882353,29.41176470588235
+realTraffic/occupancy_6005.csv,realTraffic,123,R2,{},476,24,0.05042016806722689,50.42016806722689
+realTraffic/occupancy_6005.csv,realTraffic,123,S-robust,"{""lam"": 5}",476,5,0.01050420168067227,10.504201680672269
+realTweets/Twitter_volume_AMZN.csv,realTweets,15,B1,"{""p"": 90}",3167,168,0.05304704767919166,53.047047679191664
+realTweets/Twitter_volume_AMZN.csv,realTweets,15,B2,"{""k"": 2.5}",3167,0,0.0,0.0
+realTweets/Twitter_volume_AMZN.csv,realTweets,15,B3,"{""w"": 400}",3167,102,0.032207136090937796,32.207136090937794
+realTweets/Twitter_volume_AMZN.csv,realTweets,15,B3-k,"{""k"": 3, ""w"": 400}",3167,102,0.032207136090937796,32.207136090937794
+realTweets/Twitter_volume_AMZN.csv,realTweets,15,Base,{},3167,0,0.0,0.0
+realTweets/Twitter_volume_AMZN.csv,realTweets,15,P1,"{""lam"": 6, ""memory"": ""plain"", ""w"": 50}",3167,126,0.039785285759393746,39.78528575939375
+realTweets/Twitter_volume_AMZN.csv,realTweets,15,R2,{},3167,0,0.0,0.0
+realTweets/Twitter_volume_AMZN.csv,realTweets,15,S-robust,"{""lam"": 5}",3167,21,0.006630880959898958,6.630880959898958
+realTweets/Twitter_volume_AMZN.csv,realTweets,42,B1,"{""p"": 90}",3167,214,0.06757183454373224,67.57183454373224
+realTweets/Twitter_volume_AMZN.csv,realTweets,42,B2,"{""k"": 2.5}",3167,0,0.0,0.0
+realTweets/Twitter_volume_AMZN.csv,realTweets,42,B3,"{""w"": 400}",3167,83,0.02620776760341017,26.20776760341017
+realTweets/Twitter_volume_AMZN.csv,realTweets,42,B3-k,"{""k"": 3, ""w"": 400}",3167,83,0.02620776760341017,26.20776760341017
+realTweets/Twitter_volume_AMZN.csv,realTweets,42,Base,{},3167,0,0.0,0.0
+realTweets/Twitter_volume_AMZN.csv,realTweets,42,P1,"{""lam"": 6, ""memory"": ""plain"", ""w"": 50}",3167,123,0.038838017050836754,38.838017050836754
+realTweets/Twitter_volume_AMZN.csv,realTweets,42,R2,{},3167,0,0.0,0.0
+realTweets/Twitter_volume_AMZN.csv,realTweets,42,S-robust,"{""lam"": 5}",3167,35,0.011051468266498263,11.051468266498263
+realTweets/Twitter_volume_AMZN.csv,realTweets,123,B1,"{""p"": 90}",3167,176,0.05557309756867698,55.57309756867698
+realTweets/Twitter_volume_AMZN.csv,realTweets,123,B2,"{""k"": 2.5}",3167,0,0.0,0.0
+realTweets/Twitter_volume_AMZN.csv,realTweets,123,B3,"{""w"": 400}",3167,92,0.02904957372908115,29.04957372908115
+realTweets/Twitter_volume_AMZN.csv,realTweets,123,B3-k,"{""k"": 3, ""w"": 400}",3167,92,0.02904957372908115,29.04957372908115
+realTweets/Twitter_volume_AMZN.csv,realTweets,123,Base,{},3167,0,0.0,0.0
+realTweets/Twitter_volume_AMZN.csv,realTweets,123,P1,"{""lam"": 6, ""memory"": ""plain"", ""w"": 50}",3167,129,0.040732554467950745,40.73255446795074
+realTweets/Twitter_volume_AMZN.csv,realTweets,123,R2,{},3167,0,0.0,0.0
+realTweets/Twitter_volume_AMZN.csv,realTweets,123,S-robust,"{""lam"": 5}",3167,29,0.009156930849384275,9.156930849384276
+realTweets/Twitter_volume_FB.csv,realTweets,15,B1,"{""p"": 90}",3167,219,0.06915061572466057,69.15061572466057
+realTweets/Twitter_volume_FB.csv,realTweets,15,B2,"{""k"": 2.5}",3167,104,0.03283864856330913,32.83864856330913
+realTweets/Twitter_volume_FB.csv,realTweets,15,B3,"{""w"": 400}",3167,141,0.04452162930217872,44.52162930217872
+realTweets/Twitter_volume_FB.csv,realTweets,15,B3-k,"{""k"": 3, ""w"": 400}",3167,141,0.04452162930217872,44.52162930217872
+realTweets/Twitter_volume_FB.csv,realTweets,15,Base,{},3167,102,0.032207136090937796,32.207136090937794
+realTweets/Twitter_volume_FB.csv,realTweets,15,P1,"{""lam"": 6, ""memory"": ""plain"", ""w"": 50}",3167,174,0.05494158509630565,54.94158509630565
+realTweets/Twitter_volume_FB.csv,realTweets,15,R2,{},3167,0,0.0,0.0
+realTweets/Twitter_volume_FB.csv,realTweets,15,S-robust,"{""lam"": 5}",3167,106,0.03347016103568046,33.470161035680455
+realTweets/Twitter_volume_FB.csv,realTweets,42,B1,"{""p"": 90}",3167,221,0.06978212819703189,69.7821281970319
+realTweets/Twitter_volume_FB.csv,realTweets,42,B2,"{""k"": 2.5}",3167,103,0.03252289232712346,32.52289232712346
+realTweets/Twitter_volume_FB.csv,realTweets,42,B3,"{""w"": 400}",3167,145,0.04578465424692137,45.78465424692138
+realTweets/Twitter_volume_FB.csv,realTweets,42,B3-k,"{""k"": 3, ""w"": 400}",3167,145,0.04578465424692137,45.78465424692138
+realTweets/Twitter_volume_FB.csv,realTweets,42,Base,{},3167,101,0.031891379854752135,31.89137985475213
+realTweets/Twitter_volume_FB.csv,realTweets,42,P1,"{""lam"": 6, ""memory"": ""plain"", ""w"": 50}",3167,175,0.055257341332491314,55.257341332491315
+realTweets/Twitter_volume_FB.csv,realTweets,42,R2,{},3167,0,0.0,0.0
+realTweets/Twitter_volume_FB.csv,realTweets,42,S-robust,"{""lam"": 5}",3167,106,0.03347016103568046,33.470161035680455
+realTweets/Twitter_volume_FB.csv,realTweets,123,B1,"{""p"": 90}",3167,218,0.0688348594884749,68.83485948847489
+realTweets/Twitter_volume_FB.csv,realTweets,123,B2,"{""k"": 2.5}",3167,104,0.03283864856330913,32.83864856330913
+realTweets/Twitter_volume_FB.csv,realTweets,123,B3,"{""w"": 400}",3167,141,0.04452162930217872,44.52162930217872
+realTweets/Twitter_volume_FB.csv,realTweets,123,B3-k,"{""k"": 3, ""w"": 400}",3167,141,0.04452162930217872,44.52162930217872
+realTweets/Twitter_volume_FB.csv,realTweets,123,Base,{},3167,102,0.032207136090937796,32.207136090937794
+realTweets/Twitter_volume_FB.csv,realTweets,123,P1,"{""lam"": 6, ""memory"": ""plain"", ""w"": 50}",3167,169,0.05336280391537733,53.36280391537733
+realTweets/Twitter_volume_FB.csv,realTweets,123,R2,{},3167,0,0.0,0.0
+realTweets/Twitter_volume_FB.csv,realTweets,123,S-robust,"{""lam"": 5}",3167,106,0.03347016103568046,33.470161035680455
+realTweets/Twitter_volume_GOOG.csv,realTweets,15,B1,"{""p"": 90}",3169,266,0.08393815083622594,83.93815083622594
+realTweets/Twitter_volume_GOOG.csv,realTweets,15,B2,"{""k"": 2.5}",3169,11,0.0034711265383401703,3.4711265383401706
+realTweets/Twitter_volume_GOOG.csv,realTweets,15,B3,"{""w"": 400}",3169,158,0.04985799936888608,49.857999368886084
+realTweets/Twitter_volume_GOOG.csv,realTweets,15,B3-k,"{""k"": 3, ""w"": 400}",3169,158,0.04985799936888608,49.857999368886084
+realTweets/Twitter_volume_GOOG.csv,realTweets,15,Base,{},3169,2,0.0006311139160618492,0.6311139160618492
+realTweets/Twitter_volume_GOOG.csv,realTweets,15,P1,"{""lam"": 6, ""memory"": ""plain"", ""w"": 50}",3169,68,0.02145787314610287,21.457873146102873
+realTweets/Twitter_volume_GOOG.csv,realTweets,15,R2,{},3169,0,0.0,0.0
+realTweets/Twitter_volume_GOOG.csv,realTweets,15,S-robust,"{""lam"": 5}",3169,22,0.006942253076680341,6.942253076680341
+realTweets/Twitter_volume_GOOG.csv,realTweets,42,B1,"{""p"": 90}",3169,255,0.08046702429788577,80.46702429788577
+realTweets/Twitter_volume_GOOG.csv,realTweets,42,B2,"{""k"": 2.5}",3169,0,0.0,0.0
+realTweets/Twitter_volume_GOOG.csv,realTweets,42,B3,"{""w"": 400}",3169,158,0.04985799936888608,49.857999368886084
+realTweets/Twitter_volume_GOOG.csv,realTweets,42,B3-k,"{""k"": 3, ""w"": 400}",3169,158,0.04985799936888608,49.857999368886084
+realTweets/Twitter_volume_GOOG.csv,realTweets,42,Base,{},3169,0,0.0,0.0
+realTweets/Twitter_volume_GOOG.csv,realTweets,42,P1,"{""lam"": 6, ""memory"": ""plain"", ""w"": 50}",3169,102,0.03218680971915431,32.186809719154304
+realTweets/Twitter_volume_GOOG.csv,realTweets,42,R2,{},3169,0,0.0,0.0
+realTweets/Twitter_volume_GOOG.csv,realTweets,42,S-robust,"{""lam"": 5}",3169,51,0.016093404859577155,16.093404859577152
+realTweets/Twitter_volume_GOOG.csv,realTweets,123,B1,"{""p"": 90}",3169,270,0.08520037866834963,85.20037866834964
+realTweets/Twitter_volume_GOOG.csv,realTweets,123,B2,"{""k"": 2.5}",3169,19,0.005995582202587567,5.995582202587567
+realTweets/Twitter_volume_GOOG.csv,realTweets,123,B3,"{""w"": 400}",3169,156,0.049226885452824234,49.226885452824234
+realTweets/Twitter_volume_GOOG.csv,realTweets,123,B3-k,"{""k"": 3, ""w"": 400}",3169,156,0.049226885452824234,49.226885452824234
+realTweets/Twitter_volume_GOOG.csv,realTweets,123,Base,{},3169,8,0.0025244556642473968,2.5244556642473968
+realTweets/Twitter_volume_GOOG.csv,realTweets,123,P1,"{""lam"": 6, ""memory"": ""plain"", ""w"": 50}",3169,68,0.02145787314610287,21.457873146102873
+realTweets/Twitter_volume_GOOG.csv,realTweets,123,R2,{},3169,0,0.0,0.0
+realTweets/Twitter_volume_GOOG.csv,realTweets,123,S-robust,"{""lam"": 5}",3169,28,0.008835594824865888,8.835594824865888
+realTweets/Twitter_volume_PFE.csv,realTweets,15,B1,"{""p"": 90}",3172,386,0.12168978562421186,121.68978562421185
+realTweets/Twitter_volume_PFE.csv,realTweets,15,B2,"{""k"": 2.5}",3172,61,0.019230769230769232,19.23076923076923
+realTweets/Twitter_volume_PFE.csv,realTweets,15,B3,"{""w"": 400}",3172,86,0.02711223203026482,27.112232030264817
+realTweets/Twitter_volume_PFE.csv,realTweets,15,B3-k,"{""k"": 3, ""w"": 400}",3172,86,0.02711223203026482,27.112232030264817
+realTweets/Twitter_volume_PFE.csv,realTweets,15,Base,{},3172,37,0.011664564943253467,11.664564943253469
+realTweets/Twitter_volume_PFE.csv,realTweets,15,P1,"{""lam"": 6, ""memory"": ""plain"", ""w"": 50}",3172,53,0.016708701134930642,16.708701134930642
+realTweets/Twitter_volume_PFE.csv,realTweets,15,R2,{},3172,0,0.0,0.0
+realTweets/Twitter_volume_PFE.csv,realTweets,15,S-robust,"{""lam"": 5}",3172,24,0.007566204287515763,7.566204287515763
+realTweets/Twitter_volume_PFE.csv,realTweets,42,B1,"{""p"": 90}",3172,385,0.12137452711223203,121.37452711223203
+realTweets/Twitter_volume_PFE.csv,realTweets,42,B2,"{""k"": 2.5}",3172,87,0.02742749054224464,27.42749054224464
+realTweets/Twitter_volume_PFE.csv,realTweets,42,B3,"{""w"": 400}",3172,60,0.018915510718789406,18.915510718789406
+realTweets/Twitter_volume_PFE.csv,realTweets,42,B3-k,"{""k"": 3, ""w"": 400}",3172,60,0.018915510718789406,18.915510718789406
+realTweets/Twitter_volume_PFE.csv,realTweets,42,Base,{},3172,36,0.011349306431273645,11.349306431273645
+realTweets/Twitter_volume_PFE.csv,realTweets,42,P1,"{""lam"": 6, ""memory"": ""plain"", ""w"": 50}",3172,45,0.014186633039092055,14.186633039092056
+realTweets/Twitter_volume_PFE.csv,realTweets,42,R2,{},3172,16,0.005044136191677175,5.044136191677175
+realTweets/Twitter_volume_PFE.csv,realTweets,42,S-robust,"{""lam"": 5}",3172,18,0.005674653215636823,5.674653215636822
+realTweets/Twitter_volume_PFE.csv,realTweets,123,B1,"{""p"": 90}",3172,358,0.1128625472887768,112.8625472887768
+realTweets/Twitter_volume_PFE.csv,realTweets,123,B2,"{""k"": 2.5}",3172,86,0.02711223203026482,27.112232030264817
+realTweets/Twitter_volume_PFE.csv,realTweets,123,B3,"{""w"": 400}",3172,53,0.016708701134930642,16.708701134930642
+realTweets/Twitter_volume_PFE.csv,realTweets,123,B3-k,"{""k"": 3, ""w"": 400}",3172,53,0.016708701134930642,16.708701134930642
+realTweets/Twitter_volume_PFE.csv,realTweets,123,Base,{},3172,40,0.012610340479192938,12.610340479192939
+realTweets/Twitter_volume_PFE.csv,realTweets,123,P1,"{""lam"": 6, ""memory"": ""plain"", ""w"": 50}",3172,44,0.013871374527112233,13.871374527112232
+realTweets/Twitter_volume_PFE.csv,realTweets,123,R2,{},3172,18,0.005674653215636823,5.674653215636822
+realTweets/Twitter_volume_PFE.csv,realTweets,123,S-robust,"{""lam"": 5}",3172,18,0.005674653215636823,5.674653215636822
