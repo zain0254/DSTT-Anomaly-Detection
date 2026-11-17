@@ -1,0 +1,20 @@
+# environments
+envs/
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# fetched data (scripts/fetch_nab.sh)
+data/
+
+# model checkpoints
+*.pt
+*.ckpt
+
+# editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
