@@ -2,8 +2,7 @@
 
 Produced by `scripts/phase3.py` (tuning 135 s, test 6 s, 4 worker processes)
 under the protocol pre-registered in docs/decisions.md D-26. Numbers below are
-copied from `results/phase3/*.csv`. The hypothesis tests (D-26) have not been
-run yet.
+copied from `results/phase3/*.csv`.
 
 ## Tuning (validation, 24 tuning files x 3 seeds)
 
@@ -42,3 +41,78 @@ for every method (threshold-free).
 
 Per-seed values: `test_per_seed.csv`; per file and seed: `test_metrics.csv`,
 `clean_metrics.csv`; test-segment alarms and thresholds: `test_traces/`.
+
+## Pre-registered hypothesis tests (D-26)
+
+`scripts/hypothesis_tests.py`, output `results/phase3/hypothesis_tests.csv`.
+Unit = file (mean over 3 seeds). Paired two-sided Wilcoxon signed-rank test
+(zero differences dropped), mean difference P1 - other with a percentile
+bootstrap 95 % CI (10,000 resamples, seed 2026), wins/ties/losses for P1 in
+the metric's better direction. Primary: P1 vs Base, tested alone. Secondary:
+P1 vs the six other methods, Holm-corrected within each measure. alpha = 0.05
+(D-26 does not state alpha; the conventional level is used). B3-k is
+identical to B3 on test (both selected k = 3, w = 400), so the secondary
+family contains the same comparison twice, which makes the Holm correction
+slightly more conservative than necessary.
+
+Verdicts (primary comparison P1 vs Base):
+- **H1 (composite F1): not supported.** P1 is lower than Base: mean
+  difference -0.190 [95 % CI -0.351, -0.008],
+  4 wins / 1 tie / 13 losses, p = 0.035. Base is
+  significantly better.
+- **H2 (high-variance FPR, n = 17): not supported.** P1 has a lower
+  mean high-variance FPR (difference -0.151, bootstrap CI
+  -0.328 to -0.012), but the pre-registered Wilcoxon test
+  is not significant (p = 0.109; 9 wins / 3 ties /
+  5 losses). The bootstrap CI of the mean excludes 0 while the rank
+  test does not reach significance; the pre-registered decision rule is the
+  Wilcoxon test. Secondary H2 measures on the clean streams: no significant
+  difference from Base (clean FPR difference 0.0068, p = 0.163;
+  false alarms per 1,000 points difference 6.75, p = 0.163).
+- **H3 (every-step NAB standard, per file): not supported.** No significant
+  difference (mean difference 359.4, CI -149.5 to
+  994.5, p = 0.832).
+
+Secondary comparisons with a Holm-adjusted p < 0.05: P1 worse than B3 (and
+B3-k) on composite F1, clean FPR, clean false alarms per 1,000 points and
+NAB; P1 worse than R2 on clean FPR and clean false alarms per 1,000 points;
+P1 better than B1 on high-variance FPR and NAB. All others: no significant
+difference.
+
+| H | Metric | Comparison | vs | n | P1 | Other | Diff P1 - other [95 % CI] | W/T/L | p | p (Holm) | Result |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| H1 | composite_f1 | primary | Base | 18 | 0.5437 | 0.7333 | -0.1896 [-0.3507, -0.007597] | 4/1/13 | 0.0352 | 0.0352 | P1 worse |
+| H1 | composite_f1 | secondary | B1 | 18 | 0.5437 | 0.5868 | -0.04312 [-0.2088, 0.1287] | 8/0/10 | 0.6095 | 0.6095 | no significant difference |
+| H1 | composite_f1 | secondary | B2 | 18 | 0.5437 | 0.7176 | -0.1739 [-0.3377, 0.006334] | 4/1/13 | 0.0442 | 0.1769 | no significant difference |
+| H1 | composite_f1 | secondary | S-robust | 18 | 0.5437 | 0.6548 | -0.1111 [-0.2783, 0.07191] | 5/2/11 | 0.1788 | 0.5364 | no significant difference |
+| H1 | composite_f1 | secondary | R2 | 18 | 0.5437 | 0.6393 | -0.09557 [-0.282, 0.0992] | 5/2/11 | 0.2146 | 0.5364 | no significant difference |
+| H1 | composite_f1 | secondary | B3 | 18 | 0.5437 | 0.7429 | -0.1991 [-0.3403, -0.07096] | 4/1/13 | 0.0075 | 0.0449 | P1 worse |
+| H1 | composite_f1 | secondary | B3-k | 18 | 0.5437 | 0.7429 | -0.1991 [-0.3403, -0.07096] | 4/1/13 | 0.0075 | 0.0449 | P1 worse |
+| H2 | hv_fpr | primary | Base | 17 | 0.08009 | 0.2309 | -0.1508 [-0.3278, -0.01179] | 9/3/5 | 0.1093 | 0.1093 | no significant difference |
+| H2 | hv_fpr | secondary | B1 | 17 | 0.08009 | 0.4883 | -0.4082 [-0.5455, -0.2813] | 17/0/0 | 0.0000 | 0.0001 | P1 better |
+| H2 | hv_fpr | secondary | B2 | 17 | 0.08009 | 0.2504 | -0.1703 [-0.3461, -0.03158] | 10/3/4 | 0.0640 | 0.2559 | no significant difference |
+| H2 | hv_fpr | secondary | S-robust | 17 | 0.08009 | 0.2681 | -0.188 [-0.3539, -0.05586] | 10/4/3 | 0.0131 | 0.0654 | no significant difference |
+| H2 | hv_fpr | secondary | R2 | 17 | 0.08009 | 0.1705 | -0.09044 [-0.2816, 0.06285] | 5/4/8 | 0.9165 | 1.0000 | no significant difference |
+| H2 | hv_fpr | secondary | B3 | 17 | 0.08009 | 0.06992 | 0.01017 [-0.03479, 0.05705] | 6/5/6 | 0.6949 | 1.0000 | no significant difference |
+| H2 | hv_fpr | secondary | B3-k | 17 | 0.08009 | 0.06992 | 0.01017 [-0.03479, 0.05705] | 6/5/6 | 0.6949 | 1.0000 | no significant difference |
+| H2 | clean_fpr | primary | Base | 18 | 0.06824 | 0.06149 | 0.006755 [-0.0622, 0.0593] | 5/1/12 | 0.1626 | 0.1626 | no significant difference |
+| H2 | clean_fpr | secondary | B1 | 18 | 0.06824 | 0.1873 | -0.1191 [-0.2168, -0.03757] | 12/1/5 | 0.0217 | 0.0650 | no significant difference |
+| H2 | clean_fpr | secondary | B2 | 18 | 0.06824 | 0.08106 | -0.01281 [-0.08451, 0.0446] | 6/1/11 | 0.3088 | 0.3860 | no significant difference |
+| H2 | clean_fpr | secondary | S-robust | 18 | 0.06824 | 0.1641 | -0.09589 [-0.1716, -0.02638] | 8/1/9 | 0.1930 | 0.3860 | no significant difference |
+| H2 | clean_fpr | secondary | R2 | 18 | 0.06824 | 0.0171 | 0.05115 [0.01933, 0.08213] | 1/2/15 | 0.0052 | 0.0209 | P1 worse |
+| H2 | clean_fpr | secondary | B3 | 18 | 0.06824 | 0.02451 | 0.04374 [0.02153, 0.06931] | 3/1/14 | 0.0016 | 0.0099 | P1 worse |
+| H2 | clean_fpr | secondary | B3-k | 18 | 0.06824 | 0.02451 | 0.04374 [0.02153, 0.06931] | 3/1/14 | 0.0016 | 0.0099 | P1 worse |
+| H2 | clean_false_alarms_per_1000 | primary | Base | 18 | 68.24 | 61.49 | 6.755 [-62.2, 59.3] | 5/1/12 | 0.1626 | 0.1626 | no significant difference |
+| H2 | clean_false_alarms_per_1000 | secondary | B1 | 18 | 68.24 | 187.3 | -119.1 [-216.8, -37.57] | 12/1/5 | 0.0217 | 0.0650 | no significant difference |
+| H2 | clean_false_alarms_per_1000 | secondary | B2 | 18 | 68.24 | 81.06 | -12.81 [-84.51, 44.6] | 6/1/11 | 0.3088 | 0.3860 | no significant difference |
+| H2 | clean_false_alarms_per_1000 | secondary | S-robust | 18 | 68.24 | 164.1 | -95.89 [-171.6, -26.38] | 8/1/9 | 0.1930 | 0.3860 | no significant difference |
+| H2 | clean_false_alarms_per_1000 | secondary | R2 | 18 | 68.24 | 17.1 | 51.15 [19.33, 82.13] | 1/2/15 | 0.0052 | 0.0209 | P1 worse |
+| H2 | clean_false_alarms_per_1000 | secondary | B3 | 18 | 68.24 | 24.51 | 43.74 [21.53, 69.31] | 3/1/14 | 0.0016 | 0.0099 | P1 worse |
+| H2 | clean_false_alarms_per_1000 | secondary | B3-k | 18 | 68.24 | 24.51 | 43.74 [21.53, 69.31] | 3/1/14 | 0.0016 | 0.0099 | P1 worse |
+| H3 | nab_standard | primary | Base | 18 | -173.1 | -532.5 | 359.4 [-149.5, 994.5] | 10/0/8 | 0.8317 | 0.8317 | no significant difference |
+| H3 | nab_standard | secondary | B1 | 18 | -173.1 | -1352 | 1179 [377.7, 2177] | 14/0/4 | 0.0077 | 0.0395 | P1 better |
+| H3 | nab_standard | secondary | B2 | 18 | -173.1 | -583.5 | 410.4 [-98.03, 1040] | 11/0/7 | 0.4423 | 1.0000 | no significant difference |
+| H3 | nab_standard | secondary | S-robust | 18 | -173.1 | -773.2 | 600.1 [36.1, 1270] | 9/0/9 | 0.3465 | 1.0000 | no significant difference |
+| H3 | nab_standard | secondary | R2 | 18 | -173.1 | -419.1 | 246 [-267.7, 890.7] | 7/0/11 | 0.5798 | 1.0000 | no significant difference |
+| H3 | nab_standard | secondary | B3 | 18 | -173.1 | -64.34 | -108.7 [-197.3, -34.97] | 3/0/15 | 0.0066 | 0.0395 | P1 worse |
+| H3 | nab_standard | secondary | B3-k | 18 | -173.1 | -64.34 | -108.7 [-197.3, -34.97] | 3/0/15 | 0.0066 | 0.0395 | P1 worse |

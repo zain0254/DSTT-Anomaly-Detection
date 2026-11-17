@@ -107,3 +107,7 @@
   scripts/phase3.py (tuning on validation, one test scoring), results in
   results/phase3/, scripts/plot_phase3.py (tuning figure),
   docs/phase3_thresholds.md. Hypothesis tests not run yet.
+- Pre-registered tests run (scripts/hypothesis_tests.py,
+  results/phase3/hypothesis_tests.csv) and added to docs/phase3_thresholds.md
+  with verdicts: H1, H2, H3 not supported (primary P1 vs Base). alpha = 0.05
+  stated as the conventional level because D-26 does not give one.
