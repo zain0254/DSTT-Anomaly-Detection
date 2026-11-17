@@ -1,4 +1,4 @@
-# Does Robust Adaptive Thresholding Help? Threshold rules for LSTM-autoencoder anomaly detection on NAB
+# Does Robust Adaptive Thresholding Help LSTM Autoencoder Anomaly Detection? A Leakage-Free Evaluation on NAB
 
 LSTM autoencoders are often used to detect anomalies in cloud metrics, but the
 rule that turns reconstruction error into an alarm gets little attention. A

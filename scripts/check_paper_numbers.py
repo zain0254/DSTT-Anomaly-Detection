@@ -208,7 +208,10 @@ SPECS = [
         V(TS + " Base fpr x100", 100 * ts.loc["Base", "fpr_mean"]), V(TS + " Base fpr", ts.loc["Base", "fpr_mean"]),
         V(TS + " B3 fpr", ts.loc["B3", "fpr_mean"]), V(TS + " P1 fpr", ts.loc["P1", "fpr_mean"]),
         V(TS + " B3 composite_f1", ts.loc["B3", "composite_f1_mean"]), V(TS + " P1 composite_f1", ts.loc["P1", "composite_f1_mean"]),
-        V(TS + " P1 event_recall", ts.loc["P1", "event_recall_mean"]), V(TS + " P1 precision", ts.loc["P1", "precision_mean"])]),
+        V(TS + " P1 event_recall", ts.loc["P1", "event_recall_mean"]), V(TS + " P1 precision", ts.loc["P1", "precision_mean"]),
+        V(TS + " B1 f1 (highest point F1)", ts.loc["B1", "f1_mean"] if ts.f1_mean.idxmax() == "B1" else -1),
+        V(TS + " Base f1", ts.loc["Base", "f1_mean"]), V(TS + " B3 f1", ts.loc["B3", "f1_mean"]),
+        V(TS + " P1 f1", ts.loc["P1", "f1_mean"])]),
     ("\\caption{Test results on 18 evaluation series", [V(DS + " evaluation", len(ds["evaluation"])), V(DS + " clean_test", len(ds["clean_test"]))]),
     ("Table~\\ref{tab:tests} summarises the confirmatory tests", [
         V(HT + " H1 mean_diff", H("composite_f1").mean_diff), K("95 % CI", 95), V(HT + " H1 ci95_low", H("composite_f1").ci95_low),
