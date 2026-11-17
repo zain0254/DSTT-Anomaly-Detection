@@ -310,7 +310,7 @@ WORDS = [  # (phrase in the paper, number, source, value)
     ("Four selections lie on a grid edge", 4, "docs/phase3_thresholds.md (B1, B3, B3-k, P1)", 4),
     ("tuning and test scoring took under three minutes", 3, "docs/phase3_thresholds.md tuning 135 s + test 6 s (minutes)", (135 + 6) / 60),
     ("over three seeds", 3, "scripts/train.py SEEDS", 3),
-    ("the four static rules on training errors each missed one", 4, DD + " methods with missed == 1 (Base, B1, B2, S-robust)",
+    ("the four static baselines (Base, B1, B2 and S-robust) each missed one", 4, DD + " methods with missed == 1 (Base, B1, B2, S-robust)",
      int((dmean.missed == 1).sum())),
     ("B3 missed three", 3, DD + " missed B3", dmean.loc["B3", "missed"]),
     ("for B3 (about a tenth)", 0.1, TS + " B3 fpr / Base fpr", ts.loc["B3", "fpr_mean"] / ts.loc["Base", "fpr_mean"]),

@@ -31,7 +31,7 @@ citation keys, section and figure references, and RQ/H labels.
 | Four selections lie on a grid edge | 4 | docs/phase3_thresholds.md (B1, B3, B3-k, P1) | 4 | OK |
 | tuning and test scoring took under three minutes | 3 | docs/phase3_thresholds.md tuning 135 s + test 6 s (minutes) | 2.35 | OK |
 | over three seeds | 3 | scripts/train.py SEEDS | 3 | OK |
-| the four static rules on training errors each missed one | 4 | results/phase3/detection_delay.csv methods with missed == 1 (Base, B1, B2, S-robust) | 4 | OK |
+| the four static baselines (Base, B1, B2 and S-robust) each missed one | 4 | results/phase3/detection_delay.csv methods with missed == 1 (Base, B1, B2, S-robust) | 4 | OK |
 | B3 missed three | 3 | results/phase3/detection_delay.csv missed B3 | 3 | OK |
 | for B3 (about a tenth) | 0.1 | results/phase3/test_summary.csv B3 fpr / Base fpr | 0.10 | OK |
 | for P1 (about a fifth) | 0.2 | results/phase3/test_summary.csv P1 fpr / Base fpr | 0.18 | OK |
