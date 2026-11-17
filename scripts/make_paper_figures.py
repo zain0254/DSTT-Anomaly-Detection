@@ -1,10 +1,12 @@
 """Paper versions of the figures, drawn at their exact print size.
 
-Same saved data and plotting logic as scripts/eda.py, plot_phase2.py,
-plot_phase3.py, plot_phase3_results.py and plot_proposal.py; only size,
+The four PDF figures of the paper (the pipeline figure is TikZ in main.tex):
+fig05_windows_vs_split, fig03_paired_per_file, fig04_example_trace and
+fig05_category_improvement. Same saved data and plotting logic as
+scripts/eda.py, plot_phase3_results.py and plot_proposal.py; only size,
 layout and fonts differ. Output: paper/figures/*.pdf (figures/ is unchanged).
 
-Print sizes: full width (figure*) 7.16 in, single column 3.5 in. Fonts at
+Print size: full width (figure*) 7.16 in. Fonts at
 print size: axis labels and titles 8 pt, ticks and legends 7 pt, nothing below
 6.5 pt; line widths >= 0.8 pt. The smallest font of each figure is printed and
 written to paper/figures/font_report.csv. A PNG copy at 300 dpi is written to
@@ -13,7 +15,6 @@ written to paper/figures/font_report.csv. A PNG copy at 300 dpi is written to
 from __future__ import annotations
 
 import argparse
-import json
 import sys
 from pathlib import Path
 
@@ -24,14 +25,13 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from pipeline import plotting as P  # noqa: E402
 from pipeline.data import clip_windows, load_series, split_bounds  # noqa: E402
-from pipeline.methods import METHODS, WS  # noqa: E402
-import matplotlib.dates as mdates  # noqa: E402
+from pipeline.methods import METHODS  # noqa: E402
 import matplotlib.pyplot as plt  # noqa: E402
 from matplotlib.patches import Patch  # noqa: E402
 
 OUT = ROOT / "paper" / "figures"
 R3 = ROOT / "results" / "phase3"
-FULL, COL = 7.16, 3.5
+FULL = 7.16
 SMALL = 6.5                        # smallest allowed font (pt)
 METHOD_COLOR = dict(zip(METHODS, P.SERIES))
 NAMES = {"Base": "Base (Ahmad 2026)", "B3": "B3 / RePAD2", "R2": "R2 EVT (Yu 2024)"}
@@ -77,16 +77,12 @@ def fig_windows_vs_split() -> None:
     eda = pd.read_csv(ROOT / "results/phase1_eda/file_summary.csv")
     wp = pd.read_csv(ROOT / "results/phase1_eda/window_parts.csv")
     s = eda.set_index("file")
-    # All 52 labelled files do not fit at 6.5 pt in two columns of 7.16 in (long names plus marks),
-    # so the paper version shows the 36 series that need a model, in the same order.
-    model = set(json.loads((ROOT / "configs" / "datasets.json").read_text())["model_files"])
-    labelled = eda[eda.n_windows > 0]
-    files = labelled[labelled.file.isin(model)].sort_values(["category", "file"]).file.tolist()
-    n_hidden = len(labelled) - len(files)
+    # All labelled files (same set and order as figures/phase1_eda), split into two halves side by side.
+    files = eda[eda.n_windows > 0].sort_values(["category", "file"]).file.tolist()
     half = (len(files) + 1) // 2
     fig = plt.figure(figsize=(FULL, 4.5))
     # two panels: names on the left; the mark starts inside the (empty) test zone and runs into the margin
-    axes = [fig.add_axes([0.262, 0.165, 0.15, 0.78]), fig.add_axes([0.753, 0.165, 0.15, 0.78])]
+    axes = [fig.add_axes([0.262, 0.135, 0.15, 0.825]), fig.add_axes([0.753, 0.135, 0.15, 0.825])]
     for ax, part in zip(axes, (files[:half], files[half:])):
         n = len(part)
         for i, f in enumerate(part):
@@ -109,130 +105,12 @@ def fig_windows_vs_split() -> None:
         ax.grid(axis="y", visible=False)
         for x0, x1, name in ((0, 0.6, "train"), (0.6, 0.8, "val"), (0.8, 1.0, "test")):
             ax.text((x0 + x1) / 2, n - 0.25, name, ha="center", va="bottom", fontsize=7, color=P.INK_2)
-    note(fig, f"Shown: the {len(files)} series that need a model (18 evaluation, 24 tuning, 6 in both), in two columns.\n"
-              f"The other {n_hidden} labelled series have no window in validation or test and are not shown.\n"
-              "Coloured names have a test-set window; grey names are marked [no test window].", y=0.0)
+    note(fig, f"All {len(files)} series with at least one NAB window, in two columns. Coloured names have a test-set window;\n"
+              "grey names are marked [no test window].", y=0.0)
     save(fig, "fig05_windows_vs_split")
 
 
-# ------------------------------------------------------------ Phase 2: reconstruction error
-def fig_reconstruction_error() -> None:
-    name, seed = "realKnownCause/nyc_taxi.csv", 15
-    s = load_series(name)
-    e = np.load(ROOT / f"results/phase2_errors/{name.replace('.csv', '').replace('/', '__')}__s{seed}.npz")["errors"]
-    tr, va, te = split_bounds(len(s.values))
-    fig, (a1, a2) = plt.subplots(2, 1, figsize=(COL, 2.6), sharex=True)
-    a1.plot(s.timestamps, s.values, color=P.CAT_COLOR[s.category], lw=0.8)
-    a1.set_ylabel("Value")
-    a1.yaxis.set_major_formatter(plt.FuncFormatter(lambda v, _: "0" if v == 0 else f"{v / 1000:g}k"))
-    a2.plot(s.timestamps, e, color=P.INK_2, lw=0.8)
-    a2.set_ylabel("Window MAE")
-    for ax in (a1, a2):
-        P.shade_windows(ax, s.timestamps, s.windows, label=None)
-        for b in (va.start, te.start):
-            ax.axvline(s.timestamps[b], color=P.INK_2, lw=0.8, ls="--")
-    y = a1.get_ylim()[1]
-    for x0, x1, txt in ((0, tr.stop - 1, "train"), (va.start, va.stop - 1, "val"), (te.start, len(s.values) - 1, "test")):
-        a1.text(s.timestamps[(x0 + x1) // 2], y, txt, ha="center", va="bottom", fontsize=7, color=P.INK_2)
-    a2.legend(handles=[Patch(color=P.ANOMALY, alpha=0.18, label="NAB window")], loc="upper left")
-    a2.xaxis.set_major_locator(mdates.MonthLocator(bymonth=[7, 9, 11, 1]))
-    a2.xaxis.set_major_formatter(mdates.DateFormatter("%b %Y"))
-    fig.align_ylabels()
-    fig.tight_layout(pad=0.3, h_pad=0.6)
-    save(fig, "fig02_reconstruction_error")
-
-
-# ------------------------------------------------------------ Phase 3: tuning objective
-def fig_tuning_objective() -> None:
-    summ = pd.read_csv(R3 / "tuning_summary.csv")
-    sel = pd.read_csv(R3 / "selected_params.csv")
-    summ["p"] = summ.params.map(json.loads)
-    chosen = dict(zip(sel.method, sel.params))
-    base = float(summ.loc[summ.method == "Base", "composite_f1"].iloc[0])
-    r2 = float(summ.loc[summ.method == "R2", "composite_f1"].iloc[0])
-    sub = lambda m: summ[summ.method == m]  # noqa: E731
-
-    def ring(ax, x, y):
-        ax.plot([x], [y], "o", ms=8, mfc="none", mec=P.INK, mew=1.0, zorder=5)
-
-    fig, axes = plt.subplots(2, 3, figsize=(FULL, 4.2), sharey=True)
-    ax = axes[0, 0]
-    d = sub("B1").assign(x=lambda t: t.p.map(lambda q: q["p"])).sort_values("x")
-    ax.plot(range(len(d)), d.composite_f1, "-o", ms=3.5, color=P.SERIES[0])
-    ax.set_xticks(range(len(d)), [f"{v:g}" for v in d.x])
-    c = d[d.params == chosen["B1"]].iloc[0]
-    ring(ax, list(d.x).index(c.x), c.composite_f1)
-    ax.set_title("B1 percentile", loc="left")
-    ax.set_xlabel("p")
-    ax = axes[0, 1]
-    for m, key, col in (("B2", "k", P.SERIES[0]), ("S-robust", "lam", P.SERIES[1])):
-        d = sub(m).assign(x=lambda t, k=key: t.p.map(lambda q: q[k])).sort_values("x")
-        ax.plot(d.x, d.composite_f1, "-o", ms=3.5, color=col, label=f"{m} ({'k' if key == 'k' else 'lambda'})")
-        c = d[d.params == chosen[m]].iloc[0]
-        ring(ax, c.x, c.composite_f1)
-    ax.set_title("Static: B2 vs S-robust", loc="left")
-    ax.set_xlabel("multiplier")
-    ax.legend(loc="lower right")
-    ax = axes[0, 2]
-    d = sub("B3").assign(x=lambda t: t.p.map(lambda q: q["w"])).sort_values("x")
-    ax.plot(range(len(d)), d.composite_f1, "-o", ms=3.5, color=P.SERIES[0])
-    ax.set_xticks(range(len(d)), [str(v) for v in d.x])
-    c = d[d.params == chosen["B3"]].iloc[0]
-    ring(ax, list(d.x).index(c.x), c.composite_f1)
-    ax.set_title("B3 / RePAD2 (k = 3)", loc="left")
-    ax.set_xlabel("w")
-    for m, key, mem, ax, title in (("B3-k", "k", None, axes[1, 0], "B3-k rolling mean + k sd"),
-                                   ("P1", "lam", "plain", axes[1, 1], "P1 plain memory"),
-                                   ("P1", "lam", "gated", axes[1, 2], "P1 gated memory")):
-        d = sub(m)
-        if mem:
-            d = d[d.p.map(lambda q: q["memory"]) == mem]
-        for j, w in enumerate(WS):
-            dw = d[d.p.map(lambda q: q["w"]) == w].assign(x=lambda t, k=key: t.p.map(lambda q: q[k])).sort_values("x")
-            ax.plot(dw.x, dw.composite_f1, "-o", ms=2.5, lw=0.9, color=P.SERIES[j], label=f"w = {w}")
-            hit = dw[dw.params == chosen[m]]
-            if len(hit):
-                ring(ax, hit.x.iloc[0], hit.composite_f1.iloc[0])
-        ax.set_title(title, loc="left")
-        ax.set_xlabel("k" if key == "k" else "lambda")
-    axes[1, 0].legend(loc="upper right")
-    for ax in axes.flat:
-        ax.axhline(base, color=P.INK_2, lw=0.8, ls="--")
-        ax.axhline(r2, color=P.INK_2, lw=0.8, ls=":")
-    for ax in axes[:, 0]:
-        ax.set_ylabel("Validation composite F1")
-    fig.tight_layout(pad=0.3, rect=(0, 0.04, 1, 1))
-    note(fig, "Mean over 24 tuning files x 3 seeds. Circle: selected. Dashed: Base (Ahmad 2026). Dotted: R2 EVT (Yu et al. 2024).")
-    save(fig, "fig01_tuning_objective")
-
-
 # ------------------------------------------------------------ Phase 3: test metrics
-def method_labels(idx):
-    return [NAMES.get(m, m) for m in idx]
-
-
-def fig_test_metrics() -> None:
-    s = pd.read_csv(R3 / "test_summary.csv").set_index("method").reindex(list(METHODS))
-    panels = [("composite_f1", "Composite F1 (higher better)"), ("f1", "Point F1 (higher better)"),
-              ("event_recall", "Event recall (higher better)"), ("fpr", "FPR (lower better)"),
-              ("hv_fpr", "High-variance FPR (lower better)"), ("clean_false_alarms_per_1000", "Clean false alarms / 1,000 (lower)")]
-    fig, axes = plt.subplots(2, 3, figsize=(FULL, 3.2), sharey=True)
-    y = np.arange(len(s))[::-1]
-    for ax, (col, title) in zip(axes.flat, panels):
-        ax.barh(y, s[f"{col}_mean"], xerr=s[f"{col}_sd"], height=0.62, color=[METHOD_COLOR[m] for m in s.index],
-                error_kw={"lw": 0.8, "capsize": 1.5, "ecolor": P.INK})
-        ax.set_title(title, loc="left")
-        ax.grid(axis="y", visible=False)
-        for yi, v, sd in zip(y, s[f"{col}_mean"], s[f"{col}_sd"]):
-            ax.text(v + sd, yi, f" {v:.2f}" if v < 10 else f" {v:.0f}", va="center", fontsize=SMALL, color=P.INK)
-        ax.set_xlim(0, (s[f"{col}_mean"] + s[f"{col}_sd"]).max() * 1.35)
-    for ax in axes[:, 0]:
-        ax.set_yticks(y, method_labels(s.index))
-    fig.tight_layout(pad=0.6, rect=(0, 0.08, 1, 1))
-    note(fig, "18 evaluation files (clean stream: 18 clean files). Bars: mean over 3 seeds of the across-file mean;\n"
-              "error bars: sd over seeds. B3-k selected k = 3 and equals B3.")
-    save(fig, "fig02_test_metrics")
-
 
 def fig_paired() -> None:
     t = pd.read_csv(R3 / "test_metrics.csv")
@@ -318,31 +196,6 @@ def fig_categories() -> None:
     save(fig, "fig05_category_improvement")
 
 
-def fig_delay() -> None:
-    d = pd.read_csv(R3 / "detection_delay.csv")
-    g = d.groupby("method")[["mean_relative_delay", "missed"]].agg(["mean", "std"]).reindex(list(METHODS))
-    fig, (a1, a2) = plt.subplots(1, 2, figsize=(FULL, 2.5), sharey=True)
-    y = np.arange(len(g))[::-1]
-    cols = [METHOD_COLOR[m] for m in g.index]
-    ek = {"lw": 0.8, "capsize": 1.5, "ecolor": P.INK}
-    a1.barh(y, g[("mean_relative_delay", "mean")], xerr=g[("mean_relative_delay", "std")], color=cols, height=0.62, error_kw=ek)
-    a2.barh(y, g[("missed", "mean")], xerr=g[("missed", "std")], color=cols, height=0.62, error_kw=ek)
-    for ax, key, fmt in ((a1, "mean_relative_delay", "{:.2f}"), (a2, "missed", "{:.1f}")):
-        for yi, v, sd in zip(y, g[(key, "mean")], g[(key, "std")].fillna(0)):
-            ax.text(v + sd, yi, "  " + fmt.format(v), va="center", fontsize=SMALL, color=P.INK)
-        ax.grid(axis="y", visible=False)
-    a1.set_xlim(0, 0.65)
-    a2.set_xlim(0, 9)
-    a1.set_yticks(y, method_labels(g.index))
-    a1.set_title("Relative delay of first alarm (detected windows)", loc="left")
-    a1.set_xlabel("(first alarm - window start) / window length")
-    a2.set_title("Missed test windows (of 25)", loc="left")
-    a2.set_xlabel("Windows without any alarm")
-    fig.tight_layout(pad=0.3, rect=(0, 0.06, 1, 1))
-    note(fig, "Test windows of the 18 evaluation files, clipped to the test segment. Mean over 3 seeds; error bars: sd over seeds.")
-    save(fig, "fig06_detection_delay")
-
-
 def main() -> None:
     global PNG_DIR
     ap = argparse.ArgumentParser()
@@ -352,13 +205,9 @@ def main() -> None:
         Path(PNG_DIR).mkdir(parents=True, exist_ok=True)
     style()
     fig_windows_vs_split()
-    fig_reconstruction_error()
-    fig_tuning_objective()
-    fig_test_metrics()
     fig_paired()
     fig_trace()
     fig_categories()
-    fig_delay()
     pd.DataFrame(REPORT).to_csv(OUT / "font_report.csv", index=False)
 
 
