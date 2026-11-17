@@ -266,3 +266,20 @@ Pre-registered hypothesis tests (run after the test summary is reviewed)
 - Unit of analysis: file (metric averaged over the 3 seeds), n = 18
   (clean-stream measures: n = 18 clean files). Paired two-sided Wilcoxon
   signed-rank test, mean difference with bootstrap 95 % CI, wins/ties/losses.
+
+## D-27 Exploratory grid extension (2026-11-18, user, POST-HOC)
+Decided after the primary test results and the pre-registered tests were
+known, because four selections sat on grid edges (B1 p = 90, B3 and B3-k
+w = 400, P1 w = 50). Exploratory only: it does not replace or modify the
+primary results (results/phase3/) or the D-26 verdicts.
+- Only the edge grids are extended: P1 w adds {10, 20, 30}; B3 and B3-k w add
+  {600, 800}; B1 p adds {80, 85}. All other grids, the objective and the
+  tie-breaks are as in D-26.
+- A rolling window w is used for a file only if the file has at least w
+  errors before its validation segment (train_end - 29 >= w). Otherwise that
+  candidate is skipped for that file and logged; its tuning mean is taken
+  over the remaining series. At test, if the selected w is not allowed for a
+  file, the largest allowed w of that method's grid is used and logged.
+- Re-selected on validation, test scored once, outputs in
+  results/phase3_exploratory/; reported in a separate, labelled section of
+  docs/phase3_thresholds.md.
