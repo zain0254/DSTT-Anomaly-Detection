@@ -22,6 +22,7 @@ from numpy.lib.stride_tricks import sliding_window_view
 
 MAD_SCALE = 1.4826
 FLOOR_FACTOR = 0.1
+FLOOR_MIN = 1e-6
 
 
 def scaled_mad(x) -> float:
@@ -30,8 +31,16 @@ def scaled_mad(x) -> float:
 
 
 def scale_floor(train_err) -> float:
-    """Fixed floor for B3 and P1: 0.1 * scaled MAD of the file's RE_train."""
-    return FLOOR_FACTOR * scaled_mad(train_err)
+    """Fixed floor for B3 and P1 (D-09 with its amendment):
+    0.1 * scaled MAD of the file's RE_train; if that is 0, 0.1 * std(RE_train);
+    if that is also 0, 1e-6."""
+    mad = scaled_mad(train_err)
+    if mad > 0:
+        return FLOOR_FACTOR * mad
+    std = float(np.asarray(train_err, dtype=float).std())
+    if std > 0:
+        return FLOOR_FACTOR * std
+    return FLOOR_MIN
 
 
 # ------------------------------------------------------------ static rules

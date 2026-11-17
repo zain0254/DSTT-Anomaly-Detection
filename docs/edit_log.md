@@ -46,3 +46,22 @@
   - tests/: 32 unit tests on hand-made arrays, all passing.
   - gh CLI not installed; owner said it is not needed. Pushing uses Git
     Credential Manager.
+- D-09 amended (owner): zero-MAD floor falls back to 0.1 * std(RE_train),
+  then 1e-6 (pipeline/thresholds.py, tests/test_thresholds.py, 2 new tests,
+  34 passing). Reason: a zero floor would make rolling rules alarm on any
+  increase over a constant window; decided before any model results.
+- Phase 1a EDA on branch feature/phase1-eda:
+  - pipeline/data.py: duplicate timestamps at window edges map to their first
+    occurrence, matching NAB (D-19); new unit test (35 passing); scorer
+    validation re-run, unchanged.
+  - pipeline/plotting.py: shared figure style (validated categorical palette,
+    PNG 300 dpi + PDF).
+  - scripts/eda.py: per-file summary, window positions per split part,
+    training contamination, six figures (figures/phase1_eda/), CSVs in
+    results/phase1_eda/.
+  - scripts/sync_figures.sh: mirrors figures/ into the images repo, commits
+    and pushes.
+  - docs/phase1_eda.md: figure descriptions from saved numbers and a proposed
+    (not final) evaluation/tuning file selection. D-20 (no resampling)
+    recorded. Reason: owner asked for EDA before training and for window
+    counts per part and training contamination to justify the selection.

@@ -1,0 +1,8 @@
+category,n_files,n_points,n_windows,n_labelled,pct_labelled,windows_train,windows_val,windows_test
+artificialNoAnomaly,5,20160,0,0,0.0,0,0,0
+artificialWithAnomaly,6,24192,6,2418,9.995039682539682,1,5,0
+realAWSCloudwatch,17,67740,30,6312,9.317980513728964,17,9,6
+realAdExchange,6,9610,14,960,9.989594172736732,9,5,1
+realKnownCause,7,69561,19,6594,9.479449691637555,8,3,8
+realTraffic,7,15664,14,1560,9.959141981613891,5,3,7
+realTweets,10,158631,33,15651,9.866293473532917,25,6,3

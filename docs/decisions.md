@@ -72,6 +72,12 @@ and a constant rolling window would alarm on any increase. EDA will report
 whether any selected file is affected; no epsilon is added unless the owner
 decides so.
 
+Amendment (2026-11-18, user, decided before any model results): if a
+file's training errors have scaled MAD = 0, floor = 0.1 * std(RE_train); if
+that is also 0, floor = 1e-6. Same rule for B3 and P1. This replaces the
+earlier note that a zero MAD gives a zero floor. Implemented in
+`pipeline/thresholds.py: scale_floor`, tested in `tests/test_thresholds.py`.
+
 ## D-10 Methods (2026-11-18, user)
 | ID | Rule | Tuned on validation |
 |---|---|---|
@@ -139,3 +145,16 @@ Seeds {15, 42, 123}, the same values as the old project.
 ## D-18 Window edges (2026-11-18, implementation)
 NAB window edges are mapped to rows by exact timestamp match, as NAB's
 sweeper requires; a missing edge is an error.
+
+## D-19 Duplicate timestamps (2026-11-18, implementation)
+NAB files contain 49 duplicate timestamps in 8 files (docs/phase1_eda.md).
+Rows are kept as they are, because NAB scores every row. A window edge that
+falls on a duplicated timestamp maps to its first occurrence, as
+`list.index` does in NAB's sweeper (`pipeline/data.window_indices`).
+
+## D-20 No resampling (2026-11-18, implementation)
+25 files have irregular sampling (27,625 missing steps in total, mostly
+realTraffic and rogue_agent_key_hold). Series are not resampled or
+interpolated: NAB labels and scores rows, and filling gaps would add points
+that NAB does not score. The LSTM window of 30 rows therefore covers a
+variable time span in these files.

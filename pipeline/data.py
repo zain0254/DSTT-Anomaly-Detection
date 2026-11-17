@@ -42,8 +42,11 @@ def load_windows(nab_dir: Path = NAB_DIR) -> dict[str, list[tuple[str, str]]]:
 def window_indices(timestamps: pd.DatetimeIndex, windows) -> list[tuple[int, int]]:
     """Map NAB window timestamps to row indices. NAB requires both edges to be
     existing timestamps (sweeper.py uses timestamps.index), so a missing edge
-    is an error here too."""
-    pos = {t: i for i, t in enumerate(timestamps)}
+    is an error here too. Duplicate timestamps map to their first occurrence,
+    as list.index does in NAB."""
+    pos = {}
+    for i, t in enumerate(timestamps):
+        pos.setdefault(t, i)
     out = []
     for start, end in windows:
         s, e = pd.Timestamp(start), pd.Timestamp(end)

@@ -111,3 +111,9 @@ def test_window_indices_exact_match():
     assert window_indices(ts, [("2020-01-01 01:00:00", "2020-01-01 03:00:00.000000")]) == [(1, 3)]
     with pytest.raises(ValueError):
         window_indices(ts, [("2020-01-01 01:30:00", "2020-01-01 03:00:00")])
+
+
+def test_window_indices_duplicate_timestamp_maps_to_first():
+    ts = pd.DatetimeIndex(pd.to_datetime(["2020-01-01 00:00", "2020-01-01 01:00", "2020-01-01 01:00",
+                                          "2020-01-01 02:00"]))
+    assert window_indices(ts, [("2020-01-01 01:00", "2020-01-01 02:00")]) == [(1, 3)]
