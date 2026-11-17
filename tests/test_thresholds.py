@@ -32,6 +32,16 @@ def test_scale_floor():
     assert T.scale_floor([1, 2, 3, 4, 100]) == pytest.approx(0.1 * S)
 
 
+def test_scale_floor_falls_back_to_std_when_mad_is_zero():
+    x = [1, 1, 1, 1, 1, 6]                   # MAD 0, std > 0
+    assert T.scaled_mad(x) == 0.0
+    assert T.scale_floor(x) == pytest.approx(0.1 * np.std(x))
+
+
+def test_scale_floor_minimum_on_constant_errors():
+    assert T.scale_floor([2.0, 2.0, 2.0]) == pytest.approx(1e-6)
+
+
 def test_static_alarms_strict_and_nan():
     a = T.static_alarms([np.nan, 2.0, 3.0, 3.5], 3.0)
     assert a.tolist() == [False, False, False, True]

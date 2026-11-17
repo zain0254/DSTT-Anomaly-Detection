@@ -72,6 +72,12 @@ and a constant rolling window would alarm on any increase. EDA will report
 whether any selected file is affected; no epsilon is added unless the owner
 decides so.
 
+Amendment (2026-11-18, user, decided before any model results): if a
+file's training errors have scaled MAD = 0, floor = 0.1 * std(RE_train); if
+that is also 0, floor = 1e-6. Same rule for B3 and P1. This replaces the
+earlier note that a zero MAD gives a zero floor. Implemented in
+`pipeline/thresholds.py: scale_floor`, tested in `tests/test_thresholds.py`.
+
 ## D-10 Methods (2026-11-18, user)
 | ID | Rule | Tuned on validation |
 |---|---|---|

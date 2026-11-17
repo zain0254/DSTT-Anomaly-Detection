@@ -46,3 +46,7 @@
   - tests/: 32 unit tests on hand-made arrays, all passing.
   - gh CLI not installed; owner said it is not needed. Pushing uses Git
     Credential Manager.
+- D-09 amended (owner): zero-MAD floor falls back to 0.1 * std(RE_train),
+  then 1e-6 (pipeline/thresholds.py, tests/test_thresholds.py, 2 new tests,
+  34 passing). Reason: a zero floor would make rolling rules alarm on any
+  increase over a constant window; decided before any model results.
