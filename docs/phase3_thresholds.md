@@ -42,6 +42,23 @@ for every method (threshold-free).
 Per-seed values: `test_per_seed.csv`; per file and seed: `test_metrics.csv`,
 `clean_metrics.csv`; test-segment alarms and thresholds: `test_traces/`.
 
+## Figures (primary results)
+
+`scripts/plot_phase3_results.py`, `figures/phase3_thresholds/`:
+- fig01_tuning_objective: validation composite F1 against each method's
+  parameters (from `scripts/plot_phase3.py`).
+- fig02_test_metrics: composite F1, point F1, event recall, FPR,
+  high-variance FPR and clean-stream false alarms per 1,000 points per
+  method; bars are the mean over seeds, error bars the sd over seeds.
+- fig03_paired_per_file: per evaluation file (mean over seeds), P1 against
+  Base and against B3 on composite F1 and FPR. Composite F1: P1 better on 4
+  and worse on 13 of 18 files against both. FPR: P1 lower on 10 and higher on
+  6 against Base, lower on 3 and higher on 11 against B3.
+- fig04_example_trace: nyc_taxi, seed 15 (the file and seed used in the
+  Phase 2 figure, chosen before looking at threshold results), test segment
+  with the error series, the Base, B3 and P1 thresholds, their alarms and
+  the NAB windows.
+
 ## Pre-registered hypothesis tests (D-26)
 
 `scripts/hypothesis_tests.py`, output `results/phase3/hypothesis_tests.csv`.

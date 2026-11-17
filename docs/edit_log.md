@@ -116,3 +116,6 @@
   (primary unchanged, exploratory writes results/phase3_exploratory/) and
   logs skipped windows (window_log.csv). Only B3/B3-k changed selection
   (w = 600). Reported in a separate section of docs/phase3_thresholds.md.
+- Phase 3 result figures (scripts/plot_phase3_results.py: fig02 test
+  metrics, fig03 per-file paired plots, fig04 example trace) and their
+  descriptions in docs/phase3_thresholds.md.
