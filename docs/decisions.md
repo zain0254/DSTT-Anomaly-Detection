@@ -145,3 +145,16 @@ Seeds {15, 42, 123}, the same values as the old project.
 ## D-18 Window edges (2026-11-18, implementation)
 NAB window edges are mapped to rows by exact timestamp match, as NAB's
 sweeper requires; a missing edge is an error.
+
+## D-19 Duplicate timestamps (2026-11-18, implementation)
+NAB files contain 49 duplicate timestamps in 8 files (docs/phase1_eda.md).
+Rows are kept as they are, because NAB scores every row. A window edge that
+falls on a duplicated timestamp maps to its first occurrence, as
+`list.index` does in NAB's sweeper (`pipeline/data.window_indices`).
+
+## D-20 No resampling (2026-11-18, implementation)
+25 files have irregular sampling (27,625 missing steps in total, mostly
+realTraffic and rogue_agent_key_hold). Series are not resampled or
+interpolated: NAB labels and scores rows, and filling gaps would add points
+that NAB does not score. The LSTM window of 30 rows therefore covers a
+variable time span in these files.
