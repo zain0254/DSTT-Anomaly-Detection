@@ -219,34 +219,59 @@ SPECS = [
         V("results/phase3/test_metrics.csv composite F1 losses vs Base (= vs B3)", f1l if f1l == f1l3 else -1),
         V(DS + " evaluation", len(ds["evaluation"])), V("results/phase3/test_metrics.csv FPR P1 lower than Base", fpw),
         V("results/phase3/test_metrics.csv FPR P1 higher than B3", fpl3)]),
-    ("For the proposal hypotheses: H1", [
-        K("docs/decisions.md D-28 H1 70 %", 70), V(PH + " H1 Base wins", P("Proposal H1", "Base").wins), V(DS + " evaluation", 18),
-        V(PH + " H1 Base losses", P("Proposal H1", "Base").losses), V(PH + " H1 Base p", P("Proposal H1", "Base").p),
-        V(PH + " H1 B3 wins", P("Proposal H1", "B3").wins), V(DS + " evaluation", 18), V(PH + " H1 B3 p", P("Proposal H1", "B3").p),
-        K("docs/decisions.md D-28 (13 of 18)", 13), K("docs/decisions.md D-28 H2 15 %", 15),
+    ("The proposal hypotheses were tested against both Base and B3", [
+        V(PH + " H1 Base wins", P("Proposal H1", "Base").wins), V(DS + " evaluation", 18),
+        V(PH + " H1 mean_P1 (point F1)", P("Proposal H1", "Base").mean_P1), V(PH + " H1 Base mean_baseline", P("Proposal H1", "Base").mean_baseline),
+        V(PH + " H1 Base p", P("Proposal H1", "Base").p), V(PH + " H1 B3 wins", P("Proposal H1", "B3").wins),
+        V(PH + " H1 mean_P1 (point F1)", P("Proposal H1", "B3").mean_P1), V(PH + " H1 B3 mean_baseline", P("Proposal H1", "B3").mean_baseline),
+        V(PH + " H1 B3 p", P("Proposal H1", "B3").p), K("docs/decisions.md D-28 (13 of 18)", 13),
         V(PH + " H2 Base relative_reduction x100", 100 * P("Proposal H2", "Base", "paired t-test").relative_reduction),
+        K("docs/decisions.md D-28 H2 15 %", 15),
         V(PH + " H2 Base t-test p", P("Proposal H2", "Base", "paired t-test").p), V(PH + " H2 Base Wilcoxon p", P("Proposal H2", "Base", "Wilcoxon").p),
-        V(PH + " H2 n_files", P("Proposal H2", "Base", "Wilcoxon").n_files),
         V(PH + " H2 B3 relative increase x100", -100 * P("Proposal H2", "B3", "paired t-test").relative_reduction),
         V(PH + " H2 B3 t-test p", P("Proposal H2", "B3", "paired t-test").p), V(PH + " H2 B3 Wilcoxon p", P("Proposal H2", "B3", "Wilcoxon").p)]),
-    ("shows the mean improvement of P1 per NAB category", [
-        V(DS + " evaluation", 18)] + [V(CA + f" n_files {c}", C("f1", "Base", c).n_files) for c in
-                                      ["realAWSCloudwatch", "realKnownCause", "realTraffic", "realTweets", "realAdExchange"]] + [
+    ("The evaluation set has 5 AWS CloudWatch", [V(CA + f" n_files {c}", C("f1", "Base", c).n_files) for c in
+                                                  ["realAWSCloudwatch", "realKnownCause", "realTraffic", "realTweets", "realAdExchange"]] + [
         V(CA + " composite_f1 Base AWS", C("composite_f1", "Base", "realAWSCloudwatch").mean_improvement),
         V(CA + " hv_fpr Base AWS", C("hv_fpr", "Base", "realAWSCloudwatch").mean_improvement),
         V(CA + " hv_fpr n_files AWS", C("hv_fpr", "Base", "realAWSCloudwatch").n_files),
-        V(CA + " hv_fpr Base KnownCause", C("hv_fpr", "Base", "realKnownCause").mean_improvement),
-        V(CA + " hv_fpr Base Traffic", C("hv_fpr", "Base", "realTraffic").mean_improvement),
-        V(CA + " f1 Base AWS", C("f1", "Base", "realAWSCloudwatch").mean_improvement),
-        V(CA + " composite_f1 B3 AWS", C("composite_f1", "B3", "realAWSCloudwatch").mean_improvement)]),
+        V(CA + " f1 Base AWS", C("f1", "Base", "realAWSCloudwatch").mean_improvement)]),
     ("Of the 25 test windows", [
-        V(DD + " n_windows", dmean.loc["Base", "n_windows"]), V(DD + " missed Base (= B1, B2, S-robust)",
-                                                               dmean.loc["Base", "missed"] if dmean.loc[["Base", "B1", "B2", "S-robust"], "missed"].nunique() == 1 else -1),
-        V(DD + " missed B3", dmean.loc["B3", "missed"]), V(DD + " missed R2", dmean.loc["R2", "missed"]), V(DD + " missed P1", dmean.loc["P1", "missed"]),
-        V(DD + " delay B1 (min)", dmean.loc["B1", "mean_relative_delay"] if dmean.mean_relative_delay.idxmin() == "B1" else -1),
-        V(DD + " delay R2 (max)", dmean.loc["R2", "mean_relative_delay"] if dmean.mean_relative_delay.idxmax() == "R2" else -1),
+        V(DD + " n_windows", dmean.loc["Base", "n_windows"]), V(DD + " missed R2", dmean.loc["R2", "missed"]),
+        V(DD + " missed P1", dmean.loc["P1", "missed"]), V(DD + " missed P1 sd over seeds", dd[dd.method == "P1"].missed.std()),
+        V(DD + " delay B1 x100 (min)", 100 * dmean.loc["B1", "mean_relative_delay"] if dmean.mean_relative_delay.idxmin() == "B1" else -1),
+        V(DD + " delay R2 x100 (max)", 100 * dmean.loc["R2", "mean_relative_delay"] if dmean.mean_relative_delay.idxmax() == "R2" else -1),
         V(DD + " delay Base", dmean.loc["Base", "mean_relative_delay"]), V(DD + " delay B3", dmean.loc["B3", "mean_relative_delay"]),
         V(DD + " delay P1", dmean.loc["P1", "mean_relative_delay"])]),
+    # pipeline figure (TikZ): layout lengths are not data
+    ("blk/.style={draw, rounded corners", [LAB("TikZ layout"), LAB("TikZ layout"), LAB("TikZ layout")]),
+    ("lstm/.style={blk, fill=blue", [LAB("TikZ colour mix"), LAB("TikZ layout")]),
+    ("data/.style={blk, fill=gray", [LAB("TikZ colour mix")]),
+    ("thr/.style={blk, fill=orange", [LAB("TikZ colour mix")]),
+    ("arr/.style={-{Stealth", [LAB("TikZ layout")]),
+    ("node distance=0.42cm", [LAB("TikZ layout")]),
+    ("(win) {Window", [K("pipeline/model.py T", MD.T), LAB("univariate input dimension 1")]),
+    ("(enc) {Encoder", [LAB("TikZ layout"), K("pipeline/model.py HIDDEN", MD.HIDDEN)]),
+    ("(z) {$\\mathbf{z}", [LAB("TikZ layout"), K("pipeline/model.py HIDDEN (encoder state)", MD.HIDDEN)]),
+    ("(rep) {Repeat", [K("pipeline/model.py T", MD.T)]),
+    ("(dec) {Decoder", [K("pipeline/model.py HIDDEN", MD.HIDDEN)]),
+    ("(err) {$e(t)=", [LAB("TikZ layout"), LAB("fraction 1/T"), K("pipeline/model.py T", MD.T)]),
+    ("(rule) {Threshold rule", [LAB("TikZ layout"), LAB("TikZ layout")]),
+    ("(alarm) {Alarm if", [LAB("TikZ layout")]),
+    ("(eval) {Metrics, NAB score", [LAB("TikZ layout")]),
+    ("fit=(enc)(z)(rep)(dec)(out), inner sep", [LAB("TikZ layout")]),
+    ("above:Shared LSTM autoencoder (50,497", [V("results/phase2_errors/*.json n_params", meta0["n_params"])]),
+    # Algorithm 1 (P1) and Algorithm 2 (protocol)
+    ("\\Input{errors $e(1{:}n)$", [LAB("index")]),
+    ("\\Output{alarms $a(1{:}n)$", [LAB("index"), LAB("index")]),
+    ("$B \\leftarrow e(f{:}f{+}w{-}1)$", [LAB("index")]),
+    ("\\lIf{memory $=$ plain}", [LAB("index")]),
+    ("$s \\leftarrow 1.4826", [K("pipeline/thresholds.py MAD_SCALE", TH.MAD_SCALE)]),
+    ("$a(t) \\leftarrow 1$", [LAB("alarm indicator")]),
+    ("$a(t) \\leftarrow 0$", [LAB("alarm indicator")]),
+    ("\\Input{error series $E_{f,s}$", [V(DS + " tuning", len(ds["tuning"])), V(DS + " evaluation", len(ds["evaluation"])),
+                                        K("scripts/train.py SEEDS", 15), LAB("seeds 42, 123 (scripts/train.py SEEDS = [15, 42, 123])")]),
+    ("over the 72 series", [V("results/phase3/tuning_candidates.csv series", cand.groupby(["file", "seed"]).ngroups)]),
     ("\\caption{Relative delay of the first alarm", [V(DD + " n_windows", dmean.loc["Base", "n_windows"])]),
     ("Because four selections sat on a grid edge", [
         K("pipeline/methods.py WS_P1_EXPL", 10), K("WS_P1_EXPL", 20), K("WS_P1_EXPL", 30), K("WS_B3_EXPL", 600), K("WS_B3_EXPL", 800),
@@ -256,12 +281,13 @@ SPECS = [
         V("results/phase3_exploratory/test_summary.csv B3 f1", tsx.loc["B3", "f1_mean"]),
         V(TS + " B3 corpus_nab_standard", ts.loc["B3", "corpus_nab_standard_mean"]),
         V("results/phase3_exploratory/test_summary.csv B3 corpus_nab_standard", tsx.loc["B3", "corpus_nab_standard_mean"]),
-        V(TS + " Base composite_f1", ts.loc["Base", "composite_f1_mean"]), V(TS + " B2 composite_f1", ts.loc["B2", "composite_f1_mean"])]),
+        V("results/phase3_exploratory/selected_params.csv B3 w (and exploratory B3 composite F1 below Base and B2)",
+          600 if tsx.loc["B3", "composite_f1_mean"] < min(tsx.loc["Base", "composite_f1_mean"], tsx.loc["B2", "composite_f1_mean"]) else -1)]),
     ("Our proposal argued that outliers inflate", [
         mu3, V(DD + " Base detected", dmean.loc["Base", "detected"]), V(DD + " n_windows", dmean.loc["Base", "n_windows"]),
-        V("results/phase3/error_drift.csv ALL ratio_mean_over_seeds", edall.ratio_mean_over_seeds), V("results/phase3/error_drift.csv files", len(edf)),
-        LAB("ratio threshold 1"), V("results/phase3/error_drift.csv n_files_ratio_above_1", edall.n_files_ratio_above_1),
-        V("results/phase3/error_drift.csv files", len(edf))]),
+        V("results/phase3/error_drift.csv files", len(edf)),
+        V("results/phase3/error_drift.csv ALL ratio_mean_over_seeds", edall.ratio_mean_over_seeds),
+        LAB("ratio threshold 1"), V("results/phase3/error_drift.csv n_files_ratio_above_1", edall.n_files_ratio_above_1)]),
     ("Robust statistics protect a threshold", [
         V(SEL + " P1 w", sel_p["P1"]["w"]), V(SEL + " P1 w", sel_p["P1"]["w"]), V(SEL + " B3 w", sel_p["B3"]["w"]), V(SEL + " B3 w", sel_p["B3"]["w"])]),
     ("\\caption{Test segment of \\texttt{nyc\\_taxi}, seed 15", [LAB("seed 15")]),
@@ -284,7 +310,11 @@ WORDS = [  # (phrase in the paper, number, source, value)
     ("Four selections lie on a grid edge", 4, "docs/phase3_thresholds.md (B1, B3, B3-k, P1)", 4),
     ("tuning and test scoring took under three minutes", 3, "docs/phase3_thresholds.md tuning 135 s + test 6 s (minutes)", (135 + 6) / 60),
     ("over three seeds", 3, "scripts/train.py SEEDS", 3),
-    ("more than twice as many missed windows", 2, DD + " missed P1 / missed B3", dmean.loc["P1", "missed"] / dmean.loc["B3", "missed"]),
+    ("the four static rules on training errors each missed one", 4, DD + " methods with missed == 1 (Base, B1, B2, S-robust)",
+     int((dmean.missed == 1).sum())),
+    ("B3 missed three", 3, DD + " missed B3", dmean.loc["B3", "missed"]),
+    ("for B3 (about a tenth)", 0.1, TS + " B3 fpr / Base fpr", ts.loc["B3", "fpr_mean"] / ts.loc["Base", "fpr_mean"]),
+    ("for P1 (about a fifth)", 0.2, TS + " P1 fpr / Base fpr", ts.loc["P1", "fpr_mean"] / ts.loc["Base", "fpr_mean"]),
 ]
 
 
@@ -343,6 +373,8 @@ def main() -> None:
             ok = val > 2
         elif phrase.startswith("tuning and test scoring took under"):
             ok = val < 3
+        elif "(about a" in phrase:
+            ok = round(float(val), 1) == num
         else:
             ok = abs(float(val) - num) < 1e-9
         wrows.append((phrase, num, src, f"{val:.2f}" if isinstance(val, float) and not float(val).is_integer() else str(int(val)),

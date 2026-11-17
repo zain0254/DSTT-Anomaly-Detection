@@ -144,3 +144,6 @@
 - README.md rewritten as the project front page; docs/references.md lists
   the paper's 12 references with links (two have no DOI in refs.bib);
   submission/DSTT_paper_latex.zip (flat LaTeX package for Overleaf).
+- Final paper source from the owner (pipeline TikZ figure, Algorithms 1-2,
+  url fields): paper/main.tex, paper/refs.bib; number check updated
+  (303 tokens, 0 mismatches); submission/DSTT_paper_latex.zip rebuilt.
