@@ -127,3 +127,20 @@
   (fig05 category improvement, fig06 detection delay); new section in
   docs/phase3_thresholds.md; the D-26 NAB test is labelled as such instead of
   "H3" in the doc. Primary results unchanged.
+- Paper (branch feature/paper): draft added as provided; IEEEtran.cls V1.8b
+  and figure PDFs copied; scripts/error_drift.py (results/phase3/error_drift.csv);
+  scripts/make_paper_tables.py (paper/tables/); pending results filled in
+  main.tex from saved files (proposal H1/H2, categories with H3 verdict,
+  detection delay, error drift); category and delay figures added. Number
+  mismatches fixed in the paper: "detected 97.2 % of the test windows"
+  (0.972 is mean per-file event recall; Base detected 24 of 25 windows, two
+  places), "about an order of magnitude" for P1 (0.189 to 0.035 is a factor
+  of 5.4), "the ordering of the rules did not change" in the exploratory
+  paragraph (B3 at w = 600 falls below Base and B2 on composite F1), and
+  0.037 -> 0.038 (known-cause HV FPR improvement 0.03752).
+  scripts/check_paper_numbers.py writes docs/paper_number_check.md
+  (271 tokens, 0 mismatches). Student email and AI disclosure left pending
+  for the owner. TeX not installed: not compiled.
+- README.md rewritten as the project front page; docs/references.md lists
+  the paper's 12 references with links (two have no DOI in refs.bib);
+  submission/DSTT_paper_latex.zip (flat LaTeX package for Overleaf).

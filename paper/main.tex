@@ -1,0 +1,292 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{url}
+
+\graphicspath{{figures/}}
+
+% Marks text that still waits for a saved result. Remove the macro calls
+% once the numbers are filled in from results/; the paper must not be
+% submitted while any \pending remains.
+\newcommand{\pending}[1]{\textcolor{red}{[PENDING: #1]}}
+
+\begin{document}
+
+\title{Does Robust Adaptive Thresholding Help? A Leakage-Free Evaluation of Threshold Rules for LSTM Autoencoder Anomaly Detection on NAB}
+
+\author{\IEEEauthorblockN{Zain Hassan}
+\IEEEauthorblockA{\textit{Dept. of Artificial Intelligence and Data Science} \\
+\textit{National University of Computer and Emerging Sciences}\\
+Islamabad, Pakistan \\
+\pending{student email}}
+\and
+\IEEEauthorblockN{Muhammad Mateen Yaqoob}
+\IEEEauthorblockA{\textit{Dept. of Artificial Intelligence and Data Science} \\
+\textit{National University of Computer and Emerging Sciences}\\
+Islamabad, Pakistan \\
+mateen.yaqoob@isb.nu.edu.pk}
+}
+
+\maketitle
+
+\begin{abstract}
+LSTM autoencoders are a common choice for unsupervised anomaly detection in cloud monitoring, but the rule that turns reconstruction error into an alarm gets far less attention than the model. A recent AIOps preprint thresholds the error at the mean plus three standard deviations of the training errors and argues that the rule adapts to the data. We test whether a moving median plus a multiple of the median absolute deviation (MAD) does better. All rules are applied to the same LSTM autoencoder errors on the Numenta Anomaly Benchmark (NAB): the base rule, three static baselines, a static robust rule, an extreme value theory threshold from the literature, the rolling mean plus three standard deviations rule of RePAD2, and the proposed rolling median plus MAD rule with plain or gated memory. The protocol is leakage free: a chronological 60/20/20 split, training without labels, every parameter tuned on validation data only, and a single scoring of 18 test series over three seeds, with the hypothesis tests fixed before any result was computed. The base rule detected almost every test anomaly but flagged 18.9\% of normal points. Rolling thresholds cut that rate to 1.8\% (RePAD2 rule) and 3.5\% (proposed rule). The proposed rule did not beat the rolling mean rule, and it was significantly worse than the base rule on composite F1 (0.544 versus 0.733, Wilcoxon $p = 0.035$). None of the pre-registered hypotheses was supported. The results point to adaptation, not robustness, as what matters for this model and benchmark.
+\end{abstract}
+
+\begin{IEEEkeywords}
+anomaly detection, LSTM autoencoder, dynamic threshold, median absolute deviation, AIOps, Numenta Anomaly Benchmark
+\end{IEEEkeywords}
+
+%=====================================================================
+\section{Introduction}
+%=====================================================================
+
+Cloud services produce a constant stream of metrics such as CPU load, request counts and latency. Watching these by hand does not scale, so operators rely on automated detectors, and a detector is only useful if its alerts can be trusted. Too many false alarms and people stop reading them; too few and an outage goes unnoticed. Anomaly detection in microservice and cloud applications is now an active research area with a broad mix of methods \cite{soldani2022}, and deep models have become a standard tool for it \cite{darban2024}.
+
+A widely used design is the LSTM autoencoder (LSTM-AE). The network is trained to reconstruct short windows of a metric, and a window that it reconstructs badly is treated as suspicious. That leaves one decision that the network does not make: how large an error has to be before it becomes an alarm. Ahmad \cite{ahmad2026} describes a practical AIOps pipeline of this kind and thresholds the error at $\mu + 3\sigma$ of the training errors. The paper calls the rule dynamic, but the threshold is computed once, after training, and then kept fixed. It also reports no quantitative detection metrics.
+
+Our proposal started from a concern about that rule. The mean and the standard deviation are both pulled upward by large errors, so a few extreme values can widen the threshold and hide later anomalies. The median and the MAD do not have this problem. We therefore proposed a moving median plus $\lambda\cdot$MAD threshold on the same reconstruction errors and set out to test it against the base rule and against published alternatives.
+
+This paper reports that test. Its contributions are:
+\begin{itemize}
+\item A controlled comparison of eight threshold rules on one shared LSTM-AE, so that the only thing that changes between methods is the threshold. Two of the rules come from recent peer-reviewed work: the rolling three-sigma rule of RePAD2 \cite{lee2023repad2} and the static extreme value threshold of Yu et al. \cite{yu2024evt}.
+\item A leakage-free protocol: no labels in training, all parameters chosen on validation data, a single test scoring, an equal tuning budget for the Gaussian and robust variants, and hypothesis tests committed to the project repository before any threshold result existed.
+\item An honest negative result. The proposed rule did not improve on the simpler rolling mean rule, and the failure mode we expected from $\mu + 3\sigma$ (missed anomalies) did not occur. The base rule failed in a different way, through false alarms.
+\item A public, reproducible code base with a scorer port validated against the official NAB results, and an edit log of every design decision.
+\end{itemize}
+
+The research questions follow the project proposal. RQ1 asks how the fixed percentile, fixed mean plus $k\sigma$ and base $\mu + 3\sigma$ rules perform on NAB. RQ2 asks whether the moving median plus MAD rule gives better F1 and NAB scores than these baselines. RQ3 asks whether it reduces false alarms when the variability of normal data shifts. RQ4 asks which NAB categories benefit most.
+
+%=====================================================================
+\section{Related Work}
+%=====================================================================
+
+\subsection{Deep anomaly detection and its evaluation}
+Darban et al. \cite{darban2024} survey deep learning for time series anomaly detection and group methods by strategy, with reconstruction-based and forecasting-based models as two of the main families. LSTM-AEs belong to the first. Large benchmark studies have since shown that results depend heavily on how methods are evaluated. Schmidl et al. \cite{schmidl2022} evaluated 71 algorithms on 967 time series. Kim et al. \cite{kim2022} showed that the common point-adjustment protocol inflates F1, to the point that an untrained model can look competitive. Garg et al. \cite{garg2022} proposed the composite F-score, which combines point-wise precision with event-wise recall, and found that dynamic scoring functions worked much better than static ones. Paparrizos et al. \cite{paparrizos2022} showed that the choice of evaluation measure can bias the outcome of a comparison. Wu and Keogh \cite{wu2023} went further and argued that popular benchmarks, NAB among them, suffer from flaws such as trivial anomalies, unrealistic anomaly density, mislabelled ground truth and run-to-failure bias. We take these warnings into account in the choice of metrics and in the limitations.
+
+\subsection{Thresholds for reconstruction and prediction errors}
+Most LSTM-based detectors end in a threshold, and the threshold is often the least studied part. Table~\ref{tab:related} compares the work closest to ours. Ahmad \cite{ahmad2026}, our base paper, uses $\mu + 3\sigma$ of the training errors. RePAD2 \cite{lee2023repad2} thresholds the average absolute relative error of a small LSTM predictor at the mean plus three standard deviations of the most recent $W$ values, which makes the rule genuinely rolling, and tested it on two NAB series. Yu et al. \cite{yu2024evt} fit a generalized Pareto distribution to the tail of the LSTM-AE training errors (peaks over threshold) and choose the tail probability with an unsupervised criterion; on spacecraft telemetry their extreme value threshold raised precision over the $3\sigma$ rule from 85.8\% to 92.4\%. Jeon et al. \cite{jeon2023} place the threshold between the largest error on normal data and the smallest error on anomalous data, which needs labelled anomalies. None of these studies compares static and rolling rules, or Gaussian and robust statistics, on the same model errors, and only RePAD2 uses NAB.
+
+\begin{table*}[t]
+\centering
+\caption{Closest related work on thresholds for LSTM-based detectors.}
+\label{tab:related}
+\footnotesize
+\begin{tabular}{@{}p{2.3cm}p{2.7cm}p{3.6cm}p{2.6cm}p{1.4cm}p{3.3cm}@{}}
+\toprule
+Study & Model / score & Threshold rule & Data & Labels for threshold & Limitation for our question \\
+\midrule
+Ahmad \cite{ahmad2026} & LSTM-AE, window MAE & $\mu + 3\sigma$ of training errors, fixed after training & NAB EC2 CPU (one series) & No & Preprint; no quantitative metrics; ``dynamic'' rule is static \\
+Lee \& Lin \cite{lee2023repad2} & LSTM predictor, AARE & Mean $+ 3\sigma$ over the last $W$ scores & Two NAB series, concatenated ten times & No & Gaussian statistics only; $W \geq 1440$ \\
+Yu et al. \cite{yu2024evt} & LSTM-AE, squared error & GPD tail quantile (POT), $q$ by an unsupervised criterion; dynamic update & Tennessee Eastman, spacecraft telemetry & No & Dynamic update ambiguous as printed; not on NAB \\
+Jeon et al. \cite{jeon2023} & LSTM-AE & Ratio $\alpha$ between max normal and min anomalous error & Pump sensors (Kaggle) & Yes & Needs labelled anomalies \\
+This work & LSTM-AE \cite{ahmad2026}, window MAE & Eight rules incl. rolling median + $\lambda\cdot$MAD & NAB, 18 test series & Validation only & Single model and benchmark \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\subsection{Research gap}
+The gap our proposal identified is narrow but real. The base paper's threshold assumes roughly Gaussian errors and uses non-robust statistics, and no study we found tests a moving median plus MAD threshold on LSTM-AE errors under a protocol that keeps tuning away from the test data. More broadly, the field lacks controlled comparisons in which the model is held fixed and only the threshold changes, which is exactly the setting in which a threshold rule can be judged on its own.
+
+%=====================================================================
+\section{Data}
+%=====================================================================
+
+\subsection{The Numenta Anomaly Benchmark}
+We use NAB \cite{nab2024}, pinned at commit \texttt{ea702d7}. It contains 58 univariate series in seven categories (artificial with and without anomalies, AWS CloudWatch, ad exchange, known-cause incidents, traffic and Twitter volume), 365,558 points in total, with 116 labelled anomaly windows that cover 9.16\% of all points. NAB labels windows, not single points, and its scoring rewards early detection inside a window.
+
+\subsection{Exploratory analysis and file selection}
+Every series is split chronologically into 60\% training, 20\% validation and 20\% test. Of the 116 windows, 65 touch the training part, 31 the validation part and 25 the test part; five cross a boundary. Only 18 series have a window in their test part, so these 18 series, all real data, form the evaluation set and contain all 25 test windows (Fig.~\ref{fig:split}). The tuning set consists of the 24 real series with a window in their validation part. We left out the artificial series, so that tuning matches the all-real evaluation set, and \texttt{grok\_asg\_anomaly}, whose window runs from validation into test. Six series are in both sets, which is safe because their validation and test parts do not overlap in time. The 18 tuning-only series have anomaly-free test parts, which we use to measure false alarms on clean data. Altogether 36 series need a model.
+
+Because training uses no labels, some anomalies end up in the training data: 38 of the 52 labelled series have labelled points in their training part, 8.48\% of all training points (median 8.33\% per series, maximum 16.91\%). This is what a deployed detector would face, and it affects all threshold rules in the same way. The analysis also found 49 duplicate timestamps in 8 series and irregular sampling in 25 series, with 27,625 missing steps in total.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{fig05_windows_vs_split}
+\caption{Position of every NAB anomaly window relative to the 60/20/20 split. Series without a window in the test part are marked; they cannot be used for evaluation.}
+\label{fig:split}
+\end{figure}
+
+\subsection{Preprocessing and leakage prevention}
+The steps that matter for leakage are these.
+\begin{enumerate}
+\item \emph{Scaling.} Min--max scaling to $[0,1]$ is fitted on the training part of each series only.
+\item \emph{No label filtering.} The model and all static thresholds see every training point, anomalous or not. Labels are used only to tune thresholds on validation data and to score the test data.
+\item \emph{Gaps and duplicates.} Series are not resampled, because NAB scores rows and filling gaps would move its window boundaries; a window of 30 rows therefore covers different lengths of time in irregular series. Duplicate timestamps are kept, and window edges are mapped to the first occurrence, as in the official scorer.
+\item \emph{Single test scoring.} The test parts are scored once, with parameters chosen on validation data.
+\end{enumerate}
+
+%=====================================================================
+\section{Method}
+%=====================================================================
+
+\subsection{Shared LSTM autoencoder}
+All methods share one model that follows the base paper \cite{ahmad2026}: an LSTM encoder with 64 units, its last hidden state repeated over the window, an LSTM decoder with 64 units and a linear output per step, 50,497 parameters in total. Windows have $T = 30$ steps. The model is trained with Adam (learning rate $10^{-3}$, batch size 32) on the mean squared error for up to 50 epochs, with early stopping (patience 5) on the last 10\% of the training part. The anomaly score $e(t)$ is the mean absolute error of the window that ends at $t$, so scores are causal. We use PyTorch on CPU instead of the paper's Keras; the architecture is unchanged. Each of the 36 series is trained with three seeds (15, 42, 123), giving 108 error series.
+
+\subsection{Threshold rules}
+Every rule raises an alarm when $e(t)$ exceeds its threshold $\tau(t)$. Static rules compute one $\tau$ from the training errors $E_{\mathrm{tr}}$; rolling rules compute $\tau(t)$ from the $w$ errors before $t$, over one continuous stream.
+\begin{itemize}
+\item \textbf{Base} \cite{ahmad2026}: $\tau = \mathrm{mean}(E_{\mathrm{tr}}) + 3\,\mathrm{sd}(E_{\mathrm{tr}})$, untuned.
+\item \textbf{B1}: the $p$-th percentile of $E_{\mathrm{tr}}$.
+\item \textbf{B2}: $\mathrm{mean}(E_{\mathrm{tr}}) + k\,\mathrm{sd}(E_{\mathrm{tr}})$ with tuned $k$.
+\item \textbf{S-robust}: $\mathrm{median}(E_{\mathrm{tr}}) + \lambda\,\mathrm{MAD}(E_{\mathrm{tr}})$.
+\item \textbf{R2} \cite{yu2024evt}: a generalized Pareto distribution fitted by maximum likelihood to the excesses over the 98\% quantile of $E_{\mathrm{tr}}$, with the tail probability $q \in [10^{-5}, 10^{-3}]$ chosen by the paper's unsupervised criterion on training errors. Only this fully specified static part is reproduced. As printed, the dynamic update multiplies the threshold by a factor in $[1, 2)$, so it can only grow, and its update frequency is not given.
+\item \textbf{B3} \cite{lee2023repad2}: rolling mean $+\,3\sigma$ of the last $w$ errors (the RePAD2 rule). The original window lengths exceed many NAB series, so $w$ is tuned.
+\item \textbf{B3-k}: rolling mean $+\,k\sigma$ with tuned $k$, added so that the Gaussian and robust rolling rules have the same tuning budget.
+\item \textbf{P1 (proposed)}: rolling median $+\,\lambda\cdot$MAD of the last $w$ errors. With \emph{plain} memory every error enters the window. With \emph{gated} memory an error that raised an alarm is kept out, so an anomaly cannot raise the bar it is judged by; an alarm run longer than $w$ is accepted as a new normal.
+\end{itemize}
+The MAD is scaled by 1.4826, so $\lambda = 3$ matches $3\sigma$ for Gaussian data. Rolling rules use the same fixed scale floor, $0.1$ times the scaled MAD of $E_{\mathrm{tr}}$ (falling back to $0.1\,\mathrm{sd}$, then $10^{-6}$), so that flat stretches do not trigger alarms on tiny changes. B2 versus S-robust and B3-k versus P1 are the two equal-budget comparisons of Gaussian and robust statistics.
+
+\subsection{Tuning}
+Parameters are chosen on the validation parts of the 24 tuning series over all three seeds, by mean composite F1, with ties broken by NAB score and then by alarm rate. The grids are $p \in \{90, 95, 97, 98, 99, 99.5, 99.9\}$, $k_{\mathrm{B2}} \in \{1, 1.5, 2, 2.5, 3, 4, 5, 6, 8\}$, $\lambda$ and $k_{\mathrm{B3\text{-}k}} \in \{2, 3, 4, 5, 6, 8, 10, 12, 15, 20\}$, $w \in \{50, 100, 200, 400\}$, and memory $\in$ \{plain, gated\}. One parameter set per method is used for all seeds. In total 152 candidates were scored on 72 validation series (10,944 rows).
+
+%=====================================================================
+\section{Experimental Design}
+%=====================================================================
+
+\subsection{Metrics}
+Point precision, recall and F1 count every point inside a window as positive, without point adjustment \cite{kim2022}. Event recall is the share of windows with at least one alarm, and composite F1 is the harmonic mean of point precision and event recall \cite{garg2022}. The false-positive rate (FPR) is computed over normal points. The high-variance FPR is the FPR over normal points whose 50-step rolling standard deviation exceeds the 75th percentile of that quantity in the training part; it targets RQ3. On the clean test parts we report the FPR and false alarms per 1,000 points. The NAB score is computed with a port of the official scorer, which we validated against NAB's published results for three shipped detectors and three scoring profiles, with the null detector as the normalisation baseline: per-file raw scores agreed within $5.0\times10^{-12}$ and normalised scores within $1.9\times10^{-11}$. On the test parts we count every alarm step, clip windows to the segment and use no probationary period, so our NAB numbers are not comparable with the NAB leaderboard. ROC-AUC and PR-AUC on the raw errors describe the model itself and are identical for all rules. Detection delay is the number of steps from the start of a detected window to its first alarm, divided by the window length.
+
+\subsection{Statistical protocol}
+Each test series is one unit, with metrics averaged over the three seeds first ($n = 18$; $n = 17$ for high-variance FPR, which is undefined for one series that has no normal test point above the variance cut). Comparisons use the paired two-sided Wilcoxon signed-rank test at $\alpha = 0.05$, together with the mean difference, a bootstrap 95\% confidence interval and the count of wins and losses. The primary comparison is P1 against Base. P1 against every other rule is secondary and Holm-corrected within each metric. The tuning objective, the grids, B3-k and these tests were committed to the repository before any threshold result was computed. The proposal hypotheses were fixed in October 2026, before any experiment: H1, P1 achieves higher F1 than the baseline on at least 70\% of files; H2, P1 reduces the high-variance FPR by at least 15\%, tested with a paired $t$-test; and H3, AWS CloudWatch series benefit most.
+
+\subsection{Reproducibility and resources}
+All code, configuration, error series and results are in the public repository, with a decision log and an edit log. Experiments ran on a laptop (Intel Core i5-13500H, 15.7 GB RAM) with Python 3.12.4 and PyTorch 2.14.1 on CPU, which makes runs deterministic for a given seed. The 108 training runs took 47.5 minutes in total; tuning and test scoring took under three minutes.
+
+%=====================================================================
+\section{Results}
+%=====================================================================
+
+\subsection{Model training}
+All 108 runs finished. Training stopped after 6 to 50 epochs (median 20), and ten runs reached the 50-epoch cap. Five runs had their best epoch at 1 or 2; they were kept, because the protocol applies to every run alike. Fig.~\ref{fig:error} shows one error series. The model's ROC-AUC on the test parts was $0.633 \pm 0.003$ and its PR-AUC $0.497 \pm 0.011$ (mean $\pm$ sd over seeds), which is moderate and bounds what any threshold can achieve.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{fig02_reconstruction_error}
+\caption{\texttt{nyc\_taxi}, seed 15: series (top) and window MAE (bottom), with NAB windows shaded and split boundaries dashed.}
+\label{fig:error}
+\end{figure}
+
+\subsection{Tuning}
+Validation selected $p = 90$ for B1, $k = 2.5$ for B2, $\lambda = 5$ for S-robust, $w = 400$ for B3, $k = 3$ and $w = 400$ for B3-k, and $\lambda = 6$, $w = 50$ with plain memory for P1 (Fig.~\ref{fig:tuning}). Since B3-k selected $k = 3$, it is identical to B3 on the test data, and the equal-budget rolling comparison reduces to B3 versus P1. Gated memory never won on validation. Four selections lie on a grid edge (B1, B3, B3-k and P1), which we examine in Section~\ref{sec:explore}. R2 took its unsupervised criterion path for 104 of the 108 error series and never needed its fallback.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{fig01_tuning_objective}
+\caption{Validation composite F1 against each rule's parameters (24 tuning series $\times$ 3 seeds). Circles mark the selected values; dashed and dotted lines show Base and R2.}
+\label{fig:tuning}
+\end{figure}
+
+\subsection{Test performance (RQ1, RQ2)}
+Table~\ref{tab:test} gives the test results. The base rule detected 24 of the 25 test windows (mean event recall 0.972) and reached a composite F1 of $0.733$, but it flagged 18.9\% of normal points. The tuned static rules did not change this picture much. Both rolling rules lowered the FPR sharply, from 0.189 to 0.018 for B3 and to 0.035 for P1. B3 had the highest composite F1 ($0.743$) and the best every-step NAB score. P1 had a composite F1 of $0.544$, below Base, B2 and B3, because it missed more windows (event recall 0.769) and its precision fell to 0.490. Fig.~\ref{fig:testmetrics} shows the same results with seed variation.
+
+\begin{table*}[t]
+\centering
+\caption{Test results on 18 evaluation series (mean $\pm$ sd over three seeds of the across-series mean). Clean columns use the 18 anomaly-free test parts. Generated from \texttt{results/phase3/test\_summary.csv}.}
+\label{tab:test}
+\input{tables/test_summary}
+\end{table*}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{fig02_test_metrics}
+\caption{Main test metrics per rule; error bars show the standard deviation over seeds.}
+\label{fig:testmetrics}
+\end{figure}
+
+\subsection{Hypothesis tests (RQ2, RQ3)}
+Table~\ref{tab:tests} summarises the confirmatory tests. On composite F1, P1 was significantly worse than Base: mean difference $-0.190$ (95\% CI $-0.351$ to $-0.008$), better on 4 series and worse on 13, $p = 0.035$. On high-variance FPR, P1 was lower than Base on average ($-0.151$, CI $-0.328$ to $-0.012$), but the Wilcoxon test was not significant ($p = 0.109$, $n = 17$), and the clean-stream measures showed no difference ($p = 0.163$). The every-step NAB difference was not significant ($p = 0.832$). After Holm correction, P1 was worse than B3 on composite F1, clean-stream FPR and NAB, and worse than R2 on the clean-stream measures; it was better than B1 on high-variance FPR and NAB. Fig.~\ref{fig:paired} shows the per-series picture: on composite F1, P1 lost on 13 of 18 series against both Base and B3, and on FPR it was lower than Base on 10 series but higher than B3 on 11.
+
+\begin{table}[t]
+\centering
+\caption{Confirmatory tests, P1 against Base (paired Wilcoxon, $n$ series). Generated from \texttt{results/phase3/hypothesis\_tests.csv}.}
+\label{tab:tests}
+\input{tables/hypothesis_tests}
+\end{table}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{fig03_paired_per_file}
+\caption{Per-series comparison of P1 with Base and with B3 on composite F1 and FPR.}
+\label{fig:paired}
+\end{figure}
+
+For the proposal hypotheses: H1 (higher F1 than the baseline on at least 70\% of series) was not supported. P1 had a higher point F1 than Base on 3 of 18 series and lower on 15 (Wilcoxon $p = 0.0007$, P1 significantly lower), and a higher point F1 than B3 on 5 of 18 series ($p = 0.090$); the criterion required 13. H2 (at least 15\% lower high-variance FPR, paired $t$-test) was not supported either. Against Base the mean high-variance FPR fell by 65.3\%, which meets the criterion, but neither the paired $t$-test ($p = 0.090$) nor the Wilcoxon test ($p = 0.109$) was significant ($n = 17$). Against B3, P1's mean high-variance FPR was 14.5\% higher ($t$-test $p = 0.677$, Wilcoxon $p = 0.695$).
+
+\subsection{Categories (RQ4)}
+Fig.~\ref{fig:category} shows the mean improvement of P1 per NAB category; the 18 evaluation series comprise 5 AWS CloudWatch, 5 known-cause, 4 traffic, 3 Twitter and 1 ad exchange series, so these results are descriptive. Against Base, P1 improved point F1 in no category, composite F1 only for AWS CloudWatch ($+0.080$), and high-variance FPR for AWS CloudWatch ($+0.507$, 4 series), known-cause ($+0.038$) and traffic ($+0.130$). AWS CloudWatch thus showed the largest improvement over Base in composite F1 and high-variance FPR, but ranked third in point F1 ($-0.141$). Against B3 it ranked fourth or fifth on all three measures, with a composite F1 difference of $-0.293$. H3 is therefore only partly in line with the data, and only against the static base rule.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{fig05_category_improvement}
+\caption{Mean improvement of P1 over Base and over B3 per NAB category (positive means P1 is better). Each series is averaged over three seeds; $n$ is the number of series. Descriptive only.}
+\label{fig:category}
+\end{figure}
+
+\subsection{Detection delay}
+Of the 25 test windows, Base, B1, B2 and S-robust each missed 1, B3 missed 3, R2 missed 5.3 and P1 missed 6.7 on average over seeds (Fig.~\ref{fig:delay}). In the windows they detected, the first alarm came after 0.20 (B1) to 0.45 (R2) of the window length; the values were 0.42 for Base, 0.43 for B3 and 0.41 for P1. Because the delay is averaged only over detected windows, it has to be read together with the missed count: P1's slightly shorter delay than B3 comes with more than twice as many missed windows.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{fig06_detection_delay}
+\caption{Relative delay of the first alarm in detected test windows (left) and missed test windows out of 25 (right), mean over three seeds; error bars show the standard deviation over seeds.}
+\label{fig:delay}
+\end{figure}
+
+\subsection{Exploratory grid extension}
+\label{sec:explore}
+Because four selections sat on a grid edge, we extended those grids after seeing the test results: $w \in \{10, 20, 30\}$ for P1, $w \in \{600, 800\}$ for B3 and B3-k, and $p \in \{80, 85\}$ for B1. This analysis is post hoc and does not replace the primary results. B1 and P1 kept their earlier selections, because the new values scored lower on validation. B3 and B3-k moved to $w = 600$, which on the test data lowered composite F1 to 0.713 but raised point F1 to 0.240 and improved the every-step NAB score from $-28.7$ to $-16.8$. On composite F1, B3 then fell behind Base (0.733) and B2 (0.718), while it kept the best every-step NAB score.
+
+%=====================================================================
+\section{Discussion}
+%=====================================================================
+
+\subsection{The expected failure did not occur}
+Our proposal argued that outliers inflate $\mu + 3\sigma$ and so hide real anomalies. On NAB the base rule did the opposite. It caught 24 of the 25 test windows, and its problem was a high rate of false alarms. A likely reason is that the threshold is fitted to errors on the data the model was trained on, while errors on later data tend to be larger, so a fixed threshold sits too low once the data moves on. The saved errors support this: the median test error was 1.20 times the median training error across the 18 evaluation series (median over series, each averaged over three seeds), and the ratio exceeded 1 in 17 of the 18 series. A rule that adapts to recent errors removes most of this effect, which is why both rolling rules cut false alarms so sharply. The finding agrees with Garg et al. \cite{garg2022}, who found dynamic scoring functions better than static ones on other benchmarks.
+
+\subsection{Why robustness did not help}
+Robust statistics protect a threshold from a few large values in its window. That protection only matters when large values are present and when the window is long enough for them to be a small minority. P1 selected the smallest window in the primary grid ($w = 50$); longer windows scored lower on validation, and the shorter ones added in the exploratory grid did not win either. In a 50-step window an anomaly run quickly becomes a large share of the window, and then the median and the MAD move as much as the mean. Fig.~\ref{fig:trace} shows exactly this on \texttt{nyc\_taxi}: P1's threshold jumps up right after large errors inside the anomaly windows. This is the masking effect our proposal described, but it appears in the rolling robust rule, not in the static base rule. Gated memory was designed to stop it, yet it lost on validation, probably because keeping alarmed errors out of the window also keeps out harmless level shifts, which then produce long runs of false alarms. The rolling mean rule with a long window ($w = 400$) avoids both problems: a short anomaly barely moves a mean over 400 errors, while gradual drift is still followed.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{fig04_example_trace}
+\caption{Test segment of \texttt{nyc\_taxi}, seed 15: window MAE with the Base, B3 and P1 thresholds and alarms. NAB windows are shaded. The example was chosen before any threshold result was computed.}
+\label{fig:trace}
+\end{figure}
+
+\subsection{What this means in practice}
+For an LSTM-AE monitor like the one in the base paper, the cheapest effective change is to make the threshold rolling, not to make it robust. A rolling mean plus three standard deviations over a few hundred recent errors reduced false alarms by about 90\% relative to the base rule while keeping composite F1 at the same level. The extreme value threshold of Yu et al. \cite{yu2024evt} gave the fewest false alarms on clean data of all rules, but it missed more windows (event recall 0.806). The moderate ROC-AUC of the model (0.633) also matters: no threshold can recover anomalies that the model reconstructs well, so better models and better thresholds are separate problems.
+
+%=====================================================================
+\section{Limitations and Threats to Validity}
+%=====================================================================
+
+The evaluation uses one model architecture and one benchmark, with 18 test series and 25 test windows, so the tests have limited power and per-category results are descriptive. NAB itself has been criticised for label quality and trivial anomalies \cite{wu2023}. Our NAB scores differ from the leaderboard protocol, as explained above. Several settings were fixed rather than tuned: the window length of 30, the training settings that the base paper does not specify, and the scale floor. The reference rules are reimplementations applied to our errors, not full reproductions of the original detectors: RePAD2 scores prediction errors with a different model, and the dynamic part of the extreme value method was not reproduced. Finally, the base paper is a preprint that reports no metrics, so all base numbers are our own.
+
+%=====================================================================
+\section{Ethics and Responsible Data Science}
+%=====================================================================
+
+NAB is public and contains no personal data; the Twitter series are aggregate mention counts, not user content. The detector is meant as decision support for operators, not as an automatic actor, because both error types have costs: false alarms waste effort and erode trust in alerts, and missed anomalies can lead to outages. Reporting both, as we do, lets practitioners choose a rule for their own costs. We report a negative result instead of tuning on the test data until the proposed method wins, and the commit history of the repository documents when each decision was made. \pending{Disclose AI assistance here in the form your department requires, e.g.: ``AI tools were used to assist with coding, literature search and editing; all experiments, numbers and conclusions were checked by the authors.''}
+
+%=====================================================================
+\section{Conclusion}
+%=====================================================================
+
+We asked whether a moving median plus MAD threshold improves LSTM autoencoder anomaly detection over the mean plus three standard deviations rule of a recent AIOps pipeline. Under a leakage-free protocol with pre-registered tests, it did not: it lowered false alarms compared with the static base rule but detected fewer anomalies, and it was outperformed by the simpler rolling mean rule of RePAD2. The static base rule failed through false alarms rather than missed anomalies, and adapting the threshold to recent errors fixed most of that. Future work should test longer robust windows together with a better gating rule, other benchmarks such as those proposed by Wu and Keogh \cite{wu2023}, and range-based measures \cite{paparrizos2022}. The code, data selection, error series and decision log are public, so each result in this paper can be traced back to the run that produced it.
+
+\section*{Code availability}
+\url{https://github.com/zain0254/DSTT-Anomaly-Detection-}
+
+\bibliographystyle{IEEEtran}
+\bibliography{refs}
+
+\end{document}
