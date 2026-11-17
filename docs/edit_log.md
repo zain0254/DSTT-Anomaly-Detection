@@ -150,3 +150,11 @@
 - Paper wording fixes from the owner: "four static baselines (Base, B1, B2
   and S-robust)" and the delay sentence no longer claims P1 misses the
   harder windows; number check rerun (0 mismatches); zip rebuilt.
+- Paper figures drawn at print size (scripts/make_paper_figures.py ->
+  paper/figures/*.pdf; figures/ unchanged): 7.16 in for the seven figure*
+  figures, 3.5 in for fig02_reconstruction_error; 8 pt labels and titles,
+  7 pt ticks and legends, smallest font 6.5 pt (paper/figures/font_report.csv),
+  lines >= 0.8 pt. fig05_windows_vs_split shows the 36 series that need a
+  model, in two columns, because all 52 labelled series do not fit at
+  6.5 pt; the printed note says so. main.tex (owner) uses figure* with
+  	extwidth for the full-width figures. Number check 0 mismatches; zip rebuilt.
