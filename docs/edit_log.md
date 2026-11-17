@@ -88,3 +88,13 @@
   evt_quantile, eq8_score; 5 unit tests replace the 4 EVT-POT tests). D-24
   rewritten; docs/references.md added. Reason: owner prefers a peer-reviewed
   source. The training run was not interrupted.
+- Training run (scripts/train.py): 108/108 fits, 0 failures, 47.5 min summed
+  wall time; outputs in results/phase2_errors/ (errors, loss history, run
+  time per fit), log in logs/phase2_train.log. 5 fits with best epoch <= 2
+  kept as trained (D-25). docs/phase2_model.md.
+- scripts/plot_phase2.py: loss curves and one reconstruction-error figure
+  (figures/phase2_model/).
+- docs/references.md: full citations for Ahmad (2026), Lee & Lin (2023),
+  Garg et al. (2022); NAB cited as the GitHub repository at the pinned
+  commit instead of Lavin & Ahmad (2015). Reason: the paper cites 2021+
+  sources only. decisions.md D-17 now cites Garg et al. 2022.

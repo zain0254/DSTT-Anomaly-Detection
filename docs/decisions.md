@@ -134,7 +134,7 @@ Seeds {15, 42, 123}, the same values as the old project.
   0, not undefined).
 - Event recall: share of windows in the segment with at least one alarm.
 - Composite F1: harmonic mean of point precision and event recall
-  (Garg et al. 2021).
+  (Garg et al. 2022).
 - FPR = FP / (FP + TN) over normal points.
 - High-variance FPR: FPR over normal points whose causal 50-step rolling std
   of the raw series is above the 75th percentile of the rolling std over the
@@ -226,3 +226,9 @@ computed or scored yet.
   E_TH for both gamma branches, Eq. (8) on a hand-made array, exponential
   errors (E_TH above the 0.98 quantile, q inside the grid), two fallback
   paths.
+
+## D-25 Short early-stopped fits are kept (2026-11-18, user)
+5 of 108 fits stopped with best epoch <= 2 (docs/phase2_model.md). They are
+not retrained: the decided protocol (D-05, D-23) is applied to every fit
+without exceptions, so no fit is treated differently after its outcome is
+seen.
