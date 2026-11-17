@@ -24,3 +24,25 @@
 - Implementation details recorded as D-13 to D-18 (score at window end,
   continuous rolling stream, strict alarm condition, seeds, metric
   conventions, exact window-edge matching).
+- Phase 0 setup on branch feature/phase0-setup:
+  - scripts/fetch_nab.sh: sparse, blob-filtered checkout of NAB at
+    ea702d75 into data/nab (data, labels, config, nab, results of numenta,
+    windowedGaussian, relativeEntropy, null). Reason: pinned data, small
+    download.
+  - requirements.txt, scripts/setup_env.sh, docs/env_pipeline.txt: Python
+    3.12 venv in envs/pipeline with exact pins; pip freeze saved.
+  - scripts/hardware_report.ps1, docs/hardware.md: hardware report.
+  - pipeline/data.py: NAB loader, exact window-edge matching (D-18),
+    60/20/20 split, window clipping.
+  - pipeline/nab_scorer.py, scripts/validate_scorer.py: port of NAB's
+    sweeper and normalisation. Validation on 3 detectors x 3 profiles matches
+    NAB per file (max abs diff 5.0e-12) and final_results.json (max abs diff
+    1.9e-11); results/scorer_validation.csv, results/scorer_validation_files.csv.
+  - pipeline/metrics.py: point P/R/F1, event recall, composite F1, FPR,
+    high-variance FPR, ROC-AUC, PR-AUC, NAB every-step (primary) and
+    first-step (secondary) (D-07, D-17).
+  - pipeline/thresholds.py: Base, B1, B2, S-robust, B3, P1 plain/gated
+    (D-08 to D-10, D-14, D-15).
+  - tests/: 32 unit tests on hand-made arrays, all passing.
+  - gh CLI not installed; owner said it is not needed. Pushing uses Git
+    Credential Manager.

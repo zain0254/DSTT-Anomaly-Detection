@@ -1,17 +1,36 @@
 # Threshold rules for LSTM-autoencoder anomaly detection on NAB
 
-One LSTM autoencoder is trained per series; the compared methods are threshold
-rules applied to its reconstruction errors:
+One LSTM autoencoder (base paper architecture, PyTorch) is trained per series;
+the compared methods are threshold rules applied to its reconstruction errors
+e(t):
 
-- B1: fixed p-th percentile of training errors
-- B2: fixed mean + k*sigma of training errors
-- B3: rolling mean + 3*sigma of the previous w errors (base paper)
-- P1: rolling median + lambda*MAD of the previous w errors (proposed), with
+- Base (Ahmad 2026): mean + 3 std of training errors, untuned
+- B1: p-th percentile of training errors
+- B2: mean + k std of training errors, k tuned
+- S-robust: median + lambda * scaled MAD of training errors
+- B3: rolling mean + 3 std of the previous w errors (non-robust counterpart of P1)
+- P1: rolling median + lambda * scaled MAD of the previous w errors (proposed),
   plain or gated memory
 
-Data: Numenta Anomaly Benchmark (NAB), chronological 60/20/20 split per file,
-all parameters tuned on validation only, test scored once, 3 seeds.
+Data: Numenta Anomaly Benchmark (NAB) at commit ea702d75, chronological
+60/20/20 split per file, all parameters tuned on validation only, test scored
+once, 3 seeds. Design decisions: docs/decisions.md. Change history:
+docs/edit_log.md. Comparison with the earlier project: docs/old_vs_new.md.
 
-Figures are published separately in DSTT-Anomaly-Detection-images.
+## Setup (Windows, Git Bash)
 
-Work in progress.
+    bash scripts/fetch_nab.sh          # NAB data at the pinned commit -> data/nab
+    bash scripts/setup_env.sh          # venv in envs/pipeline
+    envs/pipeline/Scripts/python.exe -m pytest
+    envs/pipeline/Scripts/python.exe scripts/validate_scorer.py
+
+## Layout
+
+    pipeline/    shared package: data, splits, model, threshold rules, metrics, plots
+    references/  external reference methods, one folder and venv each
+    scripts/     data fetch, environment setup, validation, figure sync
+    results/     CSV/JSON outputs
+    figures/     figures by phase (PNG 300 dpi + PDF)
+    docs/        decisions, edit log, hardware, environment
+
+Figures are mirrored to the DSTT-Anomaly-Detection-images repository.
