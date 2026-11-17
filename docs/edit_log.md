@@ -147,3 +147,6 @@
 - Final paper source from the owner (pipeline TikZ figure, Algorithms 1-2,
   url fields): paper/main.tex, paper/refs.bib; number check updated
   (303 tokens, 0 mismatches); submission/DSTT_paper_latex.zip rebuilt.
+- Paper wording fixes from the owner: "four static baselines (Base, B1, B2
+  and S-robust)" and the delay sentence no longer claims P1 misses the
+  harder windows; number check rerun (0 mismatches); zip rebuilt.
