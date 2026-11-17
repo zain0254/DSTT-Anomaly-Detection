@@ -176,3 +176,17 @@ def test_gated_equals_plain_without_alarms():
 def test_unknown_memory_raises():
     with pytest.raises(ValueError):
         T.rolling_alarms([1.0] * 10, 3, "median_mad", 3, memory="other")
+
+
+def test_method_context_plain_matches_rolling_alarms():
+    from pipeline.methods import SeriesContext
+    rng = np.random.default_rng(3)
+    e = np.r_[np.full(29, np.nan), rng.exponential(1, 800)]
+    ctx = SeriesContext(e, train_end=500)
+    for method, params, kind, mult in (("P1", {"lam": 4, "w": 50, "memory": "plain"}, "median_mad", 4),
+                                       ("B3", {"w": 100}, "mean_std", 3),
+                                       ("B3-k", {"k": 5, "w": 50}, "mean_std", 5)):
+        a, th = ctx.apply(method, params)
+        a2, th2 = T.rolling_alarms(e, params["w"], kind, mult, "plain", ctx.floor)
+        np.testing.assert_array_equal(a, a2)
+        np.testing.assert_allclose(th, th2)

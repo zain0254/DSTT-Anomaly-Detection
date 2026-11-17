@@ -98,3 +98,24 @@
   Garg et al. (2022); NAB cited as the GitHub repository at the pinned
   commit instead of Lavin & Ahmad (2015). Reason: the paper cites 2021+
   sources only. decisions.md D-17 now cites Garg et al. 2022.
+- D-26 recorded before any threshold result: tuning objective, grids, B3-k
+  added, one parameter set across seeds, pre-registered H1-H3 tests. Reason:
+  owner approved the Phase 3 plan.
+- Phase 3 on branch feature/phase3-thresholds: pipeline/methods.py (method
+  registry, shared rolling statistics), gated memory uses a numpy ring
+  buffer (same behaviour, faster; tests unchanged plus a consistency test),
+  scripts/phase3.py (tuning on validation, one test scoring), results in
+  results/phase3/, scripts/plot_phase3.py (tuning figure),
+  docs/phase3_thresholds.md. Hypothesis tests not run yet.
+- Pre-registered tests run (scripts/hypothesis_tests.py,
+  results/phase3/hypothesis_tests.csv) and added to docs/phase3_thresholds.md
+  with verdicts: H1, H2, H3 not supported (primary P1 vs Base). alpha = 0.05
+  stated as the conventional level because D-26 does not give one.
+- D-27 exploratory run (post-hoc): pipeline/methods.py gains the
+  EXPLORATORY grid set and w_allowed; scripts/phase3.py gains --grids
+  (primary unchanged, exploratory writes results/phase3_exploratory/) and
+  logs skipped windows (window_log.csv). Only B3/B3-k changed selection
+  (w = 600). Reported in a separate section of docs/phase3_thresholds.md.
+- Phase 3 result figures (scripts/plot_phase3_results.py: fig02 test
+  metrics, fig03 per-file paired plots, fig04 example trace) and their
+  descriptions in docs/phase3_thresholds.md.

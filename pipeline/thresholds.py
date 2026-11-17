@@ -16,8 +16,6 @@ MAD is scaled by 1.4826. See docs/decisions.md D-08, D-09, D-14, D-15.
 """
 from __future__ import annotations
 
-from collections import deque
-
 import numpy as np
 from numpy.lib.stride_tricks import sliding_window_view
 
@@ -164,6 +162,13 @@ def _stats(win: np.ndarray, kind: str):
     raise ValueError(f"unknown kind {kind!r}")
 
 
+def rolling_plain_stats(stream: np.ndarray, w: int, kind: str):
+    """(loc, scale) for each point from w on, over the w errors before it.
+    stream must start at the first finite error."""
+    win = sliding_window_view(stream, w)[:-1]           # row i = w errors before w+i
+    return _stats(win, kind)
+
+
 def rolling_alarms(err, w: int, kind: str, mult: float, memory: str = "plain",
                    floor: float = 0.0) -> tuple[np.ndarray, np.ndarray]:
     """Causal rolling threshold over a whole error stream.
@@ -192,8 +197,7 @@ def rolling_alarms(err, w: int, kind: str, mult: float, memory: str = "plain",
         return alarms, thr
 
     if memory == "plain":
-        win = sliding_window_view(e[f:], w)[:-1]       # row i = w errors before f+w+i
-        loc, scale = _stats(win, kind)
+        loc, scale = rolling_plain_stats(e[f:], w, kind)
         th = loc + mult * np.maximum(scale, floor)
         thr[f + w:] = th
         alarms[f + w:] = e[f + w:] > th
@@ -201,19 +205,27 @@ def rolling_alarms(err, w: int, kind: str, mult: float, memory: str = "plain",
 
     if memory != "gated":
         raise ValueError(f"unknown memory {memory!r}")
-    buf = deque(e[f:f + w], maxlen=w)
+    buf = e[f:f + w].copy()          # ring buffer of accepted errors; order is irrelevant
+    pos = 0
     run: list[float] = []
+    robust = kind == "median_mad"
     for t in range(f + w, n):
-        loc, scale = _stats(np.fromiter(buf, float, w), kind)
+        if robust:
+            loc = np.median(buf)
+            scale = MAD_SCALE * np.median(np.abs(buf - loc))
+        else:
+            loc, scale = buf.mean(), buf.std()
         th = loc + mult * max(scale, floor)
         thr[t] = th
         if e[t] > th:
             alarms[t] = True
             run.append(e[t])
             if len(run) > w:
-                buf = deque(run[-w:], maxlen=w)
+                buf[:] = run[-w:]
+                pos = 0
                 run = []
         else:
             run = []
-            buf.append(e[t])
+            buf[pos] = e[t]
+            pos = (pos + 1) % w
     return alarms, thr
