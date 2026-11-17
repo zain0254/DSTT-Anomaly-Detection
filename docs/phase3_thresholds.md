@@ -24,9 +24,9 @@ Twitter_volume_AMZN seeds 15, 42, 123 and speed_t4013 seed 123),
 
 Each cell: mean ± sd over the 3 seeds of the across-file mean (corpus NAB:
 raw, null and perfect summed over the 18 files per seed, then normalised).
-High-variance FPR is undefined for 3 of the 18 evaluation files (no normal
-test point above the training variance cut, D-17); its mean covers the
-remaining files. ROC-AUC 0.633 ± 0.003 and PR-AUC 0.497 ± 0.011 are the same
+High-variance FPR is undefined for 1 of the 18 evaluation files,
+ec2_cpu_utilization_ac20cd (no normal test point above the training variance
+cut, D-17, for any seed); its mean covers the other 17 files. ROC-AUC 0.633 ± 0.003 and PR-AUC 0.497 ± 0.011 are the same
 for every method (threshold-free).
 
 | Method | Selected | Composite F1 | Point F1 | Precision | Event recall | FPR | HV FPR | Corpus NAB std (every step) | Corpus NAB std (first step) | Clean FPR | Clean FA / 1000 |
