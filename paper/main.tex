@@ -325,7 +325,7 @@ The evaluation set has 5 AWS CloudWatch, 5 known-cause, 4 traffic, 3 Twitter and
 \end{figure}
 
 \subsection{Detection delay}
-Of the 25 test windows, the four static rules on training errors each missed one, B3 missed three, R2 missed 5.3 on average and P1 missed $6.7 \pm 1.5$ (Fig.~\ref{fig:delay}). Among the windows a rule did detect, its first alarm came on average after 20\% (B1) to 45\% (R2) of the window length; the values were 0.42 for Base, 0.43 for B3 and 0.41 for P1. These means cover different sets of windows, so they should be read together with the missed counts: P1's delay looks similar to the others only because it misses the windows that are harder to catch.
+Of the 25 test windows, the four static baselines (Base, B1, B2 and S-robust) each missed one, B3 missed three, R2 missed 5.3 on average and P1 missed $6.7 \pm 1.5$ (Fig.~\ref{fig:delay}). Among the windows a rule did detect, its first alarm came on average after 20\% (B1) to 45\% (R2) of the window length; the values were 0.42 for Base, 0.43 for B3 and 0.41 for P1. These means cover different sets of windows, so they should be read together with the missed counts, since a rule that misses more windows is averaged over fewer of them.
 
 \begin{figure}[t]
 \centering
