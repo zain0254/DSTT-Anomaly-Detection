@@ -65,3 +65,15 @@
     (not final) evaluation/tuning file selection. D-20 (no resampling)
     recorded. Reason: owner asked for EDA before training and for window
     counts per part and training contamination to justify the selection.
+- Selection confirmed by owner (D-21): scripts/make_selection.py writes
+  configs/datasets.json (18 evaluation, 24 tuning, 18 clean-test, 36 model
+  files).
+- Clean-stream false-alarm rate added as a secondary metric before any
+  results (D-22): pipeline/metrics.clean_stream_metrics and a unit test.
+- pipeline/model.py: base-paper LSTM-AE in PyTorch (50,497 parameters),
+  MinMax on train, early stopping on last 10 % of training windows,
+  per-window MAE at window end (D-11 to D-13, D-23); tests/test_model.py
+  (shape, alignment, seed determinism). 39 tests passing.
+- scripts/time_one.py: timed one fit (nyc_taxi, seed 15, 4 threads): 44
+  epochs, 38.6 s training; projection for 36 files x 3 seeds 0.77 h
+  (same epochs) to 0.88 h (50 epochs) sequential; results/phase2_timing.json.
