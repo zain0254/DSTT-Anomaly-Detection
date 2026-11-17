@@ -283,3 +283,34 @@ primary results (results/phase3/) or the D-26 verdicts.
 - Re-selected on validation, test scored once, outputs in
   results/phase3_exploratory/; reported in a separate, labelled section of
   docs/phase3_thresholds.md.
+
+## D-28 Proposal hypotheses (2026-11-18, user; pre-registered in the October 2026 proposal defense)
+Tested exactly as written in the proposal, in addition to D-26, on the
+primary Phase 3 results (no primary result is changed or rerun). alpha = 0.05,
+as stated in the proposal (p < 0.05). Unit = file, metric averaged over the
+3 seeds. Each hypothesis is tested against Base (static mu + 3 sigma) and
+against B3 (rolling mu + 3 sigma, which the proposal labelled as the base
+paper).
+- Proposal H1: P1 has a higher point F1 than the baseline on at least 70 %
+  of files (proposal: 7 of 10; here at least 13 of 18), plus a two-sided
+  Wilcoxon signed-rank test. Implementation reading: supported only if both
+  hold (at least 13 wins and p < 0.05 with P1 higher).
+- Proposal H2: P1 reduces the mean high-variance FPR by at least 15 %
+  relative to the baseline ((mean_other - mean_P1) / mean_other, n = 17),
+  tested with a paired t-test (as proposed) and a Wilcoxon signed-rank test,
+  both two-sided and reported side by side. The verdict is given per test
+  (criterion met and p < 0.05 with P1 lower); neither test is preferred.
+- Proposal H3 (RQ4): per NAB category of the 18 evaluation files, mean
+  improvement of P1 over Base and over B3 in point F1, composite F1 and
+  high-variance FPR (improvement = P1 - other for F1 measures, other - P1 for
+  FPR). H3 = realAWSCloudwatch shows the largest improvement. Descriptive
+  only, with n files per category; no significance claim.
+- Detection delay (proposal RO6): for each detected test window (windows
+  clipped to the test segment, as in all test metrics), (first alarm index -
+  window start) / window length; mean per method over detected windows,
+  pooled over files, reported as mean +/- sd over seeds. Missed windows are
+  counted separately.
+Label correction: D-26 called the NAB test "H3". In the paper NAB belongs to
+RQ2/RQ3 and H3 is the proposal's category hypothesis above. The D-26 text is
+kept as registered; the doc labels that test "D-26 NAB test (labelled H3 in
+D-26)".
