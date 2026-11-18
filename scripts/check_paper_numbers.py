@@ -27,6 +27,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from pipeline import model as MD  # noqa: E402
 from pipeline import thresholds as TH  # noqa: E402
+from pipeline import nab_scorer as NS  # noqa: E402
 from pipeline.data import SPLIT  # noqa: E402
 from pipeline.methods import EXPLORATORY, METHODS, WS  # noqa: E402
 
@@ -77,6 +78,44 @@ edall = ed[ed.file.str.startswith("ALL")].iloc[0]
 edf = ed[~ed.file.str.startswith("ALL")]
 
 
+# ------------------------------------------------------------------ failure-mode streams (Section VII-C)
+TT = ROOT / "results/phase3/test_traces"
+W1 = sel_p["P1"]["w"]  # P1 buffer length
+
+
+def win_stats(stem: str, k: int) -> pd.DataFrame:
+    """Per-seed statistics of test window k (0-based) of one stream, from the saved test traces.
+    rise: median error inside the window over the median of the W1 errors before it, in %;
+    in_buffer: labelled points among the W1 errors before the window (P1's buffer at its first step)."""
+    rows = []
+    for s in (15, 42, 123):
+        z = np.load(TT / f"{stem}__s{s}.npz")
+        lab, e = z["labels"].astype(int), z["errors"]
+        ed_ = np.flatnonzero(np.diff(np.r_[0, lab, 0]))
+        w = list(zip(ed_[::2], ed_[1::2]))
+        a, b = w[k]
+        rows.append({"len": b - a, "gap": (w[1][0] - w[0][1]) if len(w) > 1 else np.nan,
+                     "rise": 100 * (np.median(e[a:b]) / np.median(e[a - W1:a]) - 1) if a >= W1 else np.nan,
+                     "p1_thr": np.median(z["P1__threshold"][a:b]), "base_thr": np.median(z["Base__threshold"][a:b]),
+                     "max_err": e[a:b].max(), "in_buffer": lab[max(0, a - W1):a].sum(),
+                     **{m: int(z[f"{m}__alarms"][a:b].sum()) for m in ("Base", "B3", "P1")}})
+    return pd.DataFrame(rows)
+
+
+PFM = tm.groupby(["method", "file"]).mean(numeric_only=True)
+pfv = lambda metric, method, f: PFM.loc[(method, f), metric]  # noqa: E731
+DR = ed.set_index("file").ratio_mean_over_seeds
+FS = {"amb": "realKnownCause/ambient_temperature_system_failure.csv", "rds": "realAWSCloudwatch/rds_cpu_utilization_cc0c53.csv",
+      "spd": "realTraffic/speed_7578.csv", "occ": "realTraffic/occupancy_t4013.csv",
+      "grok": "realAWSCloudwatch/grok_asg_anomaly.csv", "ac20": "realAWSCloudwatch/ec2_cpu_utilization_ac20cd.csv"}
+stem = lambda f: f.replace("/", "__").replace(".csv", "")  # noqa: E731
+_er = PFM["event_recall"].unstack("method")
+N_FEWER = int((_er.P1 < _er[["Base", "B1", "B2"]].min(axis=1)).sum())
+_hv = PFM["hv_fpr"].unstack("method").dropna()
+_hvd = _hv.P1 - _hv.Base
+HV_SHARE = 100 * _hvd[[FS["rds"], FS["grok"]]].sum() / _hvd.sum() if (_hv.loc[[FS["rds"], FS["grok"]], "Base"] == 1).all() else -1
+
+
 def pf_wins(metric, other, higher):
     pf = tm.groupby(["method", "file"])[metric].mean().unstack("method")
     d = pf["P1"] - pf[other]
@@ -84,6 +123,9 @@ def pf_wins(metric, other, higher):
 
 
 TR = "results/phase3/test_traces/realKnownCause__nyc_taxi__s15.npz"
+TRS = "results/phase3/test_traces"
+TMF = "results/phase3/test_metrics.csv (per-file mean over seeds)"
+EDF = "results/phase3/error_drift.csv ratio_mean_over_seeds"
 
 
 def trace_alarms_last_window(method):
@@ -134,18 +176,20 @@ assert lam_grid == kgrid
 
 # ------------------------------------------------------------------ line specs
 # (phrase identifying the line, [sources in token order])
+amb, rds, occ0, occ1 = (win_stats(stem(FS[k]), i) for k, i in (("amb", 0), ("rds", 0), ("occ", 0), ("occ", 1)))
+spd0, spd1 = win_stats(stem(FS["spd"]), 0), win_stats(stem(FS["spd"]), 1)
+occ = pd.concat([occ0, occ1])
+fail_row = lambda k: [V(EDF + " " + k, DR[FS[k]]), V(TMF + " P1 event_recall " + k, pfv("event_recall", "P1", FS[k])),  # noqa: E731
+                      V(TMF + " B1 event_recall " + k, pfv("event_recall", "B1", FS[k])),
+                      V(TMF + " composite_f1 P1 - B1 " + k, pfv("composite_f1", "P1", FS[k]) - pfv("composite_f1", "B1", FS[k])),
+                      V(TMF + " composite_f1 P1 - Base " + k, pfv("composite_f1", "P1", FS[k]) - pfv("composite_f1", "Base", FS[k]))]
+p1w, p1l, b3w = (V(SEL + " P1 w", sel_p["P1"]["w"]), V(SEL + " P1 lam", sel_p["P1"]["lam"]), V(SEL + " B3 w", sel_p["B3"]["w"]))
+seeds = [K("scripts/train.py SEEDS", x) for x in (15, 42, 123)]
+bd50 = LIT("breakdown point of the median and the MAD: 50 % (Hampel 1974; standard)")
+TSB = lambda m, c, x=1: V(f"{TS} {m} {c}" + (" x100" if x == 100 else ""), x * ts.loc[m, c])  # noqa: E731
+
 SPECS = [
-    ("LSTM autoencoders are a common choice", split + [
-        V(DS + " evaluation", len(ds["evaluation"])), V(TS + " Base fpr x100", 100 * ts.loc["Base", "fpr_mean"]),
-        V(TS + " B3 fpr x100", 100 * ts.loc["B3", "fpr_mean"]), V(TS + " P1 fpr x100", 100 * ts.loc["P1", "fpr_mean"]),
-        V(TS + " P1 composite_f1", ts.loc["P1", "composite_f1_mean"]),
-        V(TS + " Base composite_f1", ts.loc["Base", "composite_f1_mean"]), V(HT + " H1 primary p", H("composite_f1").p)]),
-    ("A widely used design is the LSTM autoencoder", [mu3]),
-    ("An honest negative result", [mu3]),
-    ("The research questions follow the project proposal", [mu3]),
     ("Darban et al.", [LIT("Schmidl et al. 2022: 71 algorithms"), LIT("Schmidl et al. 2022: 967 series")]),
-    ("Most LSTM-based detectors end in a threshold", [mu3, mu3, LIT("Yu et al. 2024: precision with 3 sigma"),
-                                                       LIT("Yu et al. 2024: precision with EVT")]),
     ("Ahmad \\cite{ahmad2026} & LSTM-AE", [mu3]),
     ("Lee \\& Lin \\cite{lee2023repad2} & LSTM", [mu3, K("REPORT.md section 8 (RePAD2 windows 1,440 to 16,128)",
                                                          1440 if "1,440 to 16,128" in rep else -1)]),
@@ -161,7 +205,7 @@ SPECS = [
         V(F + " windows_test (evaluation files)", eda[eda.file.isin(ds["evaluation"])].windows_test.sum()),
         V(DS + " tuning", len(ds["tuning"])), V(DS + " clean_test", len(ds["clean_test"])),
         V(DS + " model_files", len(ds["model_files"]))]),
-    ("Because training uses no labels", [
+    ("Training uses no labels, so", [
         V(F + " labelled files with labelled_train > 0", (lab.labelled_train > 0).sum()), V(F + " labelled files", len(lab)),
         V(F + " labelled_train / len_train %", 100 * eda.labelled_train.sum() / eda.len_train.sum()),
         V(F + " median pct_train_contaminated (labelled)", lab.pct_train_contaminated.median()),
@@ -180,16 +224,7 @@ SPECS = [
         V(DS + " model_files", len(ds["model_files"])), K("scripts/train.py SEEDS", 15), K("scripts/train.py SEEDS", 42),
         K("scripts/train.py SEEDS", 123), V(RS + " rows", len(run))]),
     ("\\item \\textbf{Base} \\cite{ahmad2026}", [mu3]),
-    ("\\item \\textbf{R2} \\cite{yu2024evt}", [
-        K("pipeline/thresholds.py EVT_TH_Q x100", 100 * TH.EVT_TH_Q), K("EVT_Q_GRID lower = 10^-5 (base)", 10),
-        K("EVT_Q_GRID lower exponent", np.log10(TH.EVT_Q_GRID.min())), K("EVT_Q_GRID upper = 10^-3 (base)", 10),
-        K("EVT_Q_GRID upper exponent", round(np.log10(TH.EVT_Q_GRID.max()))),
-        K("Yu et al. 2024 Eq. 9 as printed (eps in [1, 2))", 1), K("Yu et al. 2024 Eq. 9 as printed (eps in [1, 2))", 2)]),
     ("\\item \\textbf{B3} \\cite{lee2023repad2}", [K("B3 k = 3 (pipeline/methods.py)", 3)]),
-    ("The MAD is scaled by 1.4826", [
-        K("pipeline/thresholds.py MAD_SCALE", TH.MAD_SCALE), LAB("illustration: lambda = 3"), LAB("illustration: 3 sigma"),
-        K("pipeline/thresholds.py FLOOR_FACTOR", TH.FLOOR_FACTOR), K("pipeline/thresholds.py FLOOR_FACTOR", TH.FLOOR_FACTOR),
-        K("FLOOR_MIN = 10^-6 (base)", 10), K("FLOOR_MIN exponent", np.log10(TH.FLOOR_MIN))]),
     ("Parameters are chosen on the validation parts", [V(DS + " tuning", len(ds["tuning"]))] + grid("p", "B1") + grid("k", "B2")
      + [K("pipeline/methods.py LAMBDAS", x) for x in lam_grid] + [K("pipeline/methods.py WS", x) for x in WS]
      + [V("results/phase3/tuning_candidates.csv rows per series", len(cand) / cand.groupby(["file", "seed"]).ngroups),
@@ -204,8 +239,10 @@ SPECS = [
     ("Each test series is one unit", [
         V(HT + " H1 n_files", H("composite_f1").n_files), V(HT + " H2 n_files", H("hv_fpr").n_files),
         K("scripts/hypothesis_tests.py alpha (D-26, D-28)", 0.05), K("scripts/hypothesis_tests.py 95 % CI", 95),
-        LAB("date of the proposal (October 2026, D-28)"), K("proposal H1 70 % (D-28)", 70), K("proposal H2 15 % (D-28)", 15)]),
-    ("All code, configuration, error series", [
+        LAB("date of the proposal (October 2026, D-28)")]),
+    ("\\item[H1] P1 achieves", [K("proposal H1 70 % (D-28)", 70)]),
+    ("\\item[H2] P1 lowers", [K("proposal H2 15 % (D-28)", 15)]),
+    ("Experiments ran on a laptop", [
         K("results/environment/hardware.md CPU i5-13500H", 13500 if "13500H" in hw else -1),
         V("results/environment/hardware.md RAM total", float(re.search(r"RAM total \| ([\d.]+) GB", hw).group(1))),
         V("results/environment/pip_freeze.txt Python 3.12.4", float(re.search(r"Python (\d+\.\d+)", envtxt).group(1))),
@@ -222,37 +259,7 @@ SPECS = [
         V(SEL + " B3 w", sel_p["B3"]["w"]), V(SEL + " B3-k k", sel_p["B3-k"]["k"]), V(SEL + " B3-k w", sel_p["B3-k"]["w"]),
         V(SEL + " P1 lam", sel_p["P1"]["lam"]), V(SEL + " P1 w", sel_p["P1"]["w"]), V(SEL + " B3-k k", sel_p["B3-k"]["k"]),
         V("results/phase3/r2_info.csv path == eq8", (r2.path == "eq8").sum()), V("results/phase3/r2_info.csv rows", len(r2))]),
-    ("Table~\\ref{tab:test} gives the test results", [
-        V(DD + " Base detected", dmean.loc["Base", "detected"]), V(DD + " n_windows", dmean.loc["Base", "n_windows"]),
-        V(TS + " Base event_recall", ts.loc["Base", "event_recall_mean"]), V(TS + " Base composite_f1", ts.loc["Base", "composite_f1_mean"]),
-        V(TS + " Base fpr x100", 100 * ts.loc["Base", "fpr_mean"]), V(TS + " Base fpr", ts.loc["Base", "fpr_mean"]),
-        V(TS + " B3 fpr", ts.loc["B3", "fpr_mean"]), V(TS + " P1 fpr", ts.loc["P1", "fpr_mean"]),
-        V(TS + " B3 composite_f1", ts.loc["B3", "composite_f1_mean"]), V(TS + " P1 composite_f1", ts.loc["P1", "composite_f1_mean"]),
-        V(TS + " P1 event_recall", ts.loc["P1", "event_recall_mean"]), V(TS + " P1 precision", ts.loc["P1", "precision_mean"]),
-        V(TS + " B1 f1 (highest point F1)", ts.loc["B1", "f1_mean"] if ts.f1_mean.idxmax() == "B1" else -1),
-        V(TS + " Base f1", ts.loc["Base", "f1_mean"]), V(TS + " B3 f1", ts.loc["B3", "f1_mean"]),
-        V(TS + " P1 f1", ts.loc["P1", "f1_mean"])]),
     ("\\caption{Test results on 18 evaluation series", [V(DS + " evaluation", len(ds["evaluation"])), LAB("column name FA/1k"), V(DS + " clean_test", len(ds["clean_test"]))]),
-    ("Table~\\ref{tab:tests} summarises the confirmatory tests", [
-        V(HT + " H1 mean_diff", H("composite_f1").mean_diff), K("95 % CI", 95), V(HT + " H1 ci95_low", H("composite_f1").ci95_low),
-        V(HT + " H1 ci95_high", H("composite_f1").ci95_high), V(HT + " H1 wins", H("composite_f1").wins), V(HT + " H1 losses", H("composite_f1").losses),
-        V(HT + " H1 p", H("composite_f1").p), V(HT + " H2 mean_diff", H("hv_fpr").mean_diff), V(HT + " H2 ci95_low", H("hv_fpr").ci95_low),
-        V(HT + " H2 ci95_high", H("hv_fpr").ci95_high), V(HT + " H2 p", H("hv_fpr").p), V(HT + " H2 n_files", H("hv_fpr").n_files),
-        V(HT + " clean_fpr p", H("clean_fpr").p), V(HT + " nab_standard p", H("nab_standard").p),
-        V("results/phase3/test_metrics.csv composite F1 losses vs Base (= vs B3)", f1l if f1l == f1l3 else -1),
-        V(DS + " evaluation", len(ds["evaluation"])), V("results/phase3/test_metrics.csv FPR P1 lower than Base", fpw),
-        V("results/phase3/test_metrics.csv FPR P1 higher than B3", fpl3)]),
-    ("The proposal hypotheses were tested against both Base and B3", [
-        V(PH + " H1 Base wins", P("Proposal H1", "Base").wins), V(DS + " evaluation", 18),
-        V(PH + " H1 mean_P1 (point F1)", P("Proposal H1", "Base").mean_P1), V(PH + " H1 Base mean_baseline", P("Proposal H1", "Base").mean_baseline),
-        V(PH + " H1 Base p", P("Proposal H1", "Base").p), V(PH + " H1 B3 wins", P("Proposal H1", "B3").wins),
-        V(PH + " H1 mean_P1 (point F1)", P("Proposal H1", "B3").mean_P1), V(PH + " H1 B3 mean_baseline", P("Proposal H1", "B3").mean_baseline),
-        V(PH + " H1 B3 p", P("Proposal H1", "B3").p), K("proposal H1: 70 % of 18 series rounded up (D-28)", int(np.ceil(0.7 * 18))),
-        V(PH + " H2 Base relative_reduction x100", 100 * P("Proposal H2", "Base", "paired t-test").relative_reduction),
-        K("proposal H2 15 % (D-28)", 15),
-        V(PH + " H2 Base t-test p", P("Proposal H2", "Base", "paired t-test").p), V(PH + " H2 Base Wilcoxon p", P("Proposal H2", "Base", "Wilcoxon").p),
-        V(PH + " H2 B3 relative increase x100", -100 * P("Proposal H2", "B3", "paired t-test").relative_reduction),
-        V(PH + " H2 B3 t-test p", P("Proposal H2", "B3", "paired t-test").p), V(PH + " H2 B3 Wilcoxon p", P("Proposal H2", "B3", "Wilcoxon").p)]),
     ("The evaluation set has 5 AWS CloudWatch", [V(CA + f" n_files {c}", C("f1", "Base", c).n_files) for c in
                                                   ["realAWSCloudwatch", "realKnownCause", "realTraffic", "realTweets", "realAdExchange"]] + [
         V(CA + " composite_f1 Base AWS", C("composite_f1", "Base", "realAWSCloudwatch").mean_improvement),
@@ -303,6 +310,8 @@ SPECS = [
         V("results/phase3_exploratory/test_summary.csv B3 f1", tsx.loc["B3", "f1_mean"]),
         V(TS + " B3 corpus_nab_standard", ts.loc["B3", "corpus_nab_standard_mean"]),
         V("results/phase3_exploratory/test_summary.csv B3 corpus_nab_standard", tsx.loc["B3", "corpus_nab_standard_mean"]),
+        V(TS + " B3 recall (point)", ts.loc["B3", "recall_mean"]), V("results/phase3_exploratory/test_summary.csv B3 recall", tsx.loc["B3", "recall_mean"]),
+        V(TS + " B3 event_recall", ts.loc["B3", "event_recall_mean"]), V("results/phase3_exploratory/test_summary.csv B3 event_recall", tsx.loc["B3", "event_recall_mean"]),
         V("results/phase3_exploratory/selected_params.csv B3 w (and exploratory B3 composite F1 below Base and B2)",
           600 if tsx.loc["B3", "composite_f1_mean"] < min(tsx.loc["Base", "composite_f1_mean"], tsx.loc["B2", "composite_f1_mean"]) else -1)]),
     ("Our proposal argued that outliers inflate", [
@@ -310,14 +319,89 @@ SPECS = [
         V("results/phase3/error_drift.csv files", len(edf)),
         V("results/phase3/error_drift.csv ALL ratio_mean_over_seeds", edall.ratio_mean_over_seeds),
         LAB("ratio threshold 1"), V("results/phase3/error_drift.csv n_files_ratio_above_1", edall.n_files_ratio_above_1)]),
-    ("Robust statistics protect a threshold", [
-        V(SEL + " P1 w", sel_p["P1"]["w"]), V(SEL + " P1 w", sel_p["P1"]["w"]), V(SEL + " B3 w", sel_p["B3"]["w"]), V(SEL + " B3 w", sel_p["B3"]["w"])]),
     ("\\caption{Masking in the rolling robust rule", [LAB("seed 15")] + [
         V(TR + f" {m} alarms inside the last window", trace_alarms_last_window(m)) for m in ("P1", "B3", "Base")]),
     ("For an LSTM-AE monitor like the one in the base paper", [
         ("approx10", TS + " 1 - B3 fpr / Base fpr (x100, 'about')", 100 * (1 - ts.loc["B3", "fpr_mean"] / ts.loc["Base", "fpr_mean"])),
         V(TS + " R2 event_recall", ts.loc["R2", "event_recall_mean"]), V(TS + " roc_auc", ts.loc["Base", "roc_auc_mean"])]),
     ("The evaluation uses one model architecture", [V(DS + " evaluation", 18), V(F + " windows_test (evaluation)", 25), K("pipeline/model.py T", MD.T)]),
+
+    # ---- revised abstract, introduction, results, discussion, ethics and conclusion
+    ("We hold one LSTM autoencoder fixed", [K("pipeline/model.py T", MD.T), mu3] + split + [V(DS + " evaluation", len(ds["evaluation"]))] + seeds + [
+        V(DD + " Base detected", dmean.loc["Base", "detected"]), V(DD + " n_windows", dmean.loc["Base", "n_windows"]),
+        TSB("Base", "fpr_mean", 100), TSB("B3", "fpr_mean", 100), b3w, TSB("P1", "fpr_mean", 100), p1w, p1l,
+        V(DD + " missed P1", dmean.loc["P1", "missed"]), TSB("P1", "composite_f1_mean"), TSB("Base", "composite_f1_mean"),
+        V(HT + " H1 primary p", H("composite_f1").p)]),
+    ("describes one such AIOps pipeline", [mu3, bd50, LIT("breakdown point of the mean: 0 %")]),
+    ("\\item[RQ1] How do the static percentile", [mu3]),
+    ("Threshold rules for LSTM detectors differ along two axes", [mu3, LIT("Yu et al. 2024: precision with 3 sigma"), mu3,
+                                                                 LIT("Yu et al. 2024: precision with EVT")]),
+    ("R2 fits the generalized Pareto distribution", [
+        K("pipeline/thresholds.py EVT_TH_Q x100", 100 * TH.EVT_TH_Q), K("EVT_Q_GRID lower = 10^-5 (base)", 10),
+        K("EVT_Q_GRID lower exponent", np.log10(TH.EVT_Q_GRID.min())), K("EVT_Q_GRID upper = 10^-3 (base)", 10),
+        K("EVT_Q_GRID upper exponent", round(np.log10(TH.EVT_Q_GRID.max()))),
+        K("Yu et al. 2024 Eq. 9 as printed (eps in [1, 2))", 1), K("Yu et al. 2024 Eq. 9 as printed (eps in [1, 2))", 2)]),
+    ("where $\\mathrm{med}$ is the median and the MAD scale", [
+        K("pipeline/thresholds.py MAD_SCALE", TH.MAD_SCALE), LAB("illustration: lambda = 3"), LAB("illustration: 3 sigma"),
+        K("pipeline/thresholds.py FLOOR_FACTOR", TH.FLOOR_FACTOR), K("pipeline/thresholds.py FLOOR_FACTOR", TH.FLOOR_FACTOR),
+        K("FLOOR_MIN = 10^-6 (base)", 10), K("FLOOR_MIN exponent", np.log10(TH.FLOOR_MIN))]),
+    ("Base caught 24 of the 25 test windows, and its weakness", [
+        V(DD + " Base detected", dmean.loc["Base", "detected"]), V(DD + " n_windows", dmean.loc["Base", "n_windows"]), p1w, p1l,
+        TSB("P1", "event_recall_mean"), TSB("P1", "composite_f1_mean"),
+        V(TS + " B1 f1 (highest point F1)", ts.loc["B1", "f1_mean"] if ts.f1_mean.idxmax() == "B1" else -1)]),
+    ("The order B3, P1, Base holds under all three NAB cost profiles", [
+        V(f"{TS} {m} {c}", ts.loc[m, c]) for c in ("corpus_nab_standard_mean", "corpus_nab_reward_low_FP_rate_mean",
+                                                   "corpus_nab_reward_low_FN_rate_mean") for m in ("B3", "P1", "Base")] + [
+        K("pipeline/nab_scorer.py PROFILES standard fpWeight", NS.PROFILES["standard"]["fpWeight"]),
+        K("pipeline/nab_scorer.py PROFILES reward_low_FP_rate fpWeight", NS.PROFILES["reward_low_FP_rate"]["fpWeight"])]),
+    ("lists the confirmatory tests of P1 against Base", [
+        V(HT + " H2 n_files", H("hv_fpr").n_files), V(HT + " H2 p", H("hv_fpr").p),
+        V("results/phase3/test_metrics.csv composite F1 losses vs Base (= vs B3)", f1l if f1l == f1l3 else -1),
+        V(DS + " evaluation", len(ds["evaluation"]))]),
+    ("We tested the proposal hypotheses against both Base and B3", [
+        V(PH + " H1 Base wins", P("Proposal H1", "Base").wins), V(DS + " evaluation", 18), V(PH + " H1 Base p", P("Proposal H1", "Base").p),
+        V(PH + " H1 B3 wins", P("Proposal H1", "B3").wins), V(PH + " H1 B3 p", P("Proposal H1", "B3").p),
+        K("proposal H1: 70 % of 18 series rounded up (D-28)", int(np.ceil(0.7 * 18))),
+        V(PH + " H2 Base relative_reduction x100", 100 * P("Proposal H2", "Base", "paired t-test").relative_reduction),
+        K("proposal H2 15 % (D-28)", 15),
+        V(PH + " H2 Base t-test p", P("Proposal H2", "Base", "paired t-test").p), V(PH + " H2 Base Wilcoxon p", P("Proposal H2", "Base", "Wilcoxon").p),
+        V(TMF + " hv_fpr: share of sum(P1 - Base) from rds_cc0c53 + grok (Base hv_fpr = 1) x100", HV_SHARE),
+        V(PH + " H2 B3 relative increase x100", -100 * P("Proposal H2", "B3", "paired t-test").relative_reduction),
+        V(PH + " H2 B3 t-test p", P("Proposal H2", "B3", "paired t-test").p), V(PH + " H2 B3 Wilcoxon p", P("Proposal H2", "B3", "Wilcoxon").p)]),
+    ("Robust statistics shield a threshold", [p1w, p1w, b3w]),
+    ("P1 detects fewer windows than Base, B1 and B2", [V(DS + " evaluation", len(ds["evaluation"])), p1w, p1l]),
+    ("Stream & Ratio & \\multicolumn", [LAB("table layout"), LAB("table layout")]),
+    ("system\\_\\allowbreak failure} &", fail_row("amb")),
+    ("cc0c53} &", fail_row("rds")),
+    ("\\texttt{speed\\_7578} &", fail_row("spd")),
+    ("t4013} &", fail_row("occ")),
+    ("\\emph{Slow drift.}", [V(TRS + " ambient window length", amb.len.mean()), V(TRS + " ambient median rise % (mean over seeds)", amb.rise.mean()),
+                             p1w, V(TRS + " ambient P1 median threshold in window", amb.p1_thr.mean()),
+                             V(TRS + " ambient Base threshold", amb.base_thr.mean()), V(TRS + " ambient Base alarms in window", amb.Base.mean())]),
+    ("\\emph{Level shift before the window.}", [
+        V(EDF + " rds", DR[FS["rds"]]), V(TMF + " Base fpr rds (B1, B2 equal)", pfv("fpr", "Base", FS["rds"])
+                                          if pfv("fpr", "B1", FS["rds"]) == pfv("fpr", "B2", FS["rds"]) == pfv("fpr", "Base", FS["rds"]) else -1),
+        V(TRS + " rds median rise %", rds.rise.mean()), b3w, V(TRS + " rds B3 alarms in window", rds.B3.mean()),
+        V(EDF + " grok", DR[FS["grok"]]), V(EDF + " ac20cd", DR[FS["ac20"]]),
+        V(TMF + " Base fpr grok x100", 100 * pfv("fpr", "Base", FS["grok"])), V(TMF + " Base fpr ac20cd x100", 100 * pfv("fpr", "Base", FS["ac20"])),
+        V(TMF + " P1 composite_f1 grok (= ac20cd)", pfv("composite_f1", "P1", FS["grok"])
+          if pfv("composite_f1", "P1", FS["grok"]) == pfv("composite_f1", "P1", FS["ac20"]) else -1)]),
+    ("\\emph{Back-to-back events.}", [
+        V(TRS + " speed_7578 window lengths (equal)", spd1.len.mean() if (spd0.len == spd1.len).all() else -1), V(TRS + " speed_7578 gap", spd1.gap.mean()),
+        V(TRS + " speed_7578 window-1 points in P1 buffer at window 2", spd1.in_buffer.mean()), p1w, bd50,
+        K("pipeline/thresholds.py MAD_SCALE", TH.MAD_SCALE), p1l, V(TRS + " speed_7578 P1 threshold in window 2", spd1.p1_thr.mean()),
+        V(TRS + " speed_7578 P1 threshold / max error in window 2", (spd1.p1_thr / spd1.max_err).mean()),
+        V(TRS + " speed_7578 Base alarms in window 2 (= length)", spd1.Base.mean() if (spd1.Base == spd1.len).all() else -1)]),
+    ("\\emph{Small steps under a wide margin.}", [V(TRS + " occupancy_t4013 median rise % (both windows, all seeds)", occ.rise.mean()), p1w]),
+    ("The study uses only the public Numenta Anomaly Benchmark", [
+        V("results/environment/pip_freeze.txt Python 3.12.4", float(re.search(r"Python (\d+\.\d+)", envtxt).group(1))),
+        V("results/environment/pip_freeze.txt torch 2.14.1", float(re.search(r"torch==(\d+\.\d+)", envtxt).group(1)))]),
+    ("Every result can be regenerated from the public repository", seeds + [V(RS + " rows", len(run))]),
+    ("On 18 NAB test series, replacing a static", [
+        V(DS + " evaluation", len(ds["evaluation"])), mu3, p1w, p1l, TSB("Base", "fpr_mean", 100), TSB("P1", "fpr_mean", 100),
+        V(DD + " missed P1", dmean.loc["P1", "missed"]), V(DD + " n_windows", dmean.loc["Base", "n_windows"]),
+        TSB("Base", "composite_f1_mean"), TSB("P1", "composite_f1_mean"), V(HT + " H1 primary p", H("composite_f1").p),
+        K("B3 k = 3 (pipeline/methods.py)", 3), b3w, TSB("B3", "fpr_mean", 100), TSB("B3", "composite_f1_mean")]),
 ]
 
 WORDS = [  # (phrase in the paper, number, source, value)
@@ -336,8 +420,22 @@ WORDS = [  # (phrase in the paper, number, source, value)
     ("the four static baselines (Base, B1, B2 and S-robust) each missed one", 4, DD + " methods with missed == 1 (Base, B1, B2, S-robust)",
      int((dmean.missed == 1).sum())),
     ("B3 missed three", 3, DD + " missed B3", dmean.loc["B3", "missed"]),
-    ("for B3 (about a tenth)", 0.1, TS + " B3 fpr / Base fpr", ts.loc["B3", "fpr_mean"] / ts.loc["Base", "fpr_mean"]),
-    ("for P1 (about a fifth)", 0.2, TS + " P1 fpr / Base fpr", ts.loc["P1", "fpr_mean"] / ts.loc["Base", "fpr_mean"]),
+    ("to about a tenth (B3)", 0.1, TS + " B3 fpr / Base fpr, rounded to 0.1",
+     0.1 if round(ts.loc["B3", "fpr_mean"] / ts.loc["Base", "fpr_mean"], 1) == 0.1 else -1),
+    ("a fifth (P1) of the base value", 0.2, TS + " P1 fpr / Base fpr, rounded to 0.1",
+     0.2 if round(ts.loc["P1", "fpr_mean"] / ts.loc["Base", "fpr_mean"], 1) == 0.2 else -1),
+    ("roughly ten false alarms on normal test points for every one of B3's", 10, TS + " Base fpr / B3 fpr, rounded",
+     round(ts.loc["Base", "fpr_mean"] / ts.loc["B3", "fpr_mean"])),
+    ("test it against the base rule and six alternatives", 6, "pipeline/methods.py METHODS minus Base and P1", len(METHODS) - 2),
+    ("on five of the 18 evaluation streams", 5, TMF + " files with P1 event recall below Base, B1 and B2", N_FEWER),
+    ("On two of them P1 missed the only test window in all three seeds", 2, TMF + " table streams with P1 event recall 0 and one test window",
+     sum(pfv("event_recall", "P1", FS[k]) == 0 and eda.set_index("file").loc[FS[k], "windows_test"] == 1 for k in ("amb", "rds", "spd", "occ"))),
+    ("more than seven buffer lengths", 7, TRS + " ambient window length / P1 w (floor)", int(amb.len.mean() // W1)),
+    ("P1 flagged the first in every seed and the second in none", 3, TRS + " speed_7578 seeds with P1 alarms in window 1 and none in window 2",
+     int(((spd0.P1 > 0) & (spd1.P1 == 0)).sum())),
+    ("P1 flagged one of the six window instances across seeds", 1, TRS + " occupancy_t4013 window instances with any P1 alarm (of 6)",
+     int((occ.P1 > 0).sum()) if len(occ) == 6 else -1),
+    ("enough to cross Base's fixed bar in every seed", 6, TRS + " occupancy_t4013 window instances with Base alarms (of 6)", int((occ.Base > 0).sum())),
 ]
 
 
