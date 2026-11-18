@@ -371,7 +371,7 @@ def main() -> None:
     rows, used = [], set()
     for i in range(a, b):
         l = lines[i]
-        if l.lstrip().startswith("%") or r"\begin{tabular}" in l:
+        if l.lstrip().startswith("%") or r"\begin{tabular}" in l or l.lstrip().startswith(r"\setlength"):   # layout only
             continue
         toks = [m.group() for m in PAT.finditer(l)]
         if not toks:
