@@ -1,4 +1,4 @@
-"""Proposal hypotheses (docs/decisions.md D-28) on the primary Phase 3 results.
+"""Proposal hypotheses (REPORT.md section 18: D-28) on the primary Phase 3 results.
 Reads results/phase3/test_metrics.csv and results/phase3/test_traces/; changes
 nothing in the primary results.
 

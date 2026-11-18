@@ -26,7 +26,7 @@ PNAME = {"p": "p", "k": "k", "lam": "\\lambda", "w": "w"}
 COLS = [("composite_f1", "Comp.\\ F1", 3, True), ("f1", "Point F1", 3, True), ("precision", "Prec.", 3, True),
         ("event_recall", "Ev.\\ rec.", 3, True), ("fpr", "FPR", 3, False), ("hv_fpr", "HV FPR", 3, False),
         ("corpus_nab_standard", "NAB every", 1, True), ("corpus_nab_standard_first", "NAB first", 1, True),
-        ("clean_fpr", "Clean FPR", 3, False), ("clean_false_alarms_per_1000", "Clean FA/1k", 1, False)]
+        ("clean_false_alarms_per_1000", "Clean FA/1k", 1, False)]   # clean FPR = Clean FA/1k / 1000, so not repeated
 
 
 def params_tex(m: str, params: str) -> str:

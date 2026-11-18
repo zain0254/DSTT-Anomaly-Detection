@@ -1,9 +1,9 @@
 """Check every number in paper/main.tex (abstract to conclusion) against the
-saved results, docs and code constants, and write docs/paper_number_check.md.
+saved results, records and code constants, and write paper/number_check.md.
 
 Each numeric token of each line is mapped, in order, to a source. A source is
 either a value recomputed here from a saved file (compared with the paper at
-the paper's number of decimals), a design constant read from the code or docs,
+the paper's number of decimals), a design constant read from the code or the run records,
 a value quoted from the cited literature (not checkable against our files), or
 a label (seed names, dates, the 60/20/20 split name). Unmapped tokens and
 mismatches are flagged. Numbers written as words are checked in a second
@@ -51,9 +51,20 @@ ca = pd.read_csv(R3 / "category_analysis.csv")
 dd = pd.read_csv(R3 / "detection_delay.csv")
 ed = pd.read_csv(R3 / "error_drift.csv")
 tm = pd.read_csv(R3 / "test_metrics.csv")
-hw = (ROOT / "docs/hardware.md").read_text()
-envtxt = (ROOT / "docs/env_pipeline.txt").read_text()
-dec = (ROOT / "docs/decisions.md").read_text()
+ENVD = ROOT / "results/environment"
+hw = (ENVD / "hardware.md").read_text()
+envtxt = (ENVD / "pip_freeze.txt").read_text()
+rt = (ENVD / "run_times.md").read_text()
+rep = (ROOT / "REPORT.md").read_text()
+RT_TUNE = int(re.search(r"Threshold tuning on validation.*?\| (\d+) s \|", rt).group(1))
+RT_TEST = int(re.search(r"Single test scoring.*?\| (\d+) s \|", rt).group(1))
+
+
+def on_edge(method: str) -> bool:
+    """True if any selected parameter is the first or last value of its primary grid."""
+    grid = METHODS[method]["grid"]
+    return any(isinstance(v, (int, float)) and v in (min(g[k] for g in grid), max(g[k] for g in grid))
+               for k, v in sel_p[method].items())
 
 lab = eda[eda.n_windows > 0]
 sel_p = {m: json.loads(p) for m, p in sel.params.items()}
@@ -72,6 +83,17 @@ def pf_wins(metric, other, higher):
     return int((d > 0).sum() if higher else (d < 0).sum()), int((d < 0).sum() if higher else (d > 0).sum())
 
 
+TR = "results/phase3/test_traces/realKnownCause__nyc_taxi__s15.npz"
+
+
+def trace_alarms_last_window(method):
+    z = np.load(ROOT / TR)
+    lab = z["labels"].astype(int)
+    edges = np.flatnonzero(np.diff(np.r_[0, lab, 0]))
+    s, e = edges[-2], edges[-1]
+    return int(z[f"{method}__alarms"][s:e].sum())
+
+
 F = "results/phase1_eda/file_summary.csv"
 TS = "results/phase3/test_summary.csv"
 HT = "results/phase3/hypothesis_tests.csv"
@@ -87,7 +109,7 @@ def V(src, val):            # recomputed value, compared at the paper's rounding
     return ("value", src, float(val))
 
 
-def K(src, val):            # design constant from code / docs, compared exactly
+def K(src, val):            # design constant from code or records, compared exactly
     return ("const", src, float(val))
 
 
@@ -125,8 +147,8 @@ SPECS = [
     ("Most LSTM-based detectors end in a threshold", [mu3, mu3, LIT("Yu et al. 2024: precision with 3 sigma"),
                                                        LIT("Yu et al. 2024: precision with EVT")]),
     ("Ahmad \\cite{ahmad2026} & LSTM-AE", [mu3]),
-    ("Lee \\& Lin \\cite{lee2023repad2} & LSTM", [mu3, K("docs/decisions.md D-24 (RePAD2 W 1440 to 16128)",
-                                                         1440 if "1440 to 16128" in dec else -1)]),
+    ("Lee \\& Lin \\cite{lee2023repad2} & LSTM", [mu3, K("REPORT.md section 8 (RePAD2 windows 1,440 to 16,128)",
+                                                         1440 if "1,440 to 16,128" in rep else -1)]),
     ("This work & LSTM-AE", [V(DS + " evaluation", len(ds["evaluation"]))]),
     ("We use NAB \\cite{nab2024}", [V(F + " files", len(eda)), V(F + " sum n", eda.n.sum()),
                                     V(F + " sum n_windows", eda.n_windows.sum()),
@@ -146,7 +168,7 @@ SPECS = [
         V(F + " max pct_train_contaminated", lab.pct_train_contaminated.max()),
         V(F + " sum n_duplicate_ts", eda.n_duplicate_ts.sum()), V(F + " files with duplicates", (eda.n_duplicate_ts > 0).sum()),
         V(F + " files with irregular steps", (eda.n_irregular_steps > 0).sum()), V(F + " sum n_missing_steps", eda.n_missing_steps.sum())]),
-    ("\\caption{Position of every NAB anomaly window", split),
+    ("\\caption{Position of every NAB anomaly window", split + [V(DS + " evaluation", len(ds["evaluation"]))]),
     ("Min--max scaling to", [LAB("scaled range [0, 1] (pipeline/model.py MinMax)"), LAB("scaled range [0, 1]")]),
     ("Series are not resampled", [K("pipeline/model.py T", MD.T)]),
     ("All methods share one model", [
@@ -162,7 +184,7 @@ SPECS = [
         K("pipeline/thresholds.py EVT_TH_Q x100", 100 * TH.EVT_TH_Q), K("EVT_Q_GRID lower = 10^-5 (base)", 10),
         K("EVT_Q_GRID lower exponent", np.log10(TH.EVT_Q_GRID.min())), K("EVT_Q_GRID upper = 10^-3 (base)", 10),
         K("EVT_Q_GRID upper exponent", round(np.log10(TH.EVT_Q_GRID.max()))),
-        K("docs/decisions.md D-24 (eps in [1, 2))", 1), K("docs/decisions.md D-24 (eps in [1, 2))", 2)]),
+        K("Yu et al. 2024 Eq. 9 as printed (eps in [1, 2))", 1), K("Yu et al. 2024 Eq. 9 as printed (eps in [1, 2))", 2)]),
     ("\\item \\textbf{B3} \\cite{lee2023repad2}", [K("B3 k = 3 (pipeline/methods.py)", 3)]),
     ("The MAD is scaled by 1.4826", [
         K("pipeline/thresholds.py MAD_SCALE", TH.MAD_SCALE), LAB("illustration: lambda = 3"), LAB("illustration: 3 sigma"),
@@ -181,13 +203,13 @@ SPECS = [
         K("exponent", -11)]),
     ("Each test series is one unit", [
         V(HT + " H1 n_files", H("composite_f1").n_files), V(HT + " H2 n_files", H("hv_fpr").n_files),
-        K("docs/decisions.md D-26/D-28 alpha", 0.05), K("scripts/hypothesis_tests.py 95 % CI", 95),
-        LAB("date of the proposal (October 2026, D-28)"), K("docs/decisions.md D-28 H1 70 %", 70), K("docs/decisions.md D-28 H2 15 %", 15)]),
+        K("scripts/hypothesis_tests.py alpha (D-26, D-28)", 0.05), K("scripts/hypothesis_tests.py 95 % CI", 95),
+        LAB("date of the proposal (October 2026, D-28)"), K("proposal H1 70 % (D-28)", 70), K("proposal H2 15 % (D-28)", 15)]),
     ("All code, configuration, error series", [
-        K("docs/hardware.md CPU i5-13500H", 13500 if "13500H" in hw else -1),
-        V("docs/hardware.md RAM total", float(re.search(r"RAM total \| ([\d.]+) GB", hw).group(1))),
-        V("docs/env_pipeline.txt Python 3.12.4", float(re.search(r"Python (\d+\.\d+)", envtxt).group(1))),
-        V("docs/env_pipeline.txt torch 2.14.1", float(re.search(r"torch==(\d+\.\d+)", envtxt).group(1))),
+        K("results/environment/hardware.md CPU i5-13500H", 13500 if "13500H" in hw else -1),
+        V("results/environment/hardware.md RAM total", float(re.search(r"RAM total \| ([\d.]+) GB", hw).group(1))),
+        V("results/environment/pip_freeze.txt Python 3.12.4", float(re.search(r"Python (\d+\.\d+)", envtxt).group(1))),
+        V("results/environment/pip_freeze.txt torch 2.14.1", float(re.search(r"torch==(\d+\.\d+)", envtxt).group(1))),
         V(RS + " rows", len(run)), V(RS + " sum wall_seconds / 60", run.wall_seconds.sum() / 60)]),
     ("All 108 runs finished", [
         V(RS + " rows", len(run)), V(RS + " min epochs_run", run.epochs_run.min()), V(RS + " max epochs_run", run.epochs_run.max()),
@@ -195,13 +217,11 @@ SPECS = [
         V(RS + " min best_epoch", run.best_epoch.min()), V(RS + " max best_epoch among best <= 2", run.best_epoch[run.best_epoch <= 2].max()),
         V(TS + " roc_auc mean", ts.loc["Base", "roc_auc_mean"]), V(TS + " roc_auc sd", ts.loc["Base", "roc_auc_sd"]),
         V(TS + " pr_auc mean", ts.loc["Base", "pr_auc_mean"]), V(TS + " pr_auc sd", ts.loc["Base", "pr_auc_sd"])]),
-    ("\\caption{\\texttt{nyc\\_taxi}, seed 15: series", [LAB("seed 15")]),
     ("Validation selected $p = 90$", [
         V(SEL + " B1 p", sel_p["B1"]["p"]), V(SEL + " B2 k", sel_p["B2"]["k"]), V(SEL + " S-robust lam", sel_p["S-robust"]["lam"]),
         V(SEL + " B3 w", sel_p["B3"]["w"]), V(SEL + " B3-k k", sel_p["B3-k"]["k"]), V(SEL + " B3-k w", sel_p["B3-k"]["w"]),
         V(SEL + " P1 lam", sel_p["P1"]["lam"]), V(SEL + " P1 w", sel_p["P1"]["w"]), V(SEL + " B3-k k", sel_p["B3-k"]["k"]),
         V("results/phase3/r2_info.csv path == eq8", (r2.path == "eq8").sum()), V("results/phase3/r2_info.csv rows", len(r2))]),
-    ("\\caption{Validation composite F1 against each rule", [V(DS + " tuning", len(ds["tuning"])), K("seeds", 3)]),
     ("Table~\\ref{tab:test} gives the test results", [
         V(DD + " Base detected", dmean.loc["Base", "detected"]), V(DD + " n_windows", dmean.loc["Base", "n_windows"]),
         V(TS + " Base event_recall", ts.loc["Base", "event_recall_mean"]), V(TS + " Base composite_f1", ts.loc["Base", "composite_f1_mean"]),
@@ -212,7 +232,7 @@ SPECS = [
         V(TS + " B1 f1 (highest point F1)", ts.loc["B1", "f1_mean"] if ts.f1_mean.idxmax() == "B1" else -1),
         V(TS + " Base f1", ts.loc["Base", "f1_mean"]), V(TS + " B3 f1", ts.loc["B3", "f1_mean"]),
         V(TS + " P1 f1", ts.loc["P1", "f1_mean"])]),
-    ("\\caption{Test results on 18 evaluation series", [V(DS + " evaluation", len(ds["evaluation"])), V(DS + " clean_test", len(ds["clean_test"]))]),
+    ("\\caption{Test results on 18 evaluation series", [V(DS + " evaluation", len(ds["evaluation"])), LAB("column name FA/1k"), V(DS + " clean_test", len(ds["clean_test"]))]),
     ("Table~\\ref{tab:tests} summarises the confirmatory tests", [
         V(HT + " H1 mean_diff", H("composite_f1").mean_diff), K("95 % CI", 95), V(HT + " H1 ci95_low", H("composite_f1").ci95_low),
         V(HT + " H1 ci95_high", H("composite_f1").ci95_high), V(HT + " H1 wins", H("composite_f1").wins), V(HT + " H1 losses", H("composite_f1").losses),
@@ -227,9 +247,9 @@ SPECS = [
         V(PH + " H1 mean_P1 (point F1)", P("Proposal H1", "Base").mean_P1), V(PH + " H1 Base mean_baseline", P("Proposal H1", "Base").mean_baseline),
         V(PH + " H1 Base p", P("Proposal H1", "Base").p), V(PH + " H1 B3 wins", P("Proposal H1", "B3").wins),
         V(PH + " H1 mean_P1 (point F1)", P("Proposal H1", "B3").mean_P1), V(PH + " H1 B3 mean_baseline", P("Proposal H1", "B3").mean_baseline),
-        V(PH + " H1 B3 p", P("Proposal H1", "B3").p), K("docs/decisions.md D-28 (13 of 18)", 13),
+        V(PH + " H1 B3 p", P("Proposal H1", "B3").p), K("proposal H1: 70 % of 18 series rounded up (D-28)", int(np.ceil(0.7 * 18))),
         V(PH + " H2 Base relative_reduction x100", 100 * P("Proposal H2", "Base", "paired t-test").relative_reduction),
-        K("docs/decisions.md D-28 H2 15 %", 15),
+        K("proposal H2 15 % (D-28)", 15),
         V(PH + " H2 Base t-test p", P("Proposal H2", "Base", "paired t-test").p), V(PH + " H2 Base Wilcoxon p", P("Proposal H2", "Base", "Wilcoxon").p),
         V(PH + " H2 B3 relative increase x100", -100 * P("Proposal H2", "B3", "paired t-test").relative_reduction),
         V(PH + " H2 B3 t-test p", P("Proposal H2", "B3", "paired t-test").p), V(PH + " H2 B3 Wilcoxon p", P("Proposal H2", "B3", "Wilcoxon").p)]),
@@ -275,7 +295,6 @@ SPECS = [
     ("\\Input{error series $E_{f,s}$", [V(DS + " tuning", len(ds["tuning"])), V(DS + " evaluation", len(ds["evaluation"])),
                                         K("scripts/train.py SEEDS", 15), LAB("seeds 42, 123 (scripts/train.py SEEDS = [15, 42, 123])")]),
     ("over the 72 series", [V("results/phase3/tuning_candidates.csv series", cand.groupby(["file", "seed"]).ngroups)]),
-    ("\\caption{Relative delay of the first alarm", [V(DD + " n_windows", dmean.loc["Base", "n_windows"])]),
     ("Because four selections sat on a grid edge", [
         K("pipeline/methods.py WS_P1_EXPL", 10), K("WS_P1_EXPL", 20), K("WS_P1_EXPL", 30), K("WS_B3_EXPL", 600), K("WS_B3_EXPL", 800),
         K("EXPLORATORY B1 grid", 80), K("EXPLORATORY B1 grid", 85),
@@ -293,7 +312,8 @@ SPECS = [
         LAB("ratio threshold 1"), V("results/phase3/error_drift.csv n_files_ratio_above_1", edall.n_files_ratio_above_1)]),
     ("Robust statistics protect a threshold", [
         V(SEL + " P1 w", sel_p["P1"]["w"]), V(SEL + " P1 w", sel_p["P1"]["w"]), V(SEL + " B3 w", sel_p["B3"]["w"]), V(SEL + " B3 w", sel_p["B3"]["w"])]),
-    ("\\caption{Test segment of \\texttt{nyc\\_taxi}, seed 15", [LAB("seed 15")]),
+    ("\\caption{Masking in the rolling robust rule", [LAB("seed 15")] + [
+        V(TR + f" {m} alarms inside the last window", trace_alarms_last_window(m)) for m in ("P1", "B3", "Base")]),
     ("For an LSTM-AE monitor like the one in the base paper", [
         ("approx10", TS + " 1 - B3 fpr / Base fpr (x100, 'about')", 100 * (1 - ts.loc["B3", "fpr_mean"] / ts.loc["Base", "fpr_mean"])),
         V(TS + " R2 event_recall", ts.loc["R2", "event_recall_mean"]), V(TS + " roc_auc", ts.loc["Base", "roc_auc_mean"])]),
@@ -310,8 +330,8 @@ WORDS = [  # (phrase in the paper, number, source, value)
      sv[sv.detector != "null"].detector.nunique()),
     ("ten runs reached the 50-epoch cap", 10, RS + " epochs_run == 50", (run.epochs_run == 50).sum()),
     ("Five runs had their best epoch at 1 or 2", 5, RS + " best_epoch <= 2", (run.best_epoch <= 2).sum()),
-    ("Four selections lie on a grid edge", 4, "docs/phase3_thresholds.md (B1, B3, B3-k, P1)", 4),
-    ("tuning and test scoring took under three minutes", 3, "docs/phase3_thresholds.md tuning 135 s + test 6 s (minutes)", (135 + 6) / 60),
+    ("Four selections lie on a grid edge", 4, "selected_params.csv on the first or last value of the primary grid", sum(on_edge(m) for m in sel_p)),
+    ("tuning and test scoring took under three minutes", 3, "results/environment/run_times.md tuning + test (minutes)", (RT_TUNE + RT_TEST) / 60),
     ("over three seeds", 3, "scripts/train.py SEEDS", 3),
     ("the four static baselines (Base, B1, B2 and S-robust) each missed one", 4, DD + " methods with missed == 1 (Base, B1, B2, S-robust)",
      int((dmean.missed == 1).sum())),
@@ -395,7 +415,7 @@ def main() -> None:
           "Generated by `scripts/check_paper_numbers.py` from `paper/main.tex` (abstract to conclusion).",
           "Every numeric token of the text is listed with the file it comes from and the value",
           "recomputed from that file. `value` = recomputed from a saved result and compared at the",
-          "paper's number of decimals; `const` = design constant read from the code or docs, compared",
+          "paper's number of decimals; `const` = design constant read from the code or run records, compared",
           "exactly; `literature` = quoted from the cited paper (cannot be checked against our files);",
           "`label` = an identifier, not a measured quantity.", "",
           f"Summary: {len(df)} numeric tokens; {int((df.status == 'OK').sum())} OK, "
@@ -413,7 +433,7 @@ def main() -> None:
     md += [f"| {p} | {n} | {s} | {v} | {st} |" for p, n, s, v, st in wrows]
     md += ["", "## Numeric tokens", "", "| Line | Number | Kind | Source | Value in source | Status |", "|---|---|---|---|---|---|"]
     md += [f"| {r.line} | {r.number} | {r.kind} | {r.source} | {r.value_in_source} | {r.status} |" for r in df.itertuples()]
-    (ROOT / "docs/paper_number_check.md").write_text("\n".join(md) + "\n", encoding="utf-8")
+    (ROOT / "paper/number_check.md").write_text("\n".join(md) + "\n", encoding="utf-8")
     print(md[8])
     for r in df[df.status.isin(["MISMATCH", "UNMAPPED"])].itertuples():
         print("FLAG", r.line, r.number, r.source, r.value_in_source, r.status)

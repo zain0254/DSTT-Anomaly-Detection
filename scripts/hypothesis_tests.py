@@ -1,4 +1,4 @@
-"""Pre-registered hypothesis tests (docs/decisions.md D-26).
+"""Pre-registered hypothesis tests (REPORT.md section 18: D-26).
 
 Unit = file, metric averaged over the 3 seeds. Paired two-sided Wilcoxon
 signed-rank test (scipy, zero differences dropped), mean difference P1 - other

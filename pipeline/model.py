@@ -1,5 +1,5 @@
 """Shared LSTM autoencoder (base paper architecture, PyTorch CPU) and error
-extraction. See docs/decisions.md D-04, D-05, D-11 to D-13, D-23.
+extraction. See REPORT.md section 18: D-04, D-05, D-11 to D-13, D-23.
 
   encoder LSTM(64) -> last hidden state repeated T=30 times -> decoder LSTM(64)
   -> per-step Linear(64, 1)
