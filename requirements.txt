@@ -1,5 +1,5 @@
 # Pipeline environment (Python 3.12, Windows, PyTorch CPU build from PyPI).
-# Exact pins; full resolved set is in docs/env_pipeline.txt.
+# Exact pins; full resolved set is in results/environment/pip_freeze.txt.
 numpy==2.1.3
 pandas==2.2.3
 scipy==1.14.1

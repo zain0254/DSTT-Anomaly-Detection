@@ -11,7 +11,7 @@ Outputs in results/phase2_errors/:
                            epoch), best epoch, epochs run, run time, settings
   run_summary.csv          one row per finished pair (rebuilt at the end)
   failures.json            pairs that raised an error in the last run
-Log: logs/phase2_train.log
+Log: results/phase2_train.log
 
 Usage: envs/pipeline/Scripts/python.exe scripts/train.py [--threads 4] [--limit N]
 """
@@ -36,7 +36,7 @@ from pipeline.data import load_series, split_bounds  # noqa: E402
 
 SEEDS = [15, 42, 123]
 OUT = ROOT / "results" / "phase2_errors"
-LOG = ROOT / "logs" / "phase2_train.log"
+LOG = ROOT / "results" / "phase2_train.log"
 
 
 def file_id(name: str) -> str:

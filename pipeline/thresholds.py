@@ -12,7 +12,7 @@ Rolling rules (rolling_alarms), threshold at t from the w errors before t:
   kind="median_mad", mult=lam  P1, memory "plain" or "gated"
 
 All rules alarm when e(t) > threshold(t). Standard deviations use ddof=0.
-MAD is scaled by 1.4826. See docs/decisions.md D-08, D-09, D-14, D-15.
+MAD is scaled by 1.4826. See REPORT.md section 18: D-08, D-09, D-14, D-15.
 """
 from __future__ import annotations
 

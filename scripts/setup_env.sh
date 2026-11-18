@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Create the pipeline venv in envs/pipeline from requirements.txt and save the
-# resolved package list to docs/env_pipeline.txt.
+# resolved package list to results/environment/pip_freeze.txt.
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 ENV="$ROOT/envs/pipeline"
@@ -11,8 +11,9 @@ if [ -x "$ENV/Scripts/python.exe" ]; then VPY="$ENV/Scripts/python.exe"; else VP
 
 "$VPY" -m pip install -q --upgrade pip
 "$VPY" -m pip install -q -r "$ROOT/requirements.txt"
+mkdir -p "$ROOT/results/environment"
 {
   echo "# pip freeze of envs/pipeline, $("$VPY" --version)"
   "$VPY" -m pip freeze
-} > "$ROOT/docs/env_pipeline.txt"
+} > "$ROOT/results/environment/pip_freeze.txt"
 echo "env ready: $VPY"

@@ -1,5 +1,5 @@
 figure,width_in,height_in,min_font_pt
-fig05_windows_vs_split,7.16,4.5,6.5
-fig03_paired_per_file,7.16,2.55,6.5
-fig04_example_trace,3.5,3.9,7.0
-fig05_category_improvement,7.16,2.7,6.5
+fig1_windows_vs_split,7.16,4.5,6.5
+fig3_paired_per_file,7.16,2.55,6.5
+fig5_masking_example,3.5,3.9,7.0
+fig4_category_improvement,7.16,2.7,6.5

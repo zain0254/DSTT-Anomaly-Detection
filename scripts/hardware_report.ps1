@@ -1,4 +1,4 @@
-# Write docs/hardware.md (Windows) and print it.
+# Write results/environment/hardware.md (Windows) and print it.
 # Usage: powershell -ExecutionPolicy Bypass -File scripts/hardware_report.ps1
 $root = Split-Path -Parent $PSScriptRoot
 $os  = Get-CimInstance Win32_OperatingSystem
@@ -44,10 +44,11 @@ $lines += "| Free disk on $($disk.Name): | $([math]::Round($disk.Free/1GB,1)) GB
 $lines += ""
 $lines += "Notes"
 $lines += ""
-$lines += "- The pipeline uses the CPU build of PyTorch (docs/decisions.md D-12); the GPU is not used."
+$lines += "- The pipeline uses the CPU build of PyTorch; the GPU is not used."
 $lines += "- Free RAM varies with other programs; close them before long runs."
 
 $text = $lines -join "`n"
 $utf8 = New-Object System.Text.UTF8Encoding($false)
-[System.IO.File]::WriteAllText((Join-Path $root "docs\hardware.md"), $text + "`n", $utf8)
+New-Item -ItemType Directory -Force -Path (Join-Path $root "results\environment") | Out-Null
+[System.IO.File]::WriteAllText((Join-Path $root "results\environment\hardware.md"), $text + "`n", $utf8)
 Write-Output $text

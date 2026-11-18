@@ -1,7 +1,8 @@
 # Figures
 
-Every figure of the project, in one place. Each is stored as PNG (300 dpi)
-for viewing and PDF for print. Nothing here is drawn by hand: every figure is
+Every figure of the project, in one place (this folder replaces the former
+separate images repository). Each is stored as PNG (300 dpi) for viewing and
+PDF for print, except the paper previews, which are PNG only. Nothing here is drawn by hand: every figure is
 written by a script from saved results, and the script is named under each
 figure.
 
@@ -22,50 +23,50 @@ Contents: [Figures in the paper](#figures-in-the-paper) ·
 
 | Paper | File | Section of the paper |
 |---|---|---|
-| Fig. 1 | [paper/fig05_windows_vs_split.png](paper/fig05_windows_vs_split.png) | III. Data, file selection |
-| Fig. 2 | [paper/fig_pipeline.png](paper/fig_pipeline.png) (TikZ, drawn in `paper/main.tex`) | IV. Method |
-| Fig. 3 | [paper/fig03_paired_per_file.png](paper/fig03_paired_per_file.png) | VI. Results, hypothesis tests |
-| Fig. 4 | [paper/fig05_category_improvement.png](paper/fig05_category_improvement.png) | VI. Results, categories |
-| Fig. 5 | [paper/fig04_example_trace.png](paper/fig04_example_trace.png) | VII. Discussion, why robustness did not help |
+| Fig. 1 | [paper/fig1_windows_vs_split.png](paper/fig1_windows_vs_split.png) | III. Data, file selection |
+| Fig. 2 | [paper/fig2_pipeline.png](paper/fig2_pipeline.png) (TikZ, drawn in `paper/main.tex`) | IV. Method |
+| Fig. 3 | [paper/fig3_paired_per_file.png](paper/fig3_paired_per_file.png) | VI. Results, hypothesis tests |
+| Fig. 4 | [paper/fig4_category_improvement.png](paper/fig4_category_improvement.png) | VI. Results, categories |
+| Fig. 5 | [paper/fig5_masking_example.png](paper/fig5_masking_example.png) | VII. Discussion, why robustness did not help |
 
-The file names keep their phase numbers (for example `fig05_` in Phase 1 and
-in Phase 3), so the paper's numbering is given in the table above.
+Files in `paper/` are named by their figure number in the paper. Files in
+the phase folders keep the numbering of their phase.
 
 ### Fig. 1: where the anomaly windows fall relative to the split
 Only 18 series have a window in the test part (coloured names); these form
 the evaluation set.
 
-![Fig. 1](paper/fig05_windows_vs_split.png)
+![Fig. 1](paper/fig1_windows_vs_split.png)
 
 ### Fig. 2: pipeline
 One shared LSTM autoencoder produces the error e(t); the eight methods differ
 only in the threshold rule.
 
-![Fig. 2](paper/fig_pipeline.png)
+![Fig. 2](paper/fig2_pipeline.png)
 
 ### Fig. 3: P1 against Base and B3, per series
 Each point is one evaluation series (mean over 3 seeds). On composite F1, P1
 is worse than both on 13 of 18 series.
 
-![Fig. 3](paper/fig03_paired_per_file.png)
+![Fig. 3](paper/fig3_paired_per_file.png)
 
 ### Fig. 4: improvement of P1 per NAB category
 Descriptive only; categories hold 1 to 5 series.
 
-![Fig. 4](paper/fig05_category_improvement.png)
+![Fig. 4](paper/fig4_category_improvement.png)
 
 ### Fig. 5: the masking effect on nyc_taxi
 (a) the whole test segment, (b) the last anomaly window enlarged, (c) the
 alarms in (b). P1's threshold climbs with the anomaly, so only 1 error inside
 the window exceeds it, against 30 for B3 and 73 for Base.
 
-![Fig. 5](paper/fig04_example_trace.png)
+![Fig. 5](paper/fig5_masking_example.png)
 
 ---
 
 ## Phase 1: data
 
-Report: [docs/phase1_eda.md](../docs/phase1_eda.md).
+Explained in [REPORT.md, sections 3 to 5](../REPORT.md#3-the-data).
 
 **fig01_example_per_category**: one series per NAB category, anomaly windows
 shaded, split boundaries dashed.
@@ -101,7 +102,7 @@ inside anomaly windows (the model learns these as normal, by design).
 
 ## Phase 2: model
 
-Report: [docs/phase2_model.md](../docs/phase2_model.md).
+Explained in [REPORT.md, sections 6 and 7](../REPORT.md#6-the-model).
 
 **fig01_loss_curves**: training and early-stopping loss per epoch for four
 series (seed 15).
@@ -118,7 +119,7 @@ boundaries.
 
 ## Phase 3: thresholds and results
 
-Report: [docs/phase3_thresholds.md](../docs/phase3_thresholds.md).
+Explained in [REPORT.md, sections 8 to 13](../REPORT.md#8-the-eight-threshold-rules).
 
 **fig01_tuning_objective**: validation composite F1 against each rule's
 parameters; the selected values are circled.
