@@ -2,8 +2,8 @@
 
 **Does Robust Adaptive Thresholding Help LSTM Autoencoder Anomaly Detection?
 A Leakage-Free Evaluation on NAB**
-Zain Hassan and Muhammad Mateen Yaqoob, FAST-NUCES Islamabad. DSTT course
-project, MS Data Science, November 2026.
+Zain Hassan, FAST-NUCES Islamabad. DSTT semester project, MS Data Science,
+November 2026. Course instructor: Muhammad Mateen Yaqoob.
 
 This report explains every step of the project without assuming you have
 read the paper. Each section says what we did, why, and where the evidence
@@ -560,7 +560,7 @@ publisher paywalls but reachable by DOI.
 
 **Was AI used?** Yes, as the paper's ethics section states: AI tools helped
 with coding, literature search and editing. All experiments, numbers and
-conclusions were checked by the authors.
+conclusions were checked by the author.
 
 ## 18. Design decisions D-01 to D-29
 

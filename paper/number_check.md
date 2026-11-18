@@ -40,311 +40,311 @@ citation keys, section and figure references, and RQ/H labels.
 
 | Line | Number | Kind | Source | Value in source | Status |
 |---|---|---|---|---|---|
-| 55 | 60 | value | pipeline/data.py SPLIT | 60 | OK |
-| 55 | 20 | value | pipeline/data.py SPLIT | 20 | OK |
-| 55 | 20 | value | pipeline/data.py SPLIT | 20 | OK |
-| 55 | 18 | value | configs/datasets.json evaluation | 18 | OK |
-| 55 | 18.9 | value | results/phase3/test_summary.csv Base fpr x100 | 18.907 | OK |
-| 55 | 1.8 | value | results/phase3/test_summary.csv B3 fpr x100 | 1.826 | OK |
-| 55 | 3.5 | value | results/phase3/test_summary.csv P1 fpr x100 | 3.469 | OK |
-| 55 | 0.544 | value | results/phase3/test_summary.csv P1 composite_f1 | 0.54371 | OK |
-| 55 | 0.733 | value | results/phase3/test_summary.csv Base composite_f1 | 0.73331 | OK |
-| 55 | 0.035 | value | results/phase3/hypothesis_tests.csv H1 primary p | 0.03516 | OK |
-| 68 | 3 | const | Base rule, mean + 3 sd (D-03; thresholds.base_threshold) | 3 | OK |
-| 76 | 3 | const | Base rule, mean + 3 sd (D-03; thresholds.base_threshold) | 3 | OK |
-| 80 | 3 | const | Base rule, mean + 3 sd (D-03; thresholds.base_threshold) | 3 | OK |
-| 87 | 71 | literature | Schmidl et al. 2022: 71 algorithms |  | n/a |
-| 87 | 967 | literature | Schmidl et al. 2022: 967 series |  | n/a |
-| 90 | 3 | const | Base rule, mean + 3 sd (D-03; thresholds.base_threshold) | 3 | OK |
-| 90 | 3 | const | Base rule, mean + 3 sd (D-03; thresholds.base_threshold) | 3 | OK |
-| 90 | 85.8 | literature | Yu et al. 2024: precision with 3 sigma |  | n/a |
-| 90 | 92.4 | literature | Yu et al. 2024: precision with EVT |  | n/a |
-| 102 | 3 | const | Base rule, mean + 3 sd (D-03; thresholds.base_threshold) | 3 | OK |
-| 103 | 3 | const | Base rule, mean + 3 sd (D-03; thresholds.base_threshold) | 3 | OK |
-| 103 | 1440 | const | REPORT.md section 8 (RePAD2 windows 1,440 to 16,128) | 1,440 | OK |
-| 106 | 18 | value | configs/datasets.json evaluation | 18 | OK |
-| 119 | 58 | value | results/phase1_eda/file_summary.csv files | 58 | OK |
-| 119 | 365,558 | value | results/phase1_eda/file_summary.csv sum n | 365,558 | OK |
-| 119 | 116 | value | results/phase1_eda/file_summary.csv sum n_windows | 116 | OK |
-| 119 | 9.16 | value | results/phase1_eda/category_summary.csv labelled share % | 9.1627 | OK |
-| 122 | 60 | value | pipeline/data.py SPLIT | 60 | OK |
-| 122 | 20 | value | pipeline/data.py SPLIT | 20 | OK |
-| 122 | 20 | value | pipeline/data.py SPLIT | 20 | OK |
-| 122 | 116 | value | results/phase1_eda/file_summary.csv sum n_windows | 116 | OK |
-| 122 | 65 | value | results/phase1_eda/file_summary.csv windows_train | 65 | OK |
-| 122 | 31 | value | results/phase1_eda/file_summary.csv windows_val | 31 | OK |
-| 122 | 25 | value | results/phase1_eda/file_summary.csv windows_test | 25 | OK |
-| 122 | 18 | value | results/phase1_eda/file_summary.csv files with windows_test > 0 | 18 | OK |
-| 122 | 18 | value | configs/datasets.json evaluation | 18 | OK |
-| 122 | 25 | value | results/phase1_eda/file_summary.csv windows_test (evaluation files) | 25 | OK |
-| 122 | 24 | value | configs/datasets.json tuning | 24 | OK |
-| 122 | 18 | value | configs/datasets.json clean_test | 18 | OK |
-| 122 | 36 | value | configs/datasets.json model_files | 36 | OK |
-| 124 | 38 | value | results/phase1_eda/file_summary.csv labelled files with labelled_train > 0 | 38 | OK |
-| 124 | 52 | value | results/phase1_eda/file_summary.csv labelled files | 52 | OK |
-| 124 | 8.48 | value | results/phase1_eda/file_summary.csv labelled_train / len_train % | 8.4849 | OK |
-| 124 | 8.33 | value | results/phase1_eda/file_summary.csv median pct_train_contaminated (labelled) | 8.3275 | OK |
-| 124 | 16.91 | value | results/phase1_eda/file_summary.csv max pct_train_contaminated | 16.9128 | OK |
-| 124 | 49 | value | results/phase1_eda/file_summary.csv sum n_duplicate_ts | 49 | OK |
-| 124 | 8 | value | results/phase1_eda/file_summary.csv files with duplicates | 8 | OK |
-| 124 | 25 | value | results/phase1_eda/file_summary.csv files with irregular steps | 25 | OK |
-| 124 | 27,625 | value | results/phase1_eda/file_summary.csv sum n_missing_steps | 27,625 | OK |
-| 129 | 60 | value | pipeline/data.py SPLIT | 60 | OK |
-| 129 | 20 | value | pipeline/data.py SPLIT | 20 | OK |
-| 129 | 20 | value | pipeline/data.py SPLIT | 20 | OK |
-| 129 | 18 | value | configs/datasets.json evaluation | 18 | OK |
-| 136 | 0 | label | scaled range [0, 1] (pipeline/model.py MinMax) |  | n/a |
-| 136 | 1 | label | scaled range [0, 1] |  | n/a |
-| 138 | 30 | const | pipeline/model.py T | 30 | OK |
-| 150 | 2 | label | TikZ layout |  | n/a |
-| 150 | 1.05 | label | TikZ layout |  | n/a |
-| 150 | 3 | label | TikZ layout |  | n/a |
-| 151 | 8 | label | TikZ colour mix |  | n/a |
-| 151 | 1.6 | label | TikZ layout |  | n/a |
-| 152 | 10 | label | TikZ colour mix |  | n/a |
-| 153 | 12 | label | TikZ colour mix |  | n/a |
-| 154 | 2 | label | TikZ layout |  | n/a |
-| 155 | 0.42 | label | TikZ layout |  | n/a |
+| 49 | 60 | value | pipeline/data.py SPLIT | 60 | OK |
+| 49 | 20 | value | pipeline/data.py SPLIT | 20 | OK |
+| 49 | 20 | value | pipeline/data.py SPLIT | 20 | OK |
+| 49 | 18 | value | configs/datasets.json evaluation | 18 | OK |
+| 49 | 18.9 | value | results/phase3/test_summary.csv Base fpr x100 | 18.907 | OK |
+| 49 | 1.8 | value | results/phase3/test_summary.csv B3 fpr x100 | 1.826 | OK |
+| 49 | 3.5 | value | results/phase3/test_summary.csv P1 fpr x100 | 3.469 | OK |
+| 49 | 0.544 | value | results/phase3/test_summary.csv P1 composite_f1 | 0.54371 | OK |
+| 49 | 0.733 | value | results/phase3/test_summary.csv Base composite_f1 | 0.73331 | OK |
+| 49 | 0.035 | value | results/phase3/hypothesis_tests.csv H1 primary p | 0.03516 | OK |
+| 62 | 3 | const | Base rule, mean + 3 sd (D-03; thresholds.base_threshold) | 3 | OK |
+| 70 | 3 | const | Base rule, mean + 3 sd (D-03; thresholds.base_threshold) | 3 | OK |
+| 74 | 3 | const | Base rule, mean + 3 sd (D-03; thresholds.base_threshold) | 3 | OK |
+| 81 | 71 | literature | Schmidl et al. 2022: 71 algorithms |  | n/a |
+| 81 | 967 | literature | Schmidl et al. 2022: 967 series |  | n/a |
+| 84 | 3 | const | Base rule, mean + 3 sd (D-03; thresholds.base_threshold) | 3 | OK |
+| 84 | 3 | const | Base rule, mean + 3 sd (D-03; thresholds.base_threshold) | 3 | OK |
+| 84 | 85.8 | literature | Yu et al. 2024: precision with 3 sigma |  | n/a |
+| 84 | 92.4 | literature | Yu et al. 2024: precision with EVT |  | n/a |
+| 96 | 3 | const | Base rule, mean + 3 sd (D-03; thresholds.base_threshold) | 3 | OK |
+| 97 | 3 | const | Base rule, mean + 3 sd (D-03; thresholds.base_threshold) | 3 | OK |
+| 97 | 1440 | const | REPORT.md section 8 (RePAD2 windows 1,440 to 16,128) | 1,440 | OK |
+| 100 | 18 | value | configs/datasets.json evaluation | 18 | OK |
+| 113 | 58 | value | results/phase1_eda/file_summary.csv files | 58 | OK |
+| 113 | 365,558 | value | results/phase1_eda/file_summary.csv sum n | 365,558 | OK |
+| 113 | 116 | value | results/phase1_eda/file_summary.csv sum n_windows | 116 | OK |
+| 113 | 9.16 | value | results/phase1_eda/category_summary.csv labelled share % | 9.1627 | OK |
+| 116 | 60 | value | pipeline/data.py SPLIT | 60 | OK |
+| 116 | 20 | value | pipeline/data.py SPLIT | 20 | OK |
+| 116 | 20 | value | pipeline/data.py SPLIT | 20 | OK |
+| 116 | 116 | value | results/phase1_eda/file_summary.csv sum n_windows | 116 | OK |
+| 116 | 65 | value | results/phase1_eda/file_summary.csv windows_train | 65 | OK |
+| 116 | 31 | value | results/phase1_eda/file_summary.csv windows_val | 31 | OK |
+| 116 | 25 | value | results/phase1_eda/file_summary.csv windows_test | 25 | OK |
+| 116 | 18 | value | results/phase1_eda/file_summary.csv files with windows_test > 0 | 18 | OK |
+| 116 | 18 | value | configs/datasets.json evaluation | 18 | OK |
+| 116 | 25 | value | results/phase1_eda/file_summary.csv windows_test (evaluation files) | 25 | OK |
+| 116 | 24 | value | configs/datasets.json tuning | 24 | OK |
+| 116 | 18 | value | configs/datasets.json clean_test | 18 | OK |
+| 116 | 36 | value | configs/datasets.json model_files | 36 | OK |
+| 118 | 38 | value | results/phase1_eda/file_summary.csv labelled files with labelled_train > 0 | 38 | OK |
+| 118 | 52 | value | results/phase1_eda/file_summary.csv labelled files | 52 | OK |
+| 118 | 8.48 | value | results/phase1_eda/file_summary.csv labelled_train / len_train % | 8.4849 | OK |
+| 118 | 8.33 | value | results/phase1_eda/file_summary.csv median pct_train_contaminated (labelled) | 8.3275 | OK |
+| 118 | 16.91 | value | results/phase1_eda/file_summary.csv max pct_train_contaminated | 16.9128 | OK |
+| 118 | 49 | value | results/phase1_eda/file_summary.csv sum n_duplicate_ts | 49 | OK |
+| 118 | 8 | value | results/phase1_eda/file_summary.csv files with duplicates | 8 | OK |
+| 118 | 25 | value | results/phase1_eda/file_summary.csv files with irregular steps | 25 | OK |
+| 118 | 27,625 | value | results/phase1_eda/file_summary.csv sum n_missing_steps | 27,625 | OK |
+| 123 | 60 | value | pipeline/data.py SPLIT | 60 | OK |
+| 123 | 20 | value | pipeline/data.py SPLIT | 20 | OK |
+| 123 | 20 | value | pipeline/data.py SPLIT | 20 | OK |
+| 123 | 18 | value | configs/datasets.json evaluation | 18 | OK |
+| 130 | 0 | label | scaled range [0, 1] (pipeline/model.py MinMax) |  | n/a |
+| 130 | 1 | label | scaled range [0, 1] |  | n/a |
+| 132 | 30 | const | pipeline/model.py T | 30 | OK |
+| 144 | 2 | label | TikZ layout |  | n/a |
+| 144 | 1.05 | label | TikZ layout |  | n/a |
+| 144 | 3 | label | TikZ layout |  | n/a |
+| 145 | 8 | label | TikZ colour mix |  | n/a |
+| 145 | 1.6 | label | TikZ layout |  | n/a |
+| 146 | 10 | label | TikZ colour mix |  | n/a |
+| 147 | 12 | label | TikZ colour mix |  | n/a |
+| 148 | 2 | label | TikZ layout |  | n/a |
+| 149 | 0.42 | label | TikZ layout |  | n/a |
+| 152 | 30 | const | pipeline/model.py T | 30 | OK |
+| 152 | 1 | label | univariate input dimension 1 |  | n/a |
+| 153 | 0.55 | label | TikZ layout |  | n/a |
+| 153 | 64 | const | pipeline/model.py HIDDEN | 64 | OK |
+| 154 | 1.1 | label | TikZ layout |  | n/a |
+| 154 | 64 | const | pipeline/model.py HIDDEN (encoder state) | 64 | OK |
+| 155 | 30 | const | pipeline/model.py T | 30 | OK |
+| 156 | 64 | const | pipeline/model.py HIDDEN | 64 | OK |
+| 158 | 0.75 | label | TikZ layout |  | n/a |
+| 158 | 1 | label | fraction 1/T |  | n/a |
 | 158 | 30 | const | pipeline/model.py T | 30 | OK |
-| 158 | 1 | label | univariate input dimension 1 |  | n/a |
-| 159 | 0.55 | label | TikZ layout |  | n/a |
-| 159 | 64 | const | pipeline/model.py HIDDEN | 64 | OK |
-| 160 | 1.1 | label | TikZ layout |  | n/a |
-| 160 | 64 | const | pipeline/model.py HIDDEN (encoder state) | 64 | OK |
-| 161 | 30 | const | pipeline/model.py T | 30 | OK |
-| 162 | 64 | const | pipeline/model.py HIDDEN | 64 | OK |
-| 164 | 0.75 | label | TikZ layout |  | n/a |
-| 164 | 1 | label | fraction 1/T |  | n/a |
-| 164 | 30 | const | pipeline/model.py T | 30 | OK |
-| 165 | 0.6 | label | TikZ layout |  | n/a |
-| 165 | 4.6 | label | TikZ layout |  | n/a |
-| 166 | 0.6 | label | TikZ layout |  | n/a |
-| 167 | 0.6 | label | TikZ layout |  | n/a |
-| 173 | 5 | label | TikZ layout |  | n/a |
-| 174 | 50,497 | value | results/phase2_errors/*.json n_params | 50,497 | OK |
-| 182 | 64 | const | pipeline/model.py HIDDEN | 64 | OK |
-| 182 | 64 | const | pipeline/model.py HIDDEN | 64 | OK |
-| 182 | 50,497 | value | results/phase2_errors/*.json n_params | 50,497 | OK |
-| 182 | 30 | const | pipeline/model.py T | 30 | OK |
-| 182 | 10 | const | pipeline/model.py LR = 10^-3 (base) | 10 | OK |
-| 182 | -3 | const | pipeline/model.py LR exponent | -3 | OK |
-| 182 | 32 | const | pipeline/model.py BATCH | 32 | OK |
-| 182 | 50 | const | pipeline/model.py MAX_EPOCHS | 50 | OK |
-| 182 | 5 | const | pipeline/model.py PATIENCE | 5 | OK |
-| 182 | 10 | const | pipeline/model.py HOLDOUT x100 | 10 | OK |
-| 182 | 36 | value | configs/datasets.json model_files | 36 | OK |
-| 182 | 15 | const | scripts/train.py SEEDS | 15 | OK |
-| 182 | 42 | const | scripts/train.py SEEDS | 42 | OK |
-| 182 | 123 | const | scripts/train.py SEEDS | 123 | OK |
-| 182 | 108 | value | results/phase2_errors/run_summary.csv rows | 108 | OK |
-| 187 | 3 | const | Base rule, mean + 3 sd (D-03; thresholds.base_threshold) | 3 | OK |
-| 191 | 98 | const | pipeline/thresholds.py EVT_TH_Q x100 | 98 | OK |
-| 191 | 10 | const | EVT_Q_GRID lower = 10^-5 (base) | 10 | OK |
-| 191 | -5 | const | EVT_Q_GRID lower exponent | -5 | OK |
-| 191 | 10 | const | EVT_Q_GRID upper = 10^-3 (base) | 10 | OK |
-| 191 | -3 | const | EVT_Q_GRID upper exponent | -3 | OK |
-| 191 | 1 | const | Yu et al. 2024 Eq. 9 as printed (eps in [1, 2)) | 1 | OK |
-| 191 | 2 | const | Yu et al. 2024 Eq. 9 as printed (eps in [1, 2)) | 2 | OK |
-| 192 | 3 | const | B3 k = 3 (pipeline/methods.py) | 3 | OK |
-| 196 | 1.4826 | const | pipeline/thresholds.py MAD_SCALE | 1.482600 | OK |
-| 196 | 3 | label | illustration: lambda = 3 |  | n/a |
-| 196 | 3 | label | illustration: 3 sigma |  | n/a |
-| 196 | 0.1 | const | pipeline/thresholds.py FLOOR_FACTOR | 0.100 | OK |
-| 196 | 0.1 | const | pipeline/thresholds.py FLOOR_FACTOR | 0.100 | OK |
-| 196 | 10 | const | FLOOR_MIN = 10^-6 (base) | 10 | OK |
-| 196 | -6 | const | FLOOR_MIN exponent | -6 | OK |
-| 201 | 1 | label | index |  | n/a |
-| 202 | 1 | label | index |  | n/a |
-| 202 | 1 | label | index |  | n/a |
-| 203 | 1 | label | index |  | n/a |
-| 205 | 1 | label | index |  | n/a |
-| 206 | 1.4826 | const | pipeline/thresholds.py MAD_SCALE | 1.482600 | OK |
-| 209 | 1 | label | alarm indicator |  | n/a |
-| 215 | 0 | label | alarm indicator |  | n/a |
-| 224 | 24 | value | configs/datasets.json tuning | 24 | OK |
-| 224 | 90 | const | pipeline/methods.py B1 grid | 90 | OK |
-| 224 | 95 | const | pipeline/methods.py B1 grid | 95 | OK |
-| 224 | 97 | const | pipeline/methods.py B1 grid | 97 | OK |
-| 224 | 98 | const | pipeline/methods.py B1 grid | 98 | OK |
-| 224 | 99 | const | pipeline/methods.py B1 grid | 99 | OK |
-| 224 | 99.5 | const | pipeline/methods.py B1 grid | 99.500 | OK |
-| 224 | 99.9 | const | pipeline/methods.py B1 grid | 99.900 | OK |
-| 224 | 1 | const | pipeline/methods.py B2 grid | 1 | OK |
-| 224 | 1.5 | const | pipeline/methods.py B2 grid | 1.500 | OK |
-| 224 | 2 | const | pipeline/methods.py B2 grid | 2 | OK |
-| 224 | 2.5 | const | pipeline/methods.py B2 grid | 2.500 | OK |
-| 224 | 3 | const | pipeline/methods.py B2 grid | 3 | OK |
-| 224 | 4 | const | pipeline/methods.py B2 grid | 4 | OK |
-| 224 | 5 | const | pipeline/methods.py B2 grid | 5 | OK |
-| 224 | 6 | const | pipeline/methods.py B2 grid | 6 | OK |
-| 224 | 8 | const | pipeline/methods.py B2 grid | 8 | OK |
-| 224 | 2 | const | pipeline/methods.py LAMBDAS | 2 | OK |
-| 224 | 3 | const | pipeline/methods.py LAMBDAS | 3 | OK |
-| 224 | 4 | const | pipeline/methods.py LAMBDAS | 4 | OK |
-| 224 | 5 | const | pipeline/methods.py LAMBDAS | 5 | OK |
-| 224 | 6 | const | pipeline/methods.py LAMBDAS | 6 | OK |
-| 224 | 8 | const | pipeline/methods.py LAMBDAS | 8 | OK |
-| 224 | 10 | const | pipeline/methods.py LAMBDAS | 10 | OK |
-| 224 | 12 | const | pipeline/methods.py LAMBDAS | 12 | OK |
-| 224 | 15 | const | pipeline/methods.py LAMBDAS | 15 | OK |
-| 224 | 20 | const | pipeline/methods.py LAMBDAS | 20 | OK |
-| 224 | 50 | const | pipeline/methods.py WS | 50 | OK |
-| 224 | 100 | const | pipeline/methods.py WS | 100 | OK |
-| 224 | 200 | const | pipeline/methods.py WS | 200 | OK |
-| 224 | 400 | const | pipeline/methods.py WS | 400 | OK |
-| 224 | 152 | value | results/phase3/tuning_candidates.csv rows per series | 152 | OK |
-| 224 | 72 | value | results/phase3/tuning_candidates.csv series | 72 | OK |
-| 224 | 10,944 | value | results/phase3/tuning_candidates.csv rows | 10,944 | OK |
-| 229 | 24 | value | configs/datasets.json tuning | 24 | OK |
-| 229 | 18 | value | configs/datasets.json evaluation | 18 | OK |
-| 229 | 15 | const | scripts/train.py SEEDS | 15 | OK |
-| 229 | 42,123 | label | seeds 42, 123 (scripts/train.py SEEDS = [15, 42, 123]) |  | n/a |
-| 237 | 72 | value | results/phase3/tuning_candidates.csv series | 72 | OK |
-| 252 | 50 | const | pipeline/metrics.py high_variance_mask roll | 50 | OK |
-| 252 | 75 | const | pipeline/metrics.py high_variance_mask pct | 75 | OK |
-| 252 | 1,000 | label | unit: per 1,000 points |  | n/a |
-| 252 | 5.0 | value | results/scorer_validation.csv max max_file_abs_diff (mantissa) | 4.982 | OK |
-| 252 | -12 | const | exponent | -12 | OK |
-| 252 | 1.9 | value | results/scorer_validation.csv max normalised_abs_diff (mantissa) | 1.945 | OK |
-| 252 | -11 | const | exponent | -11 | OK |
-| 255 | 18 | value | results/phase3/hypothesis_tests.csv H1 n_files | 18 | OK |
-| 255 | 17 | value | results/phase3/hypothesis_tests.csv H2 n_files | 17 | OK |
-| 255 | 0.05 | const | scripts/hypothesis_tests.py alpha (D-26, D-28) | 0.0500 | OK |
-| 255 | 95 | const | scripts/hypothesis_tests.py 95 % CI | 95 | OK |
-| 255 | 2026 | label | date of the proposal (October 2026, D-28) |  | n/a |
-| 255 | 70 | const | proposal H1 70 % (D-28) | 70 | OK |
-| 255 | 15 | const | proposal H2 15 % (D-28) | 15 | OK |
-| 258 | 13500 | const | results/environment/hardware.md CPU i5-13500H | 13,500 | OK |
-| 258 | 15.7 | value | results/environment/hardware.md RAM total | 15.700 | OK |
-| 258 | 3.12 | value | results/environment/pip_freeze.txt Python 3.12.4 | 3.1200 | OK |
-| 258 | 2.14 | value | results/environment/pip_freeze.txt torch 2.14.1 | 2.1400 | OK |
-| 258 | 108 | value | results/phase2_errors/run_summary.csv rows | 108 | OK |
-| 258 | 47.5 | value | results/phase2_errors/run_summary.csv sum wall_seconds / 60 | 47.454 | OK |
-| 265 | 108 | value | results/phase2_errors/run_summary.csv rows | 108 | OK |
-| 265 | 6 | value | results/phase2_errors/run_summary.csv min epochs_run | 6 | OK |
-| 265 | 50 | value | results/phase2_errors/run_summary.csv max epochs_run | 50 | OK |
-| 265 | 20 | value | results/phase2_errors/run_summary.csv median epochs_run | 20 | OK |
-| 265 | 50 | const | pipeline/model.py MAX_EPOCHS | 50 | OK |
-| 265 | 1 | value | results/phase2_errors/run_summary.csv min best_epoch | 1 | OK |
-| 265 | 2 | value | results/phase2_errors/run_summary.csv max best_epoch among best <= 2 | 2 | OK |
-| 265 | 0.633 | value | results/phase3/test_summary.csv roc_auc mean | 0.63251 | OK |
-| 265 | 0.003 | value | results/phase3/test_summary.csv roc_auc sd | 0.00317 | OK |
-| 265 | 0.497 | value | results/phase3/test_summary.csv pr_auc mean | 0.49721 | OK |
-| 265 | 0.011 | value | results/phase3/test_summary.csv pr_auc sd | 0.01084 | OK |
-| 268 | 90 | value | results/phase3/selected_params.csv B1 p | 90 | OK |
-| 268 | 2.5 | value | results/phase3/selected_params.csv B2 k | 2.500 | OK |
-| 268 | 5 | value | results/phase3/selected_params.csv S-robust lam | 5 | OK |
-| 268 | 400 | value | results/phase3/selected_params.csv B3 w | 400 | OK |
-| 268 | 3 | value | results/phase3/selected_params.csv B3-k k | 3 | OK |
-| 268 | 400 | value | results/phase3/selected_params.csv B3-k w | 400 | OK |
-| 268 | 6 | value | results/phase3/selected_params.csv P1 lam | 6 | OK |
-| 268 | 50 | value | results/phase3/selected_params.csv P1 w | 50 | OK |
-| 268 | 3 | value | results/phase3/selected_params.csv B3-k k | 3 | OK |
-| 268 | 104 | value | results/phase3/r2_info.csv path == eq8 | 104 | OK |
-| 268 | 108 | value | results/phase3/r2_info.csv rows | 108 | OK |
-| 271 | 24 | value | results/phase3/detection_delay.csv Base detected | 24 | OK |
-| 271 | 25 | value | results/phase3/detection_delay.csv n_windows | 25 | OK |
-| 271 | 0.972 | value | results/phase3/test_summary.csv Base event_recall | 0.97222 | OK |
-| 271 | 0.733 | value | results/phase3/test_summary.csv Base composite_f1 | 0.73331 | OK |
-| 271 | 18.9 | value | results/phase3/test_summary.csv Base fpr x100 | 18.907 | OK |
-| 271 | 0.189 | value | results/phase3/test_summary.csv Base fpr | 0.18907 | OK |
-| 271 | 0.018 | value | results/phase3/test_summary.csv B3 fpr | 0.01826 | OK |
-| 271 | 0.035 | value | results/phase3/test_summary.csv P1 fpr | 0.03469 | OK |
-| 271 | 0.743 | value | results/phase3/test_summary.csv B3 composite_f1 | 0.74285 | OK |
-| 271 | 0.544 | value | results/phase3/test_summary.csv P1 composite_f1 | 0.54371 | OK |
-| 271 | 0.769 | value | results/phase3/test_summary.csv P1 event_recall | 0.76852 | OK |
-| 271 | 0.490 | value | results/phase3/test_summary.csv P1 precision | 0.48959 | OK |
-| 271 | 0.407 | value | results/phase3/test_summary.csv B1 f1 (highest point F1) | 0.40671 | OK |
-| 271 | 0.355 | value | results/phase3/test_summary.csv Base f1 | 0.35506 | OK |
-| 271 | 0.207 | value | results/phase3/test_summary.csv B3 f1 | 0.20723 | OK |
-| 271 | 0.161 | value | results/phase3/test_summary.csv P1 f1 | 0.16108 | OK |
+| 159 | 0.6 | label | TikZ layout |  | n/a |
+| 159 | 4.6 | label | TikZ layout |  | n/a |
+| 160 | 0.6 | label | TikZ layout |  | n/a |
+| 161 | 0.6 | label | TikZ layout |  | n/a |
+| 167 | 5 | label | TikZ layout |  | n/a |
+| 168 | 50,497 | value | results/phase2_errors/*.json n_params | 50,497 | OK |
+| 176 | 64 | const | pipeline/model.py HIDDEN | 64 | OK |
+| 176 | 64 | const | pipeline/model.py HIDDEN | 64 | OK |
+| 176 | 50,497 | value | results/phase2_errors/*.json n_params | 50,497 | OK |
+| 176 | 30 | const | pipeline/model.py T | 30 | OK |
+| 176 | 10 | const | pipeline/model.py LR = 10^-3 (base) | 10 | OK |
+| 176 | -3 | const | pipeline/model.py LR exponent | -3 | OK |
+| 176 | 32 | const | pipeline/model.py BATCH | 32 | OK |
+| 176 | 50 | const | pipeline/model.py MAX_EPOCHS | 50 | OK |
+| 176 | 5 | const | pipeline/model.py PATIENCE | 5 | OK |
+| 176 | 10 | const | pipeline/model.py HOLDOUT x100 | 10 | OK |
+| 176 | 36 | value | configs/datasets.json model_files | 36 | OK |
+| 176 | 15 | const | scripts/train.py SEEDS | 15 | OK |
+| 176 | 42 | const | scripts/train.py SEEDS | 42 | OK |
+| 176 | 123 | const | scripts/train.py SEEDS | 123 | OK |
+| 176 | 108 | value | results/phase2_errors/run_summary.csv rows | 108 | OK |
+| 181 | 3 | const | Base rule, mean + 3 sd (D-03; thresholds.base_threshold) | 3 | OK |
+| 185 | 98 | const | pipeline/thresholds.py EVT_TH_Q x100 | 98 | OK |
+| 185 | 10 | const | EVT_Q_GRID lower = 10^-5 (base) | 10 | OK |
+| 185 | -5 | const | EVT_Q_GRID lower exponent | -5 | OK |
+| 185 | 10 | const | EVT_Q_GRID upper = 10^-3 (base) | 10 | OK |
+| 185 | -3 | const | EVT_Q_GRID upper exponent | -3 | OK |
+| 185 | 1 | const | Yu et al. 2024 Eq. 9 as printed (eps in [1, 2)) | 1 | OK |
+| 185 | 2 | const | Yu et al. 2024 Eq. 9 as printed (eps in [1, 2)) | 2 | OK |
+| 186 | 3 | const | B3 k = 3 (pipeline/methods.py) | 3 | OK |
+| 190 | 1.4826 | const | pipeline/thresholds.py MAD_SCALE | 1.482600 | OK |
+| 190 | 3 | label | illustration: lambda = 3 |  | n/a |
+| 190 | 3 | label | illustration: 3 sigma |  | n/a |
+| 190 | 0.1 | const | pipeline/thresholds.py FLOOR_FACTOR | 0.100 | OK |
+| 190 | 0.1 | const | pipeline/thresholds.py FLOOR_FACTOR | 0.100 | OK |
+| 190 | 10 | const | FLOOR_MIN = 10^-6 (base) | 10 | OK |
+| 190 | -6 | const | FLOOR_MIN exponent | -6 | OK |
+| 195 | 1 | label | index |  | n/a |
+| 196 | 1 | label | index |  | n/a |
+| 196 | 1 | label | index |  | n/a |
+| 197 | 1 | label | index |  | n/a |
+| 199 | 1 | label | index |  | n/a |
+| 200 | 1.4826 | const | pipeline/thresholds.py MAD_SCALE | 1.482600 | OK |
+| 203 | 1 | label | alarm indicator |  | n/a |
+| 209 | 0 | label | alarm indicator |  | n/a |
+| 218 | 24 | value | configs/datasets.json tuning | 24 | OK |
+| 218 | 90 | const | pipeline/methods.py B1 grid | 90 | OK |
+| 218 | 95 | const | pipeline/methods.py B1 grid | 95 | OK |
+| 218 | 97 | const | pipeline/methods.py B1 grid | 97 | OK |
+| 218 | 98 | const | pipeline/methods.py B1 grid | 98 | OK |
+| 218 | 99 | const | pipeline/methods.py B1 grid | 99 | OK |
+| 218 | 99.5 | const | pipeline/methods.py B1 grid | 99.500 | OK |
+| 218 | 99.9 | const | pipeline/methods.py B1 grid | 99.900 | OK |
+| 218 | 1 | const | pipeline/methods.py B2 grid | 1 | OK |
+| 218 | 1.5 | const | pipeline/methods.py B2 grid | 1.500 | OK |
+| 218 | 2 | const | pipeline/methods.py B2 grid | 2 | OK |
+| 218 | 2.5 | const | pipeline/methods.py B2 grid | 2.500 | OK |
+| 218 | 3 | const | pipeline/methods.py B2 grid | 3 | OK |
+| 218 | 4 | const | pipeline/methods.py B2 grid | 4 | OK |
+| 218 | 5 | const | pipeline/methods.py B2 grid | 5 | OK |
+| 218 | 6 | const | pipeline/methods.py B2 grid | 6 | OK |
+| 218 | 8 | const | pipeline/methods.py B2 grid | 8 | OK |
+| 218 | 2 | const | pipeline/methods.py LAMBDAS | 2 | OK |
+| 218 | 3 | const | pipeline/methods.py LAMBDAS | 3 | OK |
+| 218 | 4 | const | pipeline/methods.py LAMBDAS | 4 | OK |
+| 218 | 5 | const | pipeline/methods.py LAMBDAS | 5 | OK |
+| 218 | 6 | const | pipeline/methods.py LAMBDAS | 6 | OK |
+| 218 | 8 | const | pipeline/methods.py LAMBDAS | 8 | OK |
+| 218 | 10 | const | pipeline/methods.py LAMBDAS | 10 | OK |
+| 218 | 12 | const | pipeline/methods.py LAMBDAS | 12 | OK |
+| 218 | 15 | const | pipeline/methods.py LAMBDAS | 15 | OK |
+| 218 | 20 | const | pipeline/methods.py LAMBDAS | 20 | OK |
+| 218 | 50 | const | pipeline/methods.py WS | 50 | OK |
+| 218 | 100 | const | pipeline/methods.py WS | 100 | OK |
+| 218 | 200 | const | pipeline/methods.py WS | 200 | OK |
+| 218 | 400 | const | pipeline/methods.py WS | 400 | OK |
+| 218 | 152 | value | results/phase3/tuning_candidates.csv rows per series | 152 | OK |
+| 218 | 72 | value | results/phase3/tuning_candidates.csv series | 72 | OK |
+| 218 | 10,944 | value | results/phase3/tuning_candidates.csv rows | 10,944 | OK |
+| 223 | 24 | value | configs/datasets.json tuning | 24 | OK |
+| 223 | 18 | value | configs/datasets.json evaluation | 18 | OK |
+| 223 | 15 | const | scripts/train.py SEEDS | 15 | OK |
+| 223 | 42,123 | label | seeds 42, 123 (scripts/train.py SEEDS = [15, 42, 123]) |  | n/a |
+| 231 | 72 | value | results/phase3/tuning_candidates.csv series | 72 | OK |
+| 246 | 50 | const | pipeline/metrics.py high_variance_mask roll | 50 | OK |
+| 246 | 75 | const | pipeline/metrics.py high_variance_mask pct | 75 | OK |
+| 246 | 1,000 | label | unit: per 1,000 points |  | n/a |
+| 246 | 5.0 | value | results/scorer_validation.csv max max_file_abs_diff (mantissa) | 4.982 | OK |
+| 246 | -12 | const | exponent | -12 | OK |
+| 246 | 1.9 | value | results/scorer_validation.csv max normalised_abs_diff (mantissa) | 1.945 | OK |
+| 246 | -11 | const | exponent | -11 | OK |
+| 249 | 18 | value | results/phase3/hypothesis_tests.csv H1 n_files | 18 | OK |
+| 249 | 17 | value | results/phase3/hypothesis_tests.csv H2 n_files | 17 | OK |
+| 249 | 0.05 | const | scripts/hypothesis_tests.py alpha (D-26, D-28) | 0.0500 | OK |
+| 249 | 95 | const | scripts/hypothesis_tests.py 95 % CI | 95 | OK |
+| 249 | 2026 | label | date of the proposal (October 2026, D-28) |  | n/a |
+| 249 | 70 | const | proposal H1 70 % (D-28) | 70 | OK |
+| 249 | 15 | const | proposal H2 15 % (D-28) | 15 | OK |
+| 252 | 13500 | const | results/environment/hardware.md CPU i5-13500H | 13,500 | OK |
+| 252 | 15.7 | value | results/environment/hardware.md RAM total | 15.700 | OK |
+| 252 | 3.12 | value | results/environment/pip_freeze.txt Python 3.12.4 | 3.1200 | OK |
+| 252 | 2.14 | value | results/environment/pip_freeze.txt torch 2.14.1 | 2.1400 | OK |
+| 252 | 108 | value | results/phase2_errors/run_summary.csv rows | 108 | OK |
+| 252 | 47.5 | value | results/phase2_errors/run_summary.csv sum wall_seconds / 60 | 47.454 | OK |
+| 259 | 108 | value | results/phase2_errors/run_summary.csv rows | 108 | OK |
+| 259 | 6 | value | results/phase2_errors/run_summary.csv min epochs_run | 6 | OK |
+| 259 | 50 | value | results/phase2_errors/run_summary.csv max epochs_run | 50 | OK |
+| 259 | 20 | value | results/phase2_errors/run_summary.csv median epochs_run | 20 | OK |
+| 259 | 50 | const | pipeline/model.py MAX_EPOCHS | 50 | OK |
+| 259 | 1 | value | results/phase2_errors/run_summary.csv min best_epoch | 1 | OK |
+| 259 | 2 | value | results/phase2_errors/run_summary.csv max best_epoch among best <= 2 | 2 | OK |
+| 259 | 0.633 | value | results/phase3/test_summary.csv roc_auc mean | 0.63251 | OK |
+| 259 | 0.003 | value | results/phase3/test_summary.csv roc_auc sd | 0.00317 | OK |
+| 259 | 0.497 | value | results/phase3/test_summary.csv pr_auc mean | 0.49721 | OK |
+| 259 | 0.011 | value | results/phase3/test_summary.csv pr_auc sd | 0.01084 | OK |
+| 262 | 90 | value | results/phase3/selected_params.csv B1 p | 90 | OK |
+| 262 | 2.5 | value | results/phase3/selected_params.csv B2 k | 2.500 | OK |
+| 262 | 5 | value | results/phase3/selected_params.csv S-robust lam | 5 | OK |
+| 262 | 400 | value | results/phase3/selected_params.csv B3 w | 400 | OK |
+| 262 | 3 | value | results/phase3/selected_params.csv B3-k k | 3 | OK |
+| 262 | 400 | value | results/phase3/selected_params.csv B3-k w | 400 | OK |
+| 262 | 6 | value | results/phase3/selected_params.csv P1 lam | 6 | OK |
+| 262 | 50 | value | results/phase3/selected_params.csv P1 w | 50 | OK |
+| 262 | 3 | value | results/phase3/selected_params.csv B3-k k | 3 | OK |
+| 262 | 104 | value | results/phase3/r2_info.csv path == eq8 | 104 | OK |
+| 262 | 108 | value | results/phase3/r2_info.csv rows | 108 | OK |
+| 265 | 24 | value | results/phase3/detection_delay.csv Base detected | 24 | OK |
+| 265 | 25 | value | results/phase3/detection_delay.csv n_windows | 25 | OK |
+| 265 | 0.972 | value | results/phase3/test_summary.csv Base event_recall | 0.97222 | OK |
+| 265 | 0.733 | value | results/phase3/test_summary.csv Base composite_f1 | 0.73331 | OK |
+| 265 | 18.9 | value | results/phase3/test_summary.csv Base fpr x100 | 18.907 | OK |
+| 265 | 0.189 | value | results/phase3/test_summary.csv Base fpr | 0.18907 | OK |
+| 265 | 0.018 | value | results/phase3/test_summary.csv B3 fpr | 0.01826 | OK |
+| 265 | 0.035 | value | results/phase3/test_summary.csv P1 fpr | 0.03469 | OK |
+| 265 | 0.743 | value | results/phase3/test_summary.csv B3 composite_f1 | 0.74285 | OK |
+| 265 | 0.544 | value | results/phase3/test_summary.csv P1 composite_f1 | 0.54371 | OK |
+| 265 | 0.769 | value | results/phase3/test_summary.csv P1 event_recall | 0.76852 | OK |
+| 265 | 0.490 | value | results/phase3/test_summary.csv P1 precision | 0.48959 | OK |
+| 265 | 0.407 | value | results/phase3/test_summary.csv B1 f1 (highest point F1) | 0.40671 | OK |
+| 265 | 0.355 | value | results/phase3/test_summary.csv Base f1 | 0.35506 | OK |
+| 265 | 0.207 | value | results/phase3/test_summary.csv B3 f1 | 0.20723 | OK |
+| 265 | 0.161 | value | results/phase3/test_summary.csv P1 f1 | 0.16108 | OK |
+| 269 | 18 | value | configs/datasets.json evaluation | 18 | OK |
+| 269 | 1 | label | column name FA/1k |  | n/a |
+| 269 | 18 | value | configs/datasets.json clean_test | 18 | OK |
+| 275 | -0.190 | value | results/phase3/hypothesis_tests.csv H1 mean_diff | -0.18960 | OK |
+| 275 | 95 | const | 95 % CI | 95 | OK |
+| 275 | -0.351 | value | results/phase3/hypothesis_tests.csv H1 ci95_low | -0.35068 | OK |
+| 275 | -0.008 | value | results/phase3/hypothesis_tests.csv H1 ci95_high | -0.00760 | OK |
+| 275 | 4 | value | results/phase3/hypothesis_tests.csv H1 wins | 4 | OK |
+| 275 | 13 | value | results/phase3/hypothesis_tests.csv H1 losses | 13 | OK |
+| 275 | 0.035 | value | results/phase3/hypothesis_tests.csv H1 p | 0.03516 | OK |
+| 275 | -0.151 | value | results/phase3/hypothesis_tests.csv H2 mean_diff | -0.15076 | OK |
+| 275 | -0.328 | value | results/phase3/hypothesis_tests.csv H2 ci95_low | -0.32781 | OK |
+| 275 | -0.012 | value | results/phase3/hypothesis_tests.csv H2 ci95_high | -0.01179 | OK |
+| 275 | 0.109 | value | results/phase3/hypothesis_tests.csv H2 p | 0.10933 | OK |
+| 275 | 17 | value | results/phase3/hypothesis_tests.csv H2 n_files | 17 | OK |
+| 275 | 0.163 | value | results/phase3/hypothesis_tests.csv clean_fpr p | 0.16257 | OK |
+| 275 | 0.832 | value | results/phase3/hypothesis_tests.csv nab_standard p | 0.83173 | OK |
+| 275 | 13 | value | results/phase3/test_metrics.csv composite F1 losses vs Base (= vs B3) | 13 | OK |
 | 275 | 18 | value | configs/datasets.json evaluation | 18 | OK |
-| 275 | 1 | label | column name FA/1k |  | n/a |
-| 275 | 18 | value | configs/datasets.json clean_test | 18 | OK |
-| 281 | -0.190 | value | results/phase3/hypothesis_tests.csv H1 mean_diff | -0.18960 | OK |
-| 281 | 95 | const | 95 % CI | 95 | OK |
-| 281 | -0.351 | value | results/phase3/hypothesis_tests.csv H1 ci95_low | -0.35068 | OK |
-| 281 | -0.008 | value | results/phase3/hypothesis_tests.csv H1 ci95_high | -0.00760 | OK |
-| 281 | 4 | value | results/phase3/hypothesis_tests.csv H1 wins | 4 | OK |
-| 281 | 13 | value | results/phase3/hypothesis_tests.csv H1 losses | 13 | OK |
-| 281 | 0.035 | value | results/phase3/hypothesis_tests.csv H1 p | 0.03516 | OK |
-| 281 | -0.151 | value | results/phase3/hypothesis_tests.csv H2 mean_diff | -0.15076 | OK |
-| 281 | -0.328 | value | results/phase3/hypothesis_tests.csv H2 ci95_low | -0.32781 | OK |
-| 281 | -0.012 | value | results/phase3/hypothesis_tests.csv H2 ci95_high | -0.01179 | OK |
-| 281 | 0.109 | value | results/phase3/hypothesis_tests.csv H2 p | 0.10933 | OK |
-| 281 | 17 | value | results/phase3/hypothesis_tests.csv H2 n_files | 17 | OK |
-| 281 | 0.163 | value | results/phase3/hypothesis_tests.csv clean_fpr p | 0.16257 | OK |
-| 281 | 0.832 | value | results/phase3/hypothesis_tests.csv nab_standard p | 0.83173 | OK |
-| 281 | 13 | value | results/phase3/test_metrics.csv composite F1 losses vs Base (= vs B3) | 13 | OK |
-| 281 | 18 | value | configs/datasets.json evaluation | 18 | OK |
-| 281 | 10 | value | results/phase3/test_metrics.csv FPR P1 lower than Base | 10 | OK |
-| 281 | 11 | value | results/phase3/test_metrics.csv FPR P1 higher than B3 | 11 | OK |
-| 297 | 3 | value | results/phase3/proposal_hypotheses.csv H1 Base wins | 3 | OK |
-| 297 | 18 | value | configs/datasets.json evaluation | 18 | OK |
-| 297 | 0.161 | value | results/phase3/proposal_hypotheses.csv H1 mean_P1 (point F1) | 0.16108 | OK |
-| 297 | 0.355 | value | results/phase3/proposal_hypotheses.csv H1 Base mean_baseline | 0.35506 | OK |
-| 297 | 0.0007 | value | results/phase3/proposal_hypotheses.csv H1 Base p | 0.000671 | OK |
-| 297 | 5 | value | results/phase3/proposal_hypotheses.csv H1 B3 wins | 5 | OK |
-| 297 | 0.161 | value | results/phase3/proposal_hypotheses.csv H1 mean_P1 (point F1) | 0.16108 | OK |
-| 297 | 0.207 | value | results/phase3/proposal_hypotheses.csv H1 B3 mean_baseline | 0.20723 | OK |
-| 297 | 0.090 | value | results/phase3/proposal_hypotheses.csv H1 B3 p | 0.08977 | OK |
-| 297 | 13 | const | proposal H1: 70 % of 18 series rounded up (D-28) | 13 | OK |
-| 297 | 65.3 | value | results/phase3/proposal_hypotheses.csv H2 Base relative_reduction x100 | 65.306 | OK |
-| 297 | 15 | const | proposal H2 15 % (D-28) | 15 | OK |
-| 297 | 0.090 | value | results/phase3/proposal_hypotheses.csv H2 Base t-test p | 0.08999 | OK |
-| 297 | 0.109 | value | results/phase3/proposal_hypotheses.csv H2 Base Wilcoxon p | 0.10933 | OK |
-| 297 | 14.5 | value | results/phase3/proposal_hypotheses.csv H2 B3 relative increase x100 | 14.546 | OK |
-| 297 | 0.677 | value | results/phase3/proposal_hypotheses.csv H2 B3 t-test p | 0.67723 | OK |
-| 297 | 0.695 | value | results/phase3/proposal_hypotheses.csv H2 B3 Wilcoxon p | 0.69489 | OK |
-| 300 | 5 | value | results/phase3/category_analysis.csv n_files realAWSCloudwatch | 5 | OK |
-| 300 | 5 | value | results/phase3/category_analysis.csv n_files realKnownCause | 5 | OK |
-| 300 | 4 | value | results/phase3/category_analysis.csv n_files realTraffic | 4 | OK |
-| 300 | 3 | value | results/phase3/category_analysis.csv n_files realTweets | 3 | OK |
-| 300 | 1 | value | results/phase3/category_analysis.csv n_files realAdExchange | 1 | OK |
-| 300 | 0.080 | value | results/phase3/category_analysis.csv composite_f1 Base AWS | 0.07974 | OK |
-| 300 | 0.507 | value | results/phase3/category_analysis.csv hv_fpr Base AWS | 0.50732 | OK |
-| 300 | 4 | value | results/phase3/category_analysis.csv hv_fpr n_files AWS | 4 | OK |
-| 300 | -0.141 | value | results/phase3/category_analysis.csv f1 Base AWS | -0.14096 | OK |
-| 310 | 25 | value | results/phase3/detection_delay.csv n_windows | 25 | OK |
-| 310 | 5.3 | value | results/phase3/detection_delay.csv missed R2 | 5.333 | OK |
-| 310 | 6.7 | value | results/phase3/detection_delay.csv missed P1 | 6.667 | OK |
-| 310 | 1.5 | value | results/phase3/detection_delay.csv missed P1 sd over seeds | 1.528 | OK |
-| 310 | 20 | value | results/phase3/detection_delay.csv delay B1 x100 (min) | 20.335 | OK |
-| 310 | 45 | value | results/phase3/detection_delay.csv delay R2 x100 (max) | 45.348 | OK |
-| 310 | 0.42 | value | results/phase3/detection_delay.csv delay Base | 0.4189 | OK |
-| 310 | 0.43 | value | results/phase3/detection_delay.csv delay B3 | 0.4305 | OK |
-| 310 | 0.41 | value | results/phase3/detection_delay.csv delay P1 | 0.4059 | OK |
-| 314 | 10 | const | pipeline/methods.py WS_P1_EXPL | 10 | OK |
-| 314 | 20 | const | WS_P1_EXPL | 20 | OK |
-| 314 | 30 | const | WS_P1_EXPL | 30 | OK |
-| 314 | 600 | const | WS_B3_EXPL | 600 | OK |
-| 314 | 800 | const | WS_B3_EXPL | 800 | OK |
-| 314 | 80 | const | EXPLORATORY B1 grid | 80 | OK |
-| 314 | 85 | const | EXPLORATORY B1 grid | 85 | OK |
-| 314 | 600 | value | results/phase3_exploratory/selected_params.csv B3 w | 600 | OK |
-| 314 | 0.713 | value | results/phase3_exploratory/test_summary.csv B3 composite_f1 | 0.71304 | OK |
-| 314 | 0.240 | value | results/phase3_exploratory/test_summary.csv B3 f1 | 0.24009 | OK |
-| 314 | -28.7 | value | results/phase3/test_summary.csv B3 corpus_nab_standard | -28.655 | OK |
-| 314 | -16.8 | value | results/phase3_exploratory/test_summary.csv B3 corpus_nab_standard | -16.781 | OK |
-| 314 | 600 | value | results/phase3_exploratory/selected_params.csv B3 w (and exploratory B3 composite F1 below Base and B2) | 600 | OK |
-| 319 | 3 | const | Base rule, mean + 3 sd (D-03; thresholds.base_threshold) | 3 | OK |
-| 319 | 24 | value | results/phase3/detection_delay.csv Base detected | 24 | OK |
-| 319 | 25 | value | results/phase3/detection_delay.csv n_windows | 25 | OK |
-| 319 | 18 | value | results/phase3/error_drift.csv files | 18 | OK |
-| 319 | 1.20 | value | results/phase3/error_drift.csv ALL ratio_mean_over_seeds | 1.2016 | OK |
-| 319 | 1 | label | ratio threshold 1 |  | n/a |
-| 319 | 17 | value | results/phase3/error_drift.csv n_files_ratio_above_1 | 17 | OK |
-| 326 | 15 | label | seed 15 |  | n/a |
-| 326 | 1 | value | results/phase3/test_traces/realKnownCause__nyc_taxi__s15.npz P1 alarms inside the last window | 1 | OK |
-| 326 | 30 | value | results/phase3/test_traces/realKnownCause__nyc_taxi__s15.npz B3 alarms inside the last window | 30 | OK |
-| 326 | 73 | value | results/phase3/test_traces/realKnownCause__nyc_taxi__s15.npz Base alarms inside the last window | 73 | OK |
-| 329 | 50 | value | results/phase3/selected_params.csv P1 w | 50 | OK |
-| 329 | 50 | value | results/phase3/selected_params.csv P1 w | 50 | OK |
-| 329 | 400 | value | results/phase3/selected_params.csv B3 w | 400 | OK |
-| 329 | 400 | value | results/phase3/selected_params.csv B3 w | 400 | OK |
-| 332 | 90 | approx10 | results/phase3/test_summary.csv 1 - B3 fpr / Base fpr (x100, 'about') | 90.342 | OK |
-| 332 | 0.806 | value | results/phase3/test_summary.csv R2 event_recall | 0.80556 | OK |
-| 332 | 0.633 | value | results/phase3/test_summary.csv roc_auc | 0.63251 | OK |
-| 338 | 18 | value | configs/datasets.json evaluation | 18 | OK |
-| 338 | 25 | value | results/phase1_eda/file_summary.csv windows_test (evaluation) | 25 | OK |
-| 338 | 30 | const | pipeline/model.py T | 30 | OK |
+| 275 | 10 | value | results/phase3/test_metrics.csv FPR P1 lower than Base | 10 | OK |
+| 275 | 11 | value | results/phase3/test_metrics.csv FPR P1 higher than B3 | 11 | OK |
+| 291 | 3 | value | results/phase3/proposal_hypotheses.csv H1 Base wins | 3 | OK |
+| 291 | 18 | value | configs/datasets.json evaluation | 18 | OK |
+| 291 | 0.161 | value | results/phase3/proposal_hypotheses.csv H1 mean_P1 (point F1) | 0.16108 | OK |
+| 291 | 0.355 | value | results/phase3/proposal_hypotheses.csv H1 Base mean_baseline | 0.35506 | OK |
+| 291 | 0.0007 | value | results/phase3/proposal_hypotheses.csv H1 Base p | 0.000671 | OK |
+| 291 | 5 | value | results/phase3/proposal_hypotheses.csv H1 B3 wins | 5 | OK |
+| 291 | 0.161 | value | results/phase3/proposal_hypotheses.csv H1 mean_P1 (point F1) | 0.16108 | OK |
+| 291 | 0.207 | value | results/phase3/proposal_hypotheses.csv H1 B3 mean_baseline | 0.20723 | OK |
+| 291 | 0.090 | value | results/phase3/proposal_hypotheses.csv H1 B3 p | 0.08977 | OK |
+| 291 | 13 | const | proposal H1: 70 % of 18 series rounded up (D-28) | 13 | OK |
+| 291 | 65.3 | value | results/phase3/proposal_hypotheses.csv H2 Base relative_reduction x100 | 65.306 | OK |
+| 291 | 15 | const | proposal H2 15 % (D-28) | 15 | OK |
+| 291 | 0.090 | value | results/phase3/proposal_hypotheses.csv H2 Base t-test p | 0.08999 | OK |
+| 291 | 0.109 | value | results/phase3/proposal_hypotheses.csv H2 Base Wilcoxon p | 0.10933 | OK |
+| 291 | 14.5 | value | results/phase3/proposal_hypotheses.csv H2 B3 relative increase x100 | 14.546 | OK |
+| 291 | 0.677 | value | results/phase3/proposal_hypotheses.csv H2 B3 t-test p | 0.67723 | OK |
+| 291 | 0.695 | value | results/phase3/proposal_hypotheses.csv H2 B3 Wilcoxon p | 0.69489 | OK |
+| 294 | 5 | value | results/phase3/category_analysis.csv n_files realAWSCloudwatch | 5 | OK |
+| 294 | 5 | value | results/phase3/category_analysis.csv n_files realKnownCause | 5 | OK |
+| 294 | 4 | value | results/phase3/category_analysis.csv n_files realTraffic | 4 | OK |
+| 294 | 3 | value | results/phase3/category_analysis.csv n_files realTweets | 3 | OK |
+| 294 | 1 | value | results/phase3/category_analysis.csv n_files realAdExchange | 1 | OK |
+| 294 | 0.080 | value | results/phase3/category_analysis.csv composite_f1 Base AWS | 0.07974 | OK |
+| 294 | 0.507 | value | results/phase3/category_analysis.csv hv_fpr Base AWS | 0.50732 | OK |
+| 294 | 4 | value | results/phase3/category_analysis.csv hv_fpr n_files AWS | 4 | OK |
+| 294 | -0.141 | value | results/phase3/category_analysis.csv f1 Base AWS | -0.14096 | OK |
+| 304 | 25 | value | results/phase3/detection_delay.csv n_windows | 25 | OK |
+| 304 | 5.3 | value | results/phase3/detection_delay.csv missed R2 | 5.333 | OK |
+| 304 | 6.7 | value | results/phase3/detection_delay.csv missed P1 | 6.667 | OK |
+| 304 | 1.5 | value | results/phase3/detection_delay.csv missed P1 sd over seeds | 1.528 | OK |
+| 304 | 20 | value | results/phase3/detection_delay.csv delay B1 x100 (min) | 20.335 | OK |
+| 304 | 45 | value | results/phase3/detection_delay.csv delay R2 x100 (max) | 45.348 | OK |
+| 304 | 0.42 | value | results/phase3/detection_delay.csv delay Base | 0.4189 | OK |
+| 304 | 0.43 | value | results/phase3/detection_delay.csv delay B3 | 0.4305 | OK |
+| 304 | 0.41 | value | results/phase3/detection_delay.csv delay P1 | 0.4059 | OK |
+| 308 | 10 | const | pipeline/methods.py WS_P1_EXPL | 10 | OK |
+| 308 | 20 | const | WS_P1_EXPL | 20 | OK |
+| 308 | 30 | const | WS_P1_EXPL | 30 | OK |
+| 308 | 600 | const | WS_B3_EXPL | 600 | OK |
+| 308 | 800 | const | WS_B3_EXPL | 800 | OK |
+| 308 | 80 | const | EXPLORATORY B1 grid | 80 | OK |
+| 308 | 85 | const | EXPLORATORY B1 grid | 85 | OK |
+| 308 | 600 | value | results/phase3_exploratory/selected_params.csv B3 w | 600 | OK |
+| 308 | 0.713 | value | results/phase3_exploratory/test_summary.csv B3 composite_f1 | 0.71304 | OK |
+| 308 | 0.240 | value | results/phase3_exploratory/test_summary.csv B3 f1 | 0.24009 | OK |
+| 308 | -28.7 | value | results/phase3/test_summary.csv B3 corpus_nab_standard | -28.655 | OK |
+| 308 | -16.8 | value | results/phase3_exploratory/test_summary.csv B3 corpus_nab_standard | -16.781 | OK |
+| 308 | 600 | value | results/phase3_exploratory/selected_params.csv B3 w (and exploratory B3 composite F1 below Base and B2) | 600 | OK |
+| 313 | 3 | const | Base rule, mean + 3 sd (D-03; thresholds.base_threshold) | 3 | OK |
+| 313 | 24 | value | results/phase3/detection_delay.csv Base detected | 24 | OK |
+| 313 | 25 | value | results/phase3/detection_delay.csv n_windows | 25 | OK |
+| 313 | 18 | value | results/phase3/error_drift.csv files | 18 | OK |
+| 313 | 1.20 | value | results/phase3/error_drift.csv ALL ratio_mean_over_seeds | 1.2016 | OK |
+| 313 | 1 | label | ratio threshold 1 |  | n/a |
+| 313 | 17 | value | results/phase3/error_drift.csv n_files_ratio_above_1 | 17 | OK |
+| 320 | 15 | label | seed 15 |  | n/a |
+| 320 | 1 | value | results/phase3/test_traces/realKnownCause__nyc_taxi__s15.npz P1 alarms inside the last window | 1 | OK |
+| 320 | 30 | value | results/phase3/test_traces/realKnownCause__nyc_taxi__s15.npz B3 alarms inside the last window | 30 | OK |
+| 320 | 73 | value | results/phase3/test_traces/realKnownCause__nyc_taxi__s15.npz Base alarms inside the last window | 73 | OK |
+| 323 | 50 | value | results/phase3/selected_params.csv P1 w | 50 | OK |
+| 323 | 50 | value | results/phase3/selected_params.csv P1 w | 50 | OK |
+| 323 | 400 | value | results/phase3/selected_params.csv B3 w | 400 | OK |
+| 323 | 400 | value | results/phase3/selected_params.csv B3 w | 400 | OK |
+| 326 | 90 | approx10 | results/phase3/test_summary.csv 1 - B3 fpr / Base fpr (x100, 'about') | 90.342 | OK |
+| 326 | 0.806 | value | results/phase3/test_summary.csv R2 event_recall | 0.80556 | OK |
+| 326 | 0.633 | value | results/phase3/test_summary.csv roc_auc | 0.63251 | OK |
+| 332 | 18 | value | configs/datasets.json evaluation | 18 | OK |
+| 332 | 25 | value | results/phase1_eda/file_summary.csv windows_test (evaluation) | 25 | OK |
+| 332 | 30 | const | pipeline/model.py T | 30 | OK |
