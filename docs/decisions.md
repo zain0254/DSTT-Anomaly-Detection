@@ -314,3 +314,9 @@ Label correction: D-26 called the NAB test "H3". In the paper NAB belongs to
 RQ2/RQ3 and H3 is the proposal's category hypothesis above. The D-26 text is
 kept as registered; the doc labels that test "D-26 NAB test (labelled H3 in
 D-26)".
+
+## D-29 One repository for figures (2026-11-18, user, after submission)
+All figures live in this repository under `figures/`, indexed with previews
+in `figures/README.md`. The separate images repository is no longer
+updated; its README points here. `scripts/sync_figures.sh` is removed. No
+result or figure content changes.

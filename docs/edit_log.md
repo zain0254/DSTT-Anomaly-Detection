@@ -170,3 +170,26 @@
   ALL MATCH (25 s); folder deleted. Later commits change only paper files,
   docs and paper scripts.
 - Images repo README: figure index added.
+
+## 2026-11-18 (after submission tag v1.0-submission)
+
+- Paper Fig. 5 (fig04_example_trace) redrawn for the masking paragraph it
+  supports: single column (3.5 x 3.9 in, smallest font 7 pt), panels (a)
+  whole nyc_taxi test segment, (b) last NAB window enlarged, (c) alarms in
+  (b); windows shaded grey because P1 is drawn in the anomaly red. Moved
+  from a figure* that floated to the last page to a [!t] column figure at
+  the start of the Discussion, so it prints beside its text (page 7 in a
+  local build). Caption numbers (1, 30, 73 alarms inside the last window for
+  P1, B3, Base) added to scripts/check_paper_numbers.py, read from
+  results/phase3/test_traces/realKnownCause__nyc_taxi__s15.npz. Number
+  check: 306 tokens, 0 mismatches. Zip rebuilt.
+- One repository for figures (D-29): figures/README.md indexes every
+  figure with a preview; figures/paper/ holds PNG previews of the five
+  paper figures (fig_pipeline.png is the TikZ figure cropped from a local
+  build). scripts/sync_figures.sh removed; the images repository README now
+  points here.
+- New docs: docs/REPORT.md (pipeline in plain words with Mermaid diagrams),
+  docs/FAQ.md (reviewer questions with links to evidence). README rebuilt
+  around a "Start here" table, pipeline diagram, results, hypotheses and
+  figures. docs/references.md: links filled for lee2023repad2 and wu2023
+  from refs.bib.

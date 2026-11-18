@@ -312,20 +312,20 @@ Because four selections sat on a grid edge, we extended those grids after seeing
 
 %=====================================================================
 \section{Discussion}
+\begin{figure}[!t]
+\centering
+\safefig[\columnwidth]{fig04_example_trace}
+\caption{Masking in the rolling robust rule on \texttt{nyc\_taxi}, seed 15. (a)~Test segment: window MAE with the Base, B3 and P1 thresholds; NAB windows are shaded grey. (b)~The last window enlarged: P1's threshold climbs with the errors, so almost all of them stay below it. (c)~Alarms in (b): inside the window, 1 error exceeds P1's threshold, against 30 for B3 and 73 for Base. The example was chosen before any threshold result was computed.}
+\label{fig:trace}
+\end{figure}
+
 %=====================================================================
 
 \subsection{The expected failure did not occur}
 Our proposal argued that outliers inflate $\mu + 3\sigma$ and so hide real anomalies. On NAB the base rule did the opposite. It caught 24 of the 25 test windows, and its problem was a high rate of false alarms. A likely reason is that the threshold is fitted to errors on the data the model was trained on, while errors on later data tend to be larger, so a fixed threshold sits too low once the data moves on. On the 18 evaluation series, the ratio of median test error to median training error had a median of 1.20 and exceeded 1 in 17 series. A rule that adapts to recent errors removes most of this effect, which is why both rolling rules cut false alarms so sharply. The finding agrees with Garg et al. \cite{garg2022}, who found dynamic scoring functions better than static ones on other benchmarks.
 
 \subsection{Why robustness did not help}
-Robust statistics protect a threshold from a few large values in its window. That protection only matters when large values are present and when the window is long enough for them to be a small minority. P1 selected the smallest window in the primary grid ($w = 50$); longer windows scored lower on validation, and the shorter ones added in the exploratory grid did not win either. In a 50-step window an anomaly run quickly becomes a large share of the window, and then the median and the MAD move as much as the mean. Fig.~\ref{fig:trace} shows exactly this on \texttt{nyc\_taxi}: P1's threshold jumps up right after large errors inside the anomaly windows. This is the masking effect our proposal described, but it appears in the rolling robust rule, not in the static base rule, and it matches P1 missing the most test windows of all rules. Gated memory was designed to stop it, yet it lost on validation, probably because keeping alarmed errors out of the window also keeps out harmless level shifts, which then produce long runs of false alarms. The rolling mean rule with a long window ($w = 400$) avoids both problems: a short anomaly barely moves a mean over 400 errors, while gradual drift is still followed.
-
-\begin{figure*}[t]
-\centering
-\safefig[\textwidth]{fig04_example_trace}
-\caption{Test segment of \texttt{nyc\_taxi}, seed 15: window MAE with the Base, B3 and P1 thresholds and alarms. NAB windows are shaded. The example was chosen before any threshold result was computed.}
-\label{fig:trace}
-\end{figure*}
+Robust statistics protect a threshold from a few large values in its window. That protection only matters when large values are present and when the window is long enough for them to be a small minority. P1 selected the smallest window in the primary grid ($w = 50$); longer windows scored lower on validation, and the shorter ones added in the exploratory grid did not win either. In a 50-step window an anomaly run quickly becomes a large share of the window, and then the median and the MAD move as much as the mean. Fig.~\ref{fig:trace} shows this on \texttt{nyc\_taxi}: inside the last anomaly window P1's threshold climbs with the errors, so the anomalous errors that follow stay below it, while B3's threshold rises far less and keeps alarming. This is the masking effect our proposal described, but it appears in the rolling robust rule, not in the static base rule, and it matches P1 missing the most test windows of all rules. Gated memory was designed to stop it, yet it lost on validation, probably because keeping alarmed errors out of the window also keeps out harmless level shifts, which then produce long runs of false alarms. The rolling mean rule with a long window ($w = 400$) avoids both problems: a short anomaly barely moves a mean over 400 errors, while gradual drift is still followed.
 
 \subsection{What this means in practice}
 For an LSTM-AE monitor like the one in the base paper, the cheapest effective change is to make the threshold rolling, not to make it robust. A rolling mean plus three standard deviations over a few hundred recent errors reduced false alarms by about 90\% relative to the base rule while keeping composite F1 at the same level. The extreme value threshold of Yu et al. \cite{yu2024evt} gave the fewest false alarms on clean data of all rules, but it missed more windows (event recall 0.806). The moderate ROC-AUC of the model (0.633) also matters: no threshold can recover anomalies that the model reconstructs well, so better models and better thresholds are separate problems.

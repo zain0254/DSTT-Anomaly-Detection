@@ -72,6 +72,17 @@ def pf_wins(metric, other, higher):
     return int((d > 0).sum() if higher else (d < 0).sum()), int((d < 0).sum() if higher else (d > 0).sum())
 
 
+TR = "results/phase3/test_traces/realKnownCause__nyc_taxi__s15.npz"
+
+
+def trace_alarms_last_window(method):
+    z = np.load(ROOT / TR)
+    lab = z["labels"].astype(int)
+    edges = np.flatnonzero(np.diff(np.r_[0, lab, 0]))
+    s, e = edges[-2], edges[-1]
+    return int(z[f"{method}__alarms"][s:e].sum())
+
+
 F = "results/phase1_eda/file_summary.csv"
 TS = "results/phase3/test_summary.csv"
 HT = "results/phase3/hypothesis_tests.csv"
@@ -293,7 +304,8 @@ SPECS = [
         LAB("ratio threshold 1"), V("results/phase3/error_drift.csv n_files_ratio_above_1", edall.n_files_ratio_above_1)]),
     ("Robust statistics protect a threshold", [
         V(SEL + " P1 w", sel_p["P1"]["w"]), V(SEL + " P1 w", sel_p["P1"]["w"]), V(SEL + " B3 w", sel_p["B3"]["w"]), V(SEL + " B3 w", sel_p["B3"]["w"])]),
-    ("\\caption{Test segment of \\texttt{nyc\\_taxi}, seed 15", [LAB("seed 15")]),
+    ("\\caption{Masking in the rolling robust rule", [LAB("seed 15")] + [
+        V(TR + f" {m} alarms inside the last window", trace_alarms_last_window(m)) for m in ("P1", "B3", "Base")]),
     ("For an LSTM-AE monitor like the one in the base paper", [
         ("approx10", TS + " 1 - B3 fpr / Base fpr (x100, 'about')", 100 * (1 - ts.loc["B3", "fpr_mean"] / ts.loc["Base", "fpr_mean"])),
         V(TS + " R2 event_recall", ts.loc["R2", "event_recall_mean"]), V(TS + " roc_auc", ts.loc["Base", "roc_auc_mean"])]),
