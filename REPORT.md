@@ -558,10 +558,6 @@ and each has a DOI or direct link in [paper/refs.bib](paper/refs.bib). Ten
 are free to read; Yu et al. (2024) and Jeon et al. (2023) are behind
 publisher paywalls but reachable by DOI.
 
-**Was AI used?** Yes, as the paper's ethics section states: AI tools helped
-with coding, literature search and editing. All experiments, numbers and
-conclusions were checked by the author.
-
 ## 18. Design decisions D-01 to D-29
 
 Code comments refer to these numbers. The full text of every decision, with

@@ -16,7 +16,6 @@ no LaTeX errors and no undefined references.
   Matplotlib PSF-based; repository MIT); reproducibility (NAB pinned to `ea702d7`, exact package pins,
   seeds 15/42/123 with PyTorch deterministic algorithms, train-only scaling, stored grids, selections,
   108 error series and per-seed metrics, number-check script).
-- Removed the sentence on AI-tool assistance, as requested.
 - Code URL changed to `https://github.com/zain0254/DSTT-Anomaly-Detection` (paper body and Code
   availability). Both this URL and the old `...-Detection-` URL resolve to the same repository.
 
